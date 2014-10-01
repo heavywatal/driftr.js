@@ -17,7 +17,7 @@ document.write("Hello, Javascript.<br />");
     function evolve(N, p, s, T) {
         var freq = [p];
         for (var t=0; t<T; ++t) {
-            p = random_binomial(N, (1 + s) * p) / N;
+            p = random_binomial(N, (1 + s) * p / (1 + s * p)) / N;
             freq.push(p);
         }
         return freq;
