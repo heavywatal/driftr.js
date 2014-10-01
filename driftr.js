@@ -1,5 +1,3 @@
-document.write("Hello, Javascript.<br />");
-
 (function(d3) {
 
     function random_bernoulli(prob) {
@@ -14,38 +12,61 @@ document.write("Hello, Javascript.<br />");
         return cnt;
     }
 
-    function evolve(N, p, s, T) {
-        var freq = [p];
+    function evolve(N, s, q, T) {
+        var freq = [q];
         for (var t=0; t<T; ++t) {
-            p = random_binomial(N, (1 + s) * p / (1 + s * p)) / N;
-            freq.push(p);
+            q = random_binomial(N, (1 + s) * q / (1 + s * q)) / N;
+            freq.push(q);
         }
         return freq;
     }
 
-    console.log(random_binomial(100, 0.3));
-    var freq_history = evolve(100, 0.5, 0.01, 20);
-
     var svg_height = 320;
     var svg_width  = 640;
 
-    d3.select("body").append("p").text("Hello, D3.js");
+    var params = [
+        ["Population size (N)",
+         "popsize", 100, 10000, 100, 1000],
+        ["Selection coefficient (s)",
+         "selection", -0.02, 0.02, 0.001, 0.01],
+        ["Initial frequency (q)",
+         "frequency", 0.0, 0.5, 0.02, 0.1],
+        ["Observation period",
+         "observation", 50, 400, 50, 100],
+        ["Number of replicates",
+         "replicates", 10, 50, 10, 10]
+    ];
 
-    d3.select("#table")
-        .append("table")
-        .append("tr")
-        .selectAll("td")
-        .data(freq_history)
+    var input_items = d3.select("form")
+        .selectAll("div")
+        .data(params)
         .enter()
-        .append("td")
-        .text(String);
+        .append("div");
+
+    input_items.append("label")
+        .attr("for", function(d){return d[1];})
+        .text(function(d){return d[0];});
+
+    input_items.append("input")
+        .attr("type", "number")
+        .attr("id", function(d){return d[1];})
+        .attr("name", function(d){return d[1];})
+        .attr("min", function(d){return d[2];})
+        .attr("max", function(d){return d[3];})
+        .attr("step", function(d){return d[4];})
+        .attr("value", function(d){return d[5];});
+
+    d3.select("form").append("input")
+        .attr("type", "button")
+        .attr("id", "go")
+        .attr("value", "Go!");
 
     var svg = d3.select("#graph")
             .append("svg")
             .attr("width", svg_width)
             .attr("height", svg_height);
     var scale_x = d3.scale.linear()
-            .domain([0, freq_history.length])
+            .domain([0, 100])
             .range([0, svg_width]);
     var scale_y = d3.scale.linear()
             .domain([0, 1])
@@ -54,10 +75,22 @@ document.write("Hello, Javascript.<br />");
             .x(function(d, i) {return scale_x(i);})
             .y(function(d, i) {return scale_y(d);})
             .interpolate("linear");
-    svg.append("path")
-        .attr("d", line(freq_history))
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("stroke-width", 2);
+
+    function draw() {
+        var N = parseInt(document.getElementById("popsize").value);
+        var s = parseFloat(document.getElementById("selection").value);
+        var q = parseFloat(document.getElementById("frequency").value);
+        var T = parseInt(document.getElementById("observation").value);
+        var rep = parseInt(document.getElementById("replicates").value);
+        svg.selectAll("path").remove();
+        scale_x.domain([0, T]);
+        for (var i=0; i<rep; ++i) {
+            var trajectory = evolve(N, s, q, T);
+            svg.append("path").attr("d", line(trajectory));
+        }
+    }
+
+    d3.select("#go").on("click", draw);
+    draw();
 
 })(d3);

@@ -1,0 +1,19 @@
+label {
+    display: block;
+}
+
+label:after {
+    content: ":";
+}
+
+svg {
+    border: solid;
+    border-color: #808080;
+}
+
+path {
+    fill: none;
+    stroke: #FF6000;
+    stroke-opacity: 0.3;
+    stroke-width: 2;
+}
