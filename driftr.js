@@ -21,9 +21,6 @@
         return freq;
     }
 
-    var svg_height = 320;
-    var svg_width  = 640;
-
     var params = [
         ["Population size (N)",
          "popsize", 100, 10000, 100, 1000],
@@ -41,7 +38,8 @@
         .selectAll("div")
         .data(params)
         .enter()
-        .append("div");
+        .append("div")
+        .attr("class", "parameter");
 
     input_items.append("label")
         .attr("for", function(d){return d[1];})
@@ -63,18 +61,22 @@
 
     var svg = d3.select("#graph")
             .append("svg")
-            .attr("width", svg_width)
-            .attr("height", svg_height);
+            .attr("height", 320);
     var scale_x = d3.scale.linear()
-            .domain([0, 100])
-            .range([0, svg_width]);
+            .domain([0, 100]);
     var scale_y = d3.scale.linear()
             .domain([0, 1])
-            .range([svg_height, 0]);
+            .range([svg.attr("height"), 0]);
     var line = d3.svg.line()
             .x(function(d, i) {return scale_x(i);})
             .y(function(d, i) {return scale_y(d);})
             .interpolate("linear");
+
+    function update_width() {
+        var width = parseInt(d3.select("#main").style("width")) - 8;
+        svg.attr("width", width);
+        scale_x.range([0, width]);
+    }
 
     function draw() {
         var N = parseInt(document.getElementById("popsize").value);
@@ -90,7 +92,10 @@
         }
     }
 
-    d3.select("#go").on("click", draw);
+    update_width();
     draw();
+
+    d3.select(window).on("resize", update_width);
+    d3.select("#go").on("click", draw);
 
 })(d3);
