@@ -12,15 +12,6 @@
         return cnt;
     }
 
-    function evolve(N, s, q, T) {
-        var freq = [q];
-        for (var t=0; t<T; ++t) {
-            q = random_binomial(N, (1 + s) * q / (1 + s * q)) / N;
-            freq.push(q);
-        }
-        return freq;
-    }
-
     var params = [
         ["Population size (N)",
          "popsize", 100, 10000, 100, 1000],
@@ -120,12 +111,7 @@
         panel.selectAll("g").remove();
 
         panel_bg.attr("width", panel_width);
-
         scale_x.domain([0, T]);
-        for (var i=0; i<rep; ++i) {
-            var trajectory = evolve(N, s, q, T);
-            panel.append("path").attr("d", line(trajectory));
-        }
 
         panel.append("g")
             .attr("transform",
@@ -139,6 +125,17 @@
               +","+ (panel_height + 50) +")");
         y_axis_label.attr("transform",
               "translate(-50,"+ panel_height/2 +")rotate(-90)");
+
+        for (var i=0; i<rep; ++i) {
+            var path = panel.append("path");
+            var freq = [q]
+            for (var t=0; t<T; ++t) {
+                var qt = freq[t];
+                freq.push(random_binomial(N, (1 + s) * qt / (1 + s * qt)) / N);
+                path.transition().delay(20 * t).ease("linear")
+                    .attr("d", line(freq));
+            }
+        }
     }
 
     update_width();
