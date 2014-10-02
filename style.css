@@ -1,7 +1,7 @@
 body {
     margin: 0 20px 20px;
     font-family: "Noto Sans", sans-serif;
-    font-size: 108%;
+    font-size: 110%;
     -webkit-text-size-adjust: 150%;
 }
 
@@ -36,8 +36,11 @@ button {
 }
 
 svg {
-    border: solid;
-    border-color: #808080;
+    background-color: #EEEEEE;
+}
+
+rect.panel_background {
+    fill: #FFFFFF;
 }
 
 path {
@@ -45,4 +48,14 @@ path {
     stroke: #FF6000;
     stroke-opacity: 0.3;
     stroke-width: 3;
+}
+
+path.domain {
+    stroke: #000000;
+    stroke-opacity: 0.5;
+    stroke-width: 2;
+}
+
+text {
+    font-size: 110%;
 }

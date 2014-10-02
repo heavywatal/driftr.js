@@ -26,7 +26,7 @@
          "popsize", 100, 10000, 100, 1000],
         ["Selection coefficient (s)",
          "selection", -0.02, 0.02, 0.001, 0.01],
-        ["Initial frequency (q)",
+        ["Initial frequency (q0)",
          "frequency", 0.0, 0.5, 0.02, 0.1],
         ["Observation period",
          "observation", 50, 400, 50, 100],
@@ -59,37 +59,86 @@
         .attr("id", "go")
         .text("Go!");
 
+    var svg_padding = {
+        top:    20,
+        right:  40,
+        bottom: 60,
+        left:   80
+    };
+
     var svg = d3.select("#graph")
             .append("svg")
             .attr("height", 400);
+    var panel = svg.append("g")
+            .attr("class", "panel")
+            .attr("transform",
+                  "translate("+svg_padding.left+","+svg_padding.top+")")
+            .attr("height",
+                  svg.attr("height") - svg_padding.top - svg_padding.bottom);
+    var panel_bg = panel.append("rect")
+            .attr("class", "panel_background")
+            .attr("height", panel.attr("height"));
+
     var scale_x = d3.scale.linear()
             .domain([0, 100]);
     var scale_y = d3.scale.linear()
             .domain([0, 1])
-            .range([svg.attr("height"), 0]);
+            .range([panel.attr("height"), 0]);
     var line = d3.svg.line()
             .x(function(d, i) {return scale_x(i);})
             .y(function(d, i) {return scale_y(d);})
             .interpolate("linear");
+    var x_axis = d3.svg.axis()
+            .scale(scale_x)
+            .orient("bottom");
+    var y_axis = d3.svg.axis()
+            .scale(scale_y)
+            .orient("left");
+    var x_axis_label = panel.append("text")
+        .text("Time (generations)")
+        .attr("text-anchor", "middle");
+    var y_axis_label = panel.append("text")
+        .text("Frequency of mutant allele (q)")
+        .attr("text-anchor", 'middle');
 
     function update_width() {
-        var width = parseInt(d3.select("#main").style("width")) - 8;
+        var width = parseInt(d3.select("#main").style("width"));
         svg.attr("width", width);
-        scale_x.range([0, width]);
+        scale_x.range([0, width - svg_padding.left - svg_padding.right]);
     }
 
     function draw() {
+        var svg_width = parseInt(svg.attr("width"));
+        var panel_width = svg_width - svg_padding.left - svg_padding.right;
+        var panel_height = parseInt(panel.attr("height"));
         var N = parseInt(document.getElementById("popsize").value);
         var s = parseFloat(document.getElementById("selection").value);
         var q = parseFloat(document.getElementById("frequency").value);
         var T = parseInt(document.getElementById("observation").value);
         var rep = parseInt(document.getElementById("replicates").value);
-        svg.selectAll("path").remove();
+        panel.selectAll("path").remove();
+        panel.selectAll("g").remove();
+
+        panel_bg.attr("width", panel_width);
+
         scale_x.domain([0, T]);
         for (var i=0; i<rep; ++i) {
             var trajectory = evolve(N, s, q, T);
-            svg.append("path").attr("d", line(trajectory));
+            panel.append("path").attr("d", line(trajectory));
         }
+
+        panel.append("g")
+            .attr("transform",
+                  "translate(0," + panel.attr("height") + ")")
+            .call(x_axis);
+        panel.append("g")
+            .call(y_axis);
+
+        x_axis_label.attr("transform", "translate("+
+              ((svg_width - svg_padding.left - svg_padding.right) / 2)
+              +","+ (panel_height + 50) +")");
+        y_axis_label.attr("transform",
+              "translate(-50,"+ panel_height/2 +")rotate(-90)");
     }
 
     update_width();
