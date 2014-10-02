@@ -54,14 +54,14 @@
         .attr("step", function(d){return d[4];})
         .attr("value", function(d){return d[5];});
 
-    d3.select("form").append("input")
+    d3.select("form").append("button")
         .attr("type", "button")
         .attr("id", "go")
-        .attr("value", "Go!");
+        .text("Go!");
 
     var svg = d3.select("#graph")
             .append("svg")
-            .attr("height", 320);
+            .attr("height", 400);
     var scale_x = d3.scale.linear()
             .domain([0, 100]);
     var scale_y = d3.scale.linear()

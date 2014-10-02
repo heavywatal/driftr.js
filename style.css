@@ -1,6 +1,8 @@
 body {
-    font-family: "Noto Sans", sans-serif;
     margin: 0 20px 20px;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 108%;
+    -webkit-text-size-adjust: 150%;
 }
 
 form {
@@ -22,7 +24,15 @@ label:after {
 }
 
 input {
-    width: 120px;
+    width: 5em;
+    font-size: inherit;
+}
+
+button {
+    border-radius: none;
+    padding: 16px 40px;
+    font-weight: bold;
+    font-size: 120%;
 }
 
 svg {
@@ -34,5 +44,5 @@ path {
     fill: none;
     stroke: #FF6000;
     stroke-opacity: 0.3;
-    stroke-width: 2;
+    stroke-width: 3;
 }
