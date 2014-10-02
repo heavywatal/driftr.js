@@ -11,20 +11,40 @@ form {
     padding: 8px;
 }
 
-div.parameter {
-    margin: 0 0 8px;
+form dd {
+    margin-left: 0;
 }
 
 label {
-    display: block;
+    display: inline-block;
 }
 
-label:after {
+label.param_name {
+    font-weight: bold;
+}
+
+label.param_name:after {
     content: ":";
 }
 
+dd label {
+    color: #999999;
+    width: 8em;
+}
+
+label.value {
+    text-align: right;
+    width: 3em;
+    margin-left: 1em;
+    color: #000000;
+}
+
+label.max {
+    text-align: right;
+}
+
 input {
-    width: 5em;
+    width: 16em;
     font-size: inherit;
 }
 

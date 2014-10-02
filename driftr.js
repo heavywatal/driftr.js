@@ -25,25 +25,59 @@
          "replicates", 10, 50, 10, 20]
     ];
 
+    var params_now = {};
+    for (var i=0; i<params.length; ++i) {
+        x = params[i];
+        params_now[x[1]] = x[5];
+    }
+
     var input_items = d3.select("form")
-        .selectAll("div")
+        .selectAll("dl")
         .data(params)
         .enter()
-        .append("div")
+        .append("dl")
+        .attr("id", function(d){return d[1];})
         .attr("class", "parameter");
 
-    input_items.append("label")
+    input_items.append("dt")
+        .append("label")
+        .attr("class", "param_name")
         .attr("for", function(d){return d[1];})
         .text(function(d){return d[0];});
 
-    input_items.append("input")
-        .attr("type", "number")
-        .attr("id", function(d){return d[1];})
+    var input_ranges = input_items.append("dd")
+        .attr("class", "param_range")
+
+    input_ranges.append("label")
+        .attr("class", "min")
+        .attr("for", function(d){return d[1];})
+        .text(function(d){return d[2];});
+    input_ranges.append("label")
+        .attr("class", "max")
+        .attr("for", function(d){return d[1];})
+        .text(function(d){return d[3];});
+    input_ranges.append("br");
+
+    input_ranges.append("input")
+        .attr("type", "range")
         .attr("name", function(d){return d[1];})
         .attr("min", function(d){return d[2];})
         .attr("max", function(d){return d[3];})
         .attr("step", function(d){return d[4];})
-        .attr("value", function(d){return d[5];});
+        .attr("value", function(d){return d[5];})
+        .on("input", function(d){update_param(d[1], this.value);});
+
+    input_ranges.append("label")
+        .attr("class", "value")
+        .attr("for", function(d){return d[1];})
+        .text(function(d){return d[5];});
+
+    function update_param(id, value) {
+        input_ranges
+            .select("#"+id+" label.value")
+            .text(value);
+        params_now[id] = value;
+    }
 
     d3.select("form").append("button")
         .attr("type", "button")
@@ -102,11 +136,11 @@
         var svg_width = parseInt(svg.attr("width"));
         var panel_width = svg_width - svg_padding.left - svg_padding.right;
         var panel_height = parseInt(panel.attr("height"));
-        var N = parseInt(document.getElementById("popsize").value);
-        var s = parseFloat(document.getElementById("selection").value);
-        var q = parseFloat(document.getElementById("frequency").value);
-        var T = parseInt(document.getElementById("observation").value);
-        var rep = parseInt(document.getElementById("replicates").value);
+        var N = parseFloat(params_now["popsize"]);
+        var s = parseFloat(params_now["selection"]);
+        var q = parseFloat(params_now["frequency"]);
+        var T = parseInt(params_now["observation"]);
+        var rep = parseInt(params_now["replicates"]);
         panel.selectAll("path").remove();
         panel.selectAll("g").remove();
 
@@ -128,8 +162,8 @@
 
         for (var i=0; i<rep; ++i) {
             var path = panel.append("path");
-            var freq = [q]
-            var repl_delay = 800 * i / rep;
+            var freq = [q];
+            var repl_delay = 100 + 800 * i / rep;
             for (var t=0; t<T; ++t) {
                 var qt = freq[t];
                 freq.push(random_binomial(N, (1 + s) * qt / (1 + s * qt)) / N);
