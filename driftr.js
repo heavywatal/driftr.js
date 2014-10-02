@@ -22,7 +22,7 @@
         ["Observation period",
          "observation", 50, 400, 50, 100],
         ["Number of replicates",
-         "replicates", 10, 50, 10, 10]
+         "replicates", 10, 50, 10, 20]
     ];
 
     var input_items = d3.select("form")
@@ -129,10 +129,11 @@
         for (var i=0; i<rep; ++i) {
             var path = panel.append("path");
             var freq = [q]
+            var repl_delay = 800 * i / rep;
             for (var t=0; t<T; ++t) {
                 var qt = freq[t];
                 freq.push(random_binomial(N, (1 + s) * qt / (1 + s * qt)) / N);
-                path.transition().delay(20 * t).ease("linear")
+                path.transition().delay(repl_delay + 23 * t).ease("linear")
                     .attr("d", line(freq));
             }
         }
