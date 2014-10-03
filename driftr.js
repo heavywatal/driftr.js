@@ -16,9 +16,9 @@
         ["Population size (N)",
          "popsize", 100, 10000, 100, 1000],
         ["Selection coefficient (s)",
-         "selection", -0.02, 0.02, 0.001, 0.01],
+         "selection", -0.025, 0.025, 0.001, 0.01],
         ["Initial frequency (q0)",
-         "frequency", 0.0, 0.5, 0.02, 0.1],
+         "frequency", 0.0, 1.0, 0.01, 0.1],
         ["Observation period",
          "observation", 50, 400, 50, 100],
         ["Number of replicates",
@@ -27,7 +27,7 @@
 
     var params_now = {};
     for (var i=0; i<params.length; ++i) {
-        x = params[i];
+        var x = params[i];
         params_now[x[1]] = x[5];
     }
 
@@ -46,7 +46,7 @@
         .text(function(d){return d[0];});
 
     var input_ranges = input_items.append("dd")
-        .attr("class", "param_range")
+        .attr("class", "param_range");
 
     input_ranges.append("label")
         .attr("class", "min")
@@ -163,7 +163,7 @@
         for (var i=0; i<rep; ++i) {
             var path = panel.append("path");
             var freq = [q];
-            var repl_delay = 100 + 800 * i / rep;
+            var repl_delay = rep * T / 5 + 600 * i / rep;
             for (var t=0; t<T; ++t) {
                 var qt = freq[t];
                 freq.push(random_binomial(N, (1 + s) * qt / (1 + s * qt)) / N);
