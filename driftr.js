@@ -132,7 +132,7 @@
         scale_x.range([0, width - svg_padding.left - svg_padding.right]);
     }
 
-    function draw() {
+    function draw(only_axis) {
         var svg_width = parseInt(svg.attr("width"));
         var panel_width = svg_width - svg_padding.left - svg_padding.right;
         var panel_height = parseInt(panel.attr("height"));
@@ -160,6 +160,7 @@
         y_axis_label.attr("transform",
               "translate(-50,"+ panel_height/2 +")rotate(-90)");
 
+        if (only_axis) {rep=0;}
         for (var i=0; i<rep; ++i) {
             var path = panel.append("path");
             var freq = [q];
@@ -174,7 +175,7 @@
     }
 
     update_width();
-    draw();
+    draw(true);
 
     d3.select(window).on("resize", update_width);
     d3.select("#go").on("click", draw);
