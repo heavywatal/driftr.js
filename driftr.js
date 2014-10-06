@@ -16,7 +16,7 @@
         ["Population size (N)",
          "popsize", 100, 10000, 100, 1000],
         ["Selection coefficient (s)",
-         "selection", -0.025, 0.025, 0.001, 0.01],
+         "selection", -0.025, 0.025, 0.001, 0.0],
         ["Initial frequency (q0)",
          "frequency", 0.0, 1.0, 0.01, 0.1],
         ["Observation period",
@@ -94,6 +94,16 @@
     var svg = d3.select("#graph")
             .append("svg")
             .attr("height", 400);
+
+    d3.select("#graph")
+            .append("div")
+            .attr("id", "fixloss")
+            .selectAll("label")
+            .data(["fixed", "polymorphic", "lost"])
+            .enter()
+            .append("label")
+            .attr("id", function(d){return d;});
+
     var panel = svg.append("g")
             .attr("class", "panel")
             .attr("transform",
@@ -127,9 +137,10 @@
         .attr("text-anchor", 'middle');
 
     function update_width() {
+        var col_width = 40;
         var width = parseInt(d3.select("#main").style("width"));
-        svg.attr("width", width);
-        scale_x.range([0, width - svg_padding.left - svg_padding.right]);
+        svg.attr("width", width - col_width);
+        scale_x.range([0, width - svg_padding.left - svg_padding.right - col_width]);
     }
 
     function draw(only_axis) {
@@ -160,6 +171,8 @@
         y_axis_label.attr("transform",
               "translate(-50,"+ panel_height/2 +")rotate(-90)");
 
+        d3.selectAll("#fixloss label").text(0);
+
         if (only_axis) {rep=0;}
         for (var i=0; i<rep; ++i) {
             var path = panel.append("path");
@@ -171,7 +184,19 @@
                 path.transition().delay(repl_delay + 23 * t).ease("linear")
                     .attr("d", line(freq));
             }
+            if (freq.slice(-1)[0] == 1) {
+                fixloss_increment("#fixed");
+            } else if (freq.slice(-1)[0] == 0) {
+                fixloss_increment("#lost");
+            } else {
+                fixloss_increment("#polymorphic");
+            }
         }
+    }
+
+    function fixloss_increment(id) {
+        var label = d3.select(id);
+        label.text(parseInt(label.text()) + 1);
     }
 
     update_width();

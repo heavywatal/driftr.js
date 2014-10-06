@@ -55,8 +55,32 @@ button {
     font-size: 120%;
 }
 
-svg {
+#graph {
     background-color: #EEEEEE;
+}
+
+svg {
+    vertical-align: top;
+}
+
+#fixloss {
+    height: 400px;
+    width: 40px;
+    display: inline-block;
+}
+
+#fixloss label {
+    margin-right: 16px;
+    display: block;
+    text-align: right;
+}
+
+#fixed {
+    margin-top: 12px;
+}
+
+#polymorphic {
+    margin: 134px 0px;
 }
 
 rect.panel_background {
