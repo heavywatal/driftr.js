@@ -29,7 +29,7 @@
     var params_now = {};
     for (var i=0; i<params.length; ++i) {
         var x = params[i];
-        params_now[x[1]] = x[5];
+        params_now[String(x[1])] = x[5];
     }
 
     var input_items = d3.select("form")
