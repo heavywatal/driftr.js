@@ -1,4 +1,5 @@
 (function(d3) {
+    "use strict";
 
     function random_bernoulli(prob) {
         return Math.random() < prob;
