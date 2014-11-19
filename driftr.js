@@ -1,4 +1,4 @@
-(function(d3) {
+(function(d3, x18n, t) {
     "use strict";
 
     function random_bernoulli(prob) {
@@ -13,16 +13,43 @@
         return cnt;
     }
 
+    x18n.register("en", {
+        params: {
+            "popsize": "Population size",
+            "selection": "Selection coefficient",
+            "frequency": "Initital frequency",
+            "observation": "Observation period",
+            "replicates": "Number of replicates"
+        },
+        axes: {
+            "time": "Time (generations)",
+            "frequency": "Frequency of mutant allele"
+        }
+    });
+    x18n.register("ja", {
+        params: {
+            "popsize": "集団サイズ",
+            "selection": "選択係数",
+            "frequency": "初期頻度",
+            "observation": "観察期間",
+            "replicates": "反復回数"
+        },
+        axes: {
+            "time": "時間 (世代数)",
+            "frequency": "変異型アリル頻度"
+        }
+    });
+
     var params = [
-        ["Population size (N)",
+        [t("params.popsize") + " (N)",
          "popsize", 100, 10000, 100, 1000],
-        ["Selection coefficient (s)",
+        [t("params.selection") + " (s)",
          "selection", -0.025, 0.025, 0.001, 0.0],
-        ["Initial frequency (q0)",
+        [t("params.frequency") + " (q0)",
          "frequency", 0.0, 1.0, 0.01, 0.1],
-        ["Observation period",
+        [t("params.observation"),
          "observation", 50, 400, 50, 100],
-        ["Number of replicates",
+        [t("params.replicates"),
          "replicates", 10, 50, 10, 20]
     ];
 
@@ -131,11 +158,11 @@
             .scale(scale_y)
             .orient("left");
     var x_axis_label = panel.append("text")
-        .text("Time (generations)")
-        .attr("text-anchor", "middle");
+            .text(t("axes.time"))
+            .attr("text-anchor", "middle");
     var y_axis_label = panel.append("text")
-        .text("Frequency of mutant allele (q)")
-        .attr("text-anchor", 'middle');
+            .text(t("axes.frequency") + " (q)")
+            .attr("text-anchor", 'middle');
 
     function update_width() {
         var col_width = 40;
@@ -206,4 +233,4 @@
     d3.select(window).on("resize", update_width);
     d3.select("#go").on("click", draw);
 
-})(d3);
+})(d3, x18n, t);
