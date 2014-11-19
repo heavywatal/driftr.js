@@ -3,4 +3,4 @@
 	url = https://github.com/mbostock/d3.git
 [submodule "x18n"]
 	path = x18n
-	url = https://github.com/js-coder/x18n.git
+	url = https://github.com/heavywatal/x18n.git
