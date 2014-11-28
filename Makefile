@@ -1,5 +1,5 @@
 ## Directories and Files
-SRCS := index.html style.css driftr.js d3/d3.min.js d3/LICENSE README.md
+SRCS := index.html style.css driftr.js README.md d3/d3.min.js d3/LICENSE x18n/x18n.js x18n/LICENSE
 
 ## Targets
 .PHONY: all dist sync
