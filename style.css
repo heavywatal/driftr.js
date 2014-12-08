@@ -61,13 +61,15 @@ button {
 
 svg {
     vertical-align: top;
-    margin-right: -60px;
+    margin-right: -80px;
 }
 
 #fixation {
     height: 400px;
     min-width: 80px;
     display: inline-block;
+    float: right;
+    margin-right: 12px;
 }
 
 #fixation div {
@@ -92,7 +94,7 @@ div#fixed {
 }
 
 div#polymorphic {
-    margin: 120px 0px;
+    margin: 116px 0px;
 }
 
 rect.panel_background {

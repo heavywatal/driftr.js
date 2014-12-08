@@ -124,7 +124,7 @@
 
     var svg_padding = {
         top:    20,
-        right:  80,
+        right:  100,
         bottom: 60,
         left:   80
     };
