@@ -32,7 +32,7 @@ dd label {
     width: 8em;
 }
 
-label.value {
+.param_range label.value {
     text-align: right;
     width: 3em;
     margin-left: 1em;
@@ -61,26 +61,38 @@ button {
 
 svg {
     vertical-align: top;
+    margin-right: -60px;
 }
 
-#fixloss {
+#fixation {
     height: 400px;
-    width: 40px;
+    min-width: 80px;
     display: inline-block;
 }
 
-#fixloss label {
-    margin-right: 16px;
-    display: block;
+#fixation div {
+    padding: 4px;
+    background-color: #DDDDDD;
+}
+
+#fixation label {
     text-align: right;
 }
 
-#fixed {
+#fixation label.name {
+    min-width: 50px;
+}
+
+#fixation label.value {
+    min-width: 30px;
+}
+
+div#fixed {
     margin-top: 12px;
 }
 
-#polymorphic {
-    margin: 134px 0px;
+div#polymorphic {
+    margin: 120px 0px;
 }
 
 rect.panel_background {

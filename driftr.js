@@ -24,6 +24,11 @@
         axes: {
             "time": "Time (generations)",
             "frequency": "Frequency of mutant allele"
+        },
+        fixation: {
+            "fixed": "fixed",
+            "polymorphic": "poly",
+            "lost": "lost"
         }
     });
     x18n.register("ja", {
@@ -37,6 +42,11 @@
         axes: {
             "time": "時間 (世代数)",
             "frequency": "変異型アリル頻度"
+        },
+        fixation: {
+            "fixed": "固定",
+            "polymorphic": "多型",
+            "lost": "消失"
         }
     });
 
@@ -114,7 +124,7 @@
 
     var svg_padding = {
         top:    20,
-        right:  40,
+        right:  80,
         bottom: 60,
         left:   80
     };
@@ -123,14 +133,19 @@
             .append("svg")
             .attr("height", 400);
 
-    d3.select("#graph")
+    var fixation_divs = d3.select("#graph")
             .append("div")
-            .attr("id", "fixloss")
+            .attr("id", "fixation")
             .selectAll("label")
             .data(["fixed", "polymorphic", "lost"])
             .enter()
-            .append("label")
+            .append("div")
             .attr("id", function(d){return d;});
+    fixation_divs.append("label")
+            .attr("class", function(d){return "name";})
+            .text(function(d){return t("fixation." + d) + ":";});
+    fixation_divs.append("label")
+            .attr("class", function(d){return "value";});
 
     var panel = svg.append("g")
             .attr("class", "panel")
@@ -199,7 +214,7 @@
         y_axis_label.attr("transform",
               "translate(-50,"+ panel_height/2 +")rotate(-90)");
 
-        d3.selectAll("#fixloss label").text(0);
+        d3.selectAll("#fixation label.value").text(0);
 
         if (only_axis) {rep=0;}
         for (var i=0; i<rep; ++i) {
@@ -213,17 +228,17 @@
                     .attr("d", line(freq));
             }
             if (freq.slice(-1)[0] == 1) {
-                fixloss_increment("#fixed");
+                fixation_increment("#fixed");
             } else if (freq.slice(-1)[0] == 0) {
-                fixloss_increment("#lost");
+                fixation_increment("#lost");
             } else {
-                fixloss_increment("#polymorphic");
+                fixation_increment("#polymorphic");
             }
         }
     }
 
-    function fixloss_increment(id) {
-        var label = d3.select(id);
+    function fixation_increment(id) {
+        var label = d3.select(id + " label.value");
         label.text(parseInt(label.text()) + 1);
     }
 
