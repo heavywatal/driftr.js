@@ -4,5 +4,6 @@ Genetic Drift Simulator for Education
 The web app is hosted at
 http://heavywatal.github.io/driftr.js/
 
-driftr was originally written in R as a
-[Shiny app](https://github.com/heavywatal/driftr).
+To run this app offline, download the latest version from
+https://github.com/heavywatal/driftr.js/releases/latest
+and open index.html on your browser.
