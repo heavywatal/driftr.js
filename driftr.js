@@ -29,6 +29,11 @@
             "fixed": "fixed",
             "polymorphic": "poly",
             "lost": "lost"
+        },
+        footer: {
+            "download": "Download driftr.js",
+            "report": "Report a bug",
+            "develop": "Development site"
         }
     });
     x18n.register("ja", {
@@ -47,6 +52,11 @@
             "fixed": "固定",
             "polymorphic": "多型",
             "lost": "消失"
+        },
+        footer: {
+            "download": "driftr.jsをダウンロード",
+            "report": "不具合報告・提案",
+            "develop": "開発元"
         }
     });
 
@@ -119,8 +129,9 @@
 
     d3.select("form").append("button")
         .attr("type", "button")
-        .attr("id", "go")
-        .text("Go!");
+        .attr("id", "start")
+        .attr("class", "button")
+        .text("START!");
 
     var svg_padding = {
         top:    20,
@@ -242,10 +253,27 @@
         label.text(parseInt(label.text()) + 1);
     }
 
+    var footer = d3.select("body").append("div").attr("id", "footer");
+
+    footer.append("a")
+        .attr("class", "button")
+        .attr("href", "https://github.com/heavywatal/driftr.js/releases/latest")
+        .text(t("footer.download"));
+
+    footer.append("a")
+        .attr("class", "button")
+        .attr("href", "https://github.com/heavywatal/driftr.js/issues")
+        .text(t("footer.report"));
+
+    footer.append("a")
+        .attr("class", "button")
+        .attr("href", "https://github.com/heavywatal/driftr.js")
+        .text(t("footer.develop"));
+
     update_width();
     draw(true);
 
     d3.select(window).on("resize", update_width);
-    d3.select("#go").on("click", draw);
+    d3.select("#start").on("click", draw);
 
 })(d3, x18n, t);
