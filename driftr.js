@@ -192,7 +192,7 @@
 
     function update_width() {
         var col_width = 40;
-        var width = parseInt(d3.select("#main").style("width"));
+        var width = parseInt(d3.select("body").style("width"));
         svg.attr("width", width - col_width);
         scale_x.range([0, width - svg_padding.left - svg_padding.right - col_width]);
     }
@@ -253,7 +253,7 @@
         label.text(parseInt(label.text()) + 1);
     }
 
-    var footer = d3.select("body").append("div").attr("id", "footer");
+    var footer = d3.select("#footer");
 
     footer.append("a")
         .attr("class", "button")
