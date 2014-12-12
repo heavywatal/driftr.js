@@ -13,6 +13,7 @@ all:
 
 dist:
 	tar -C .. -czf $(PACKAGE)-$(VERSION).tar.gz $(DISTFILES)
+	cd .. && zip $(PACKAGE)/$(PACKAGE)-$(VERSION).zip $(DISTFILES)
 
 sync:
 	rsync --include=d3/d3.min.js --exclude='.git*' --exclude='d3/*' --exclude='*.gz' --delete -auv ./ meme:~/Default/driftr
