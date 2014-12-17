@@ -82,7 +82,9 @@ input {
 
 svg {
     vertical-align: top;
-    margin-right: -80px;
+    height: 400px;
+    margin-right: -120px;
+    padding-right: 120px;
 }
 
 #fixation {
