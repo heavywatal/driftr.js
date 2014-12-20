@@ -6,45 +6,51 @@ body {
 }
 
 form {
+    max-width: 296px;
     background-color: #EEEEEE;
     margin: 0 0 12px;
-    padding: 8px;
+    padding: 12px;
+}
+
+dl {
+    margin: 0 0 18px;
 }
 
 dt {
     font-weight: bold;
 }
 
-dt:after {
-    content: ":";
+dd {
+    margin-left: 0;
 }
 
 label {
     display: inline-block;
 }
 
-form dd {
-    margin-left: 0;
+label.name:after {
+    content: ":";
 }
 
-dd label {
-    color: #999999;
-    width: 8em;
-}
-
-.param_range label.value {
+label.value {
+    float: right;
     text-align: right;
-    width: 3em;
-    margin-left: 1em;
     color: #000000;
+    font-weight: bold;
+}
+
+label.min, label.max {
+    color: #999999;
 }
 
 label.max {
+    float: right;
     text-align: right;
 }
 
 input {
-    width: 16em;
+    width: 100%;
+    margin: 0;
     font-size: inherit;
 }
 
@@ -64,6 +70,7 @@ input {
 #start {
     padding: 12px 16px;
     font-size: 120%;
+    width: 100%;
 }
 
 #footer .button {

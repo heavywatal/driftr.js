@@ -87,24 +87,19 @@
         .attr("id", function(d){return d[1];})
         .attr("class", "parameter");
 
+    input_items.append("label")
+        .attr("class", "value")
+        .attr("for", function(d){return d[1];})
+        .text(function(d){return d[5];});
+
     input_items.append("dt")
         .append("label")
+        .attr("class", "name")
         .attr("for", function(d){return d[1];})
         .html(function(d){return d[0];});
 
     var input_ranges = input_items.append("dd")
         .attr("class", "param_range");
-
-    input_ranges.append("label")
-        .attr("class", "min")
-        .attr("for", function(d){return d[1];})
-        .text(function(d){return d[2];});
-    input_ranges.append("label")
-        .attr("class", "max")
-        .attr("for", function(d){return d[1];})
-        .text(function(d){return d[3];});
-    input_ranges.append("br");
-
     input_ranges.append("input")
         .attr("type", "range")
         .attr("name", function(d){return d[1];})
@@ -113,14 +108,17 @@
         .attr("step", function(d){return d[4];})
         .attr("value", function(d){return d[5];})
         .on("input", function(d){update_param(d[1], this.value);});
-
     input_ranges.append("label")
-        .attr("class", "value")
+        .attr("class", "min")
         .attr("for", function(d){return d[1];})
-        .text(function(d){return d[5];});
+        .text(function(d){return d[2];});
+    input_ranges.append("label")
+        .attr("class", "max")
+        .attr("for", function(d){return d[1];})
+        .text(function(d){return d[3];});
 
     function update_param(id, value) {
-        input_ranges
+        input_items
             .select("#"+id+" label.value")
             .text(value);
         params_now[id] = value;
