@@ -11,20 +11,20 @@ form {
     padding: 8px;
 }
 
-form dd {
-    margin-left: 0;
+dt {
+    font-weight: bold;
+}
+
+dt:after {
+    content: ":";
 }
 
 label {
     display: inline-block;
 }
 
-label.param_name {
-    font-weight: bold;
-}
-
-label.param_name:after {
-    content: ":";
+form dd {
+    margin-left: 0;
 }
 
 dd label {

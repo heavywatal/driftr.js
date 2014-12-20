@@ -61,11 +61,11 @@
     });
 
     var params = [
-        [t("params.popsize") + " (N)",
+        [t("params.popsize") + " (<var>N</var>)",
          "popsize", 100, 10000, 100, 1000],
-        [t("params.selection") + " (s)",
+        [t("params.selection") + " (<var>s<var>)",
          "selection", -0.025, 0.025, 0.001, 0.0],
-        [t("params.frequency") + " (q0)",
+        [t("params.frequency") + " (<var>q<sub>0</sub></var>)",
          "frequency", 0.0, 1.0, 0.01, 0.1],
         [t("params.observation"),
          "observation", 50, 400, 50, 100],
@@ -89,9 +89,8 @@
 
     input_items.append("dt")
         .append("label")
-        .attr("class", "param_name")
         .attr("for", function(d){return d[1];})
-        .text(function(d){return d[0];});
+        .html(function(d){return d[0];});
 
     var input_ranges = input_items.append("dd")
         .attr("class", "param_range");
