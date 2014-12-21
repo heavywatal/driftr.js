@@ -2,7 +2,7 @@ body {
     margin: 0 20px 20px;
     font-family: "Noto Sans", sans-serif;
     font-size: 110%;
-    -webkit-text-size-adjust: 150%;
+    -webkit-text-size-adjust: 160%;
 }
 
 form {
@@ -10,6 +10,13 @@ form {
     background-color: #EEEEEE;
     margin: 0 0 12px;
     padding: 12px;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2),
+       (min-resolution: 2dppx) {
+    form {
+        max-width: 592px;
+    }
 }
 
 dl {

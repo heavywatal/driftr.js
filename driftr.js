@@ -149,7 +149,7 @@
             .attr("id", function(d){return d;});
     fixation_divs.append("label")
             .attr("class", function(d){return "name";})
-            .text(function(d){return t("fixation." + d) + ":";});
+            .text(function(d){return t("fixation." + d);});
     fixation_divs.append("label")
             .attr("class", function(d){return "value";});
 
