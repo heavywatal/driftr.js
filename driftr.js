@@ -199,8 +199,8 @@
                   "translate(0," + panel_height + ")")
             .call(x_axis);
         x_axis_label.attr("transform", "translate("+
-              ((svg_width - svg_padding.left - svg_padding.right) / 2)
-                          +","+ (panel_height + 50) +")");
+              ((svg_width - svg_padding.left - svg_padding.right) / 2)+
+                          ","+ (panel_height + 50) +")");
         panel.selectAll("path").remove();
         plot();
     }
@@ -221,18 +221,18 @@
             .call(y_axis);
 
         x_axis_label.attr("transform", "translate("+
-              ((svg_width - svg_padding.left - svg_padding.right) / 2)
-              +","+ (panel_height + 50) +")");
+              ((svg_width - svg_padding.left - svg_padding.right) / 2)+
+              ","+ (panel_height + 50) +")");
         y_axis_label.attr("transform",
               "translate(-50,"+ panel_height/2 +")rotate(-90)");
     }
 
     function simulation() {
-        var N = parseFloat(params_now["popsize"]);
-        var s = parseFloat(params_now["selection"]);
-        var q0 = parseFloat(params_now["frequency"]);
-        var T = parseInt(params_now["observation"]);
-        var rep = parseInt(params_now["replicates"]);
+        var N = parseFloat(params_now.popsize);
+        var s = parseFloat(params_now.selection);
+        var q0 = parseFloat(params_now.frequency);
+        var T = parseInt(params_now.observation);
+        var rep = parseInt(params_now.replicates);
         scale_x.domain([0, T]);
         for (var i=0; i<rep; ++i) {
             var qt = q0;
@@ -270,7 +270,7 @@
             var qT = trajectory.slice(-1)[0];
             if (qT == 1) {
                 fixation_increment("#fixed");
-            } else if (qT == 0) {
+            } else if (qT === 0) {
                 fixation_increment("#lost");
             } else {
                 fixation_increment("#polymorphic");
