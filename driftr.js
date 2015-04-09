@@ -153,37 +153,47 @@
     fixation_divs.append("label")
             .attr("class", function(d){return "value";});
 
-    var panel = svg.append("g")
-            .attr("class", "panel")
+    var panel_height = parseInt(svg.style("height")) - svg_padding.top - svg_padding.bottom;
+    var plot = svg.append("g")
+            .attr("class", "plot")
             .attr("transform",
-                  "translate("+svg_padding.left+","+svg_padding.top+")")
-            .attr("height",
-                  parseInt(svg.style("height")) - svg_padding.top - svg_padding.bottom);
-    var panel_bg = panel.append("rect")
+                  "translate("+svg_padding.left+","+svg_padding.top+")");
+    var panel_bg = plot.append("rect")
             .attr("class", "panel_background")
-            .attr("height", panel.attr("height"));
+            .attr("height", panel_height);
+    var panel = plot.append("g")
+            .attr("class", "panel");
 
     var scale_x = d3.scale.linear()
-            .domain([0, 100]);
+            .domain([0, parseInt(params_now.observation)]);
     var scale_y = d3.scale.linear()
             .domain([0, 1])
-            .range([panel.attr("height"), 0]);
+            .range([panel_height, 0]);
+    var axis_func_x = d3.svg.axis()
+            .scale(scale_x)
+            .orient("bottom");
+    var axis_func_y = d3.svg.axis()
+            .scale(scale_y)
+            .orient("left");
+    var axis_x = plot.append("g")
+            .attr("transform",
+                  "translate(0,"+ panel_height +")")
+            .call(axis_func_x);
+    var axis_y = plot.append("g")
+            .call(axis_func_y);
+    var axis_title_x = plot.append("text")
+            .attr('class', 'axis_title_x')
+            .attr("text-anchor", "middle")
+            .text(t("axes.time"));
+    var axis_title_y = plot.append("text")
+            .attr('class', 'axis_title_y')
+            .attr("text-anchor", 'middle')
+            .text(t("axes.frequency") + " (q)")
+            .attr("transform", "translate(-50,"+ panel_height/2 +") rotate(-90)");
     var line = d3.svg.line()
             .x(function(d, i) {return scale_x(i);})
             .y(function(d, i) {return scale_y(d);})
             .interpolate("linear");
-    var x_axis = d3.svg.axis()
-            .scale(scale_x)
-            .orient("bottom");
-    var y_axis = d3.svg.axis()
-            .scale(scale_y)
-            .orient("left");
-    var x_axis_label = panel.append("text")
-            .text(t("axes.time"))
-            .attr("text-anchor", "middle");
-    var y_axis_label = panel.append("text")
-            .text(t("axes.frequency") + " (q)")
-            .attr("text-anchor", 'middle');
 
     function update_width() {
         var width = parseInt(d3.select("#graph").style("width"));
@@ -191,40 +201,13 @@
         svg.attr("width", width - fixation_width);
         var svg_width = parseInt(svg.attr("width"));
         var panel_width = svg_width - svg_padding.left - svg_padding.right;
-        var panel_height = parseInt(panel.attr("height"));
         panel_bg.attr("width", panel_width);
         scale_x.range([0, panel_width]);
-        d3.select("#xaxis")
-            .attr("transform",
-                  "translate(0," + panel_height + ")")
-            .call(x_axis);
-        x_axis_label.attr("transform", "translate("+
-              ((svg_width - svg_padding.left - svg_padding.right) / 2)+
-                          ","+ (panel_height + 50) +")");
+        axis_x.call(axis_func_x.scale(scale_x));
+        axis_title_x.attr("transform", "translate("+
+                          (panel_width / 2) +","+ (panel_height + 50) +")");
         panel.selectAll("path").remove();
-        plot();
-    }
-
-    function init_svg() {
-        update_width();
-        var svg_width = parseInt(svg.attr("width"));
-        var panel_width = svg_width - svg_padding.left - svg_padding.right;
-        var panel_height = parseInt(panel.attr("height"));
-
-        panel.append("g")
-            .attr("id", "xaxis")
-            .attr("transform",
-                  "translate(0," + panel.attr("height") + ")")
-            .call(x_axis);
-        panel.append("g")
-            .attr("id", "yaxis")
-            .call(y_axis);
-
-        x_axis_label.attr("transform", "translate("+
-              ((svg_width - svg_padding.left - svg_padding.right) / 2)+
-              ","+ (panel_height + 50) +")");
-        y_axis_label.attr("transform",
-              "translate(-50,"+ panel_height/2 +")rotate(-90)");
+        draw();
     }
 
     function simulation() {
@@ -233,7 +216,7 @@
         var q0 = parseFloat(params_now.frequency);
         var T = parseInt(params_now.observation);
         var rep = parseInt(params_now.replicates);
-        scale_x.domain([0, T]);
+        axis_x.call(axis_func_x.scale(scale_x.domain([0, T])));
         for (var i=0; i<rep; ++i) {
             var qt = q0;
             var trajectory = [q0];
@@ -247,7 +230,7 @@
         return results;
     }
 
-    function plot() {
+    function draw() {
         var rep = results.length;
         for (var i=0; i<rep; ++i) {
             var trajectory = results[i];
@@ -298,7 +281,7 @@
         .text(t("footer.develop"));
 
     var results = [];
-    init_svg();
+    update_width();
 
     d3.select(window).on("resize", update_width);
     d3.select("#start").on("click", function(){
