@@ -267,6 +267,16 @@
     }
 
     var footer = d3.select("#footer");
+    var download_json = footer.append("a")
+        .attr("class", "button")
+        .attr("download", "result.json")
+        .text("Download results");
+    download_json.on("click", function(){
+        var json = JSON.stringify(results);
+        var blob = new Blob([json], {type: "application/json"});
+        var url = URL.createObjectURL(blob);
+        download_json.attr("href", url);
+    });
     footer.append("a")
         .attr("class", "button")
         .attr("href", "https://github.com/heavywatal/driftr.js/releases/latest")
