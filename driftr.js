@@ -31,6 +31,7 @@
             "lost": "lost"
         },
         footer: {
+            "save": "Save results",
             "download": "Download driftr.js",
             "report": "Report a bug",
             "develop": "Development site"
@@ -54,6 +55,7 @@
             "lost": "消失"
         },
         footer: {
+            "save": "結果を保存",
             "download": "driftr.jsをダウンロード",
             "report": "不具合報告・提案",
             "develop": "開発元"
@@ -269,8 +271,8 @@
     var footer = d3.select("#footer");
     var download_json = footer.append("a")
         .attr("class", "button")
-        .attr("download", "result.json")
-        .text("Download results");
+        .attr("download", "driftr_result.json")
+        .text(t("footer.save"));
     download_json.on("click", function(){
         var json = JSON.stringify(results);
         var blob = new Blob([json], {type: "application/json"});
