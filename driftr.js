@@ -33,8 +33,7 @@
         footer: {
             "save": "Save results",
             "download": "Download driftr.js",
-            "report": "Report a bug",
-            "develop": "Development site"
+            "report": "Send feedback"
         }
     });
     x18n.register("ja", {
@@ -57,8 +56,7 @@
         footer: {
             "save": "結果を保存",
             "download": "driftr.jsをダウンロード",
-            "report": "不具合報告・提案",
-            "develop": "開発元"
+            "report": "不具合報告・提案"
         }
     });
 
@@ -287,10 +285,6 @@
         .attr("class", "button")
         .attr("href", "https://github.com/heavywatal/driftr.js/issues")
         .text(t("footer.report"));
-    footer.append("a")
-        .attr("class", "button")
-        .attr("href", "https://github.com/heavywatal/driftr.js")
-        .text(t("footer.develop"));
 
     var results = [];
     update_width();

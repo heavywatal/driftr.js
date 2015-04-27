@@ -139,6 +139,9 @@ rect.panel_background {
 
 path {
     fill: none;
+}
+
+.panel path {
     stroke: #FF6000;
     stroke-opacity: 0.3;
     stroke-width: 3;
