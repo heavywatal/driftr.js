@@ -2,7 +2,7 @@ body {
     margin: 0 10px 10px;
     font-family: "Noto Sans", "Segoe UI", sans-serif;
     font-size: 110%;
-    -webkit-text-size-adjust: 160%;
+    -webkit-text-size-adjust: 100%;
 }
 
 dl {
