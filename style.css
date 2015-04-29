@@ -1,23 +1,27 @@
+* {
+        box-sizing: border-box;
+-webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+     -o-box-sizing: border-box;
+}
+
 body {
     margin: 0 10px 10px;
     font-family: "Noto Sans", "Segoe UI", sans-serif;
-    font-size: 110%;
     -webkit-text-size-adjust: 100%;
 }
 
 dl {
     display: inline-block;
-    width: 270px;
+    width: 100%;
     margin: 0 12px 12px 0;
     padding: 8px 12px;
     background-color: #EEEEEE;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2),
-       (min-resolution: 2dppx) {
-    dl {
-        width: 400px;
-    }
+@media (min-width: 600px) {
+    dl {width: 48%;}
 }
 
 dt {
@@ -95,13 +99,13 @@ input {
 
 svg {
     vertical-align: top;
-    height: 400px;
+    height: 360px;
     margin-right: -120px;
     padding-right: 120px;
 }
 
 #fixation {
-    height: 400px;
+    height: 360px;
     min-width: 80px;
     display: inline-block;
     float: right;
