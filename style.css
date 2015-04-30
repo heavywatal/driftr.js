@@ -100,20 +100,17 @@ input {
 svg {
     vertical-align: top;
     height: 360px;
-    margin-right: -120px;
-    padding-right: 120px;
 }
 
 #fixation {
-    height: 360px;
-    min-width: 80px;
     display: inline-block;
-    float: right;
     margin-right: 12px;
 }
 
 #fixation div {
+    display: inline-block;
     padding: 4px;
+    margin-right: 8px;
     background-color: #DDDDDD;
 }
 
@@ -127,14 +124,6 @@ svg {
 
 #fixation label.value {
     min-width: 30px;
-}
-
-div#fixed {
-    margin-top: 12px;
-}
-
-div#polymorphic {
-    margin: 116px 0px;
 }
 
 rect.panel_background {
