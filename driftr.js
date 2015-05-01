@@ -27,7 +27,7 @@
         },
         fixation: {
             "fixed": "fixed",
-            "polymorphic": "poly",
+            "polymorphic": "polymorphic",
             "lost": "lost"
         },
         footer: {
