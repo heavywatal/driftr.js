@@ -210,7 +210,7 @@
         draw();
     }
 
-    function simulation() {
+    function wright_fisher() {
         var N = parseFloat(params_now.popsize);
         var s = parseFloat(params_now.selection);
         var q0 = parseFloat(params_now.frequency);
@@ -228,6 +228,44 @@
             results.push(trajectory);
         }
         return results;
+    }
+
+    function moran() {
+        var N = parseFloat(params_now.popsize);
+        var s = parseFloat(params_now.selection);
+        var q0 = parseFloat(params_now.frequency);
+        var T = parseInt(params_now.observation);
+        var rep = parseInt(params_now.replicates);
+        axis_x.call(axis_func_x.scale(scale_x.domain([0, T])));
+        var s1 = s + 1;
+        for (var i=0; i<rep; ++i) {
+            var qt = q0;
+            var trajectory = [q0];
+            var repl_delay = rep * T / 5 + 600 * i / rep;
+            for (var t=1; t<=T * N; ++t) {
+                var Nqt = N * qt;
+                var p_mutrep = s1 * Nqt / (s1 * Nqt  + (N - Nqt));
+                if (random_bernoulli(qt)) {  // a mutant dies
+                    if (!random_bernoulli(p_mutrep)) {
+                        qt -= 1 / N;
+                    }
+                } else {  // a wildtype dies
+                    if (random_bernoulli(p_mutrep)) {
+                        qt += 1 / N;
+                    }
+                }
+                if (t % N == 0) {
+                    trajectory.push(qt);
+                }
+            }
+            results.push(trajectory);
+        }
+        return results;
+    }
+
+    function simulation() {
+//        moran();
+        wright_fisher();
     }
 
     function draw() {
