@@ -79,6 +79,14 @@
         params_now[String(x[1])] = x[5];
     }
 
+    // TODO
+    var model = d3.select("form")
+        .append("dl").attr("class", "parameter");
+    model.append("dt").append("label").attr("class", "name").text("Model");
+    model.append("dd").append("select").attr("name", "model")
+        .append("option").attr("value", "wf").text("Wright-Fisher");
+    model.remove();
+
     var input_items = d3.select("form")
         .selectAll("dl")
         .data(params)
