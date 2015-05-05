@@ -1,5 +1,5 @@
 (function(d3, x18n, t) {
-    "use strict";
+    'use strict';
 
     function random_bernoulli(prob) {
         return Math.random() < prob;
@@ -13,64 +13,64 @@
         return cnt;
     }
 
-    x18n.register("en", {
+    x18n.register('en', {
         params: {
-            "popsize": "Population size",
-            "selection": "Selection coefficient",
-            "frequency": "Initital frequency",
-            "observation": "Observation period",
-            "replicates": "Number of replicates"
+            'popsize': 'Population size',
+            'selection': 'Selection coefficient',
+            'frequency': 'Initital frequency',
+            'observation': 'Observation period',
+            'replicates': 'Number of replicates'
         },
         axes: {
-            "time": "Time (generations)",
-            "frequency": "Frequency of mutant allele"
+            'time': 'Time (generations)',
+            'frequency': 'Frequency of mutant allele'
         },
         fixation: {
-            "fixed": "fixed",
-            "polymorphic": "polymorphic",
-            "lost": "lost"
+            'fixed': 'fixed',
+            'polymorphic': 'polymorphic',
+            'lost': 'lost'
         },
         footer: {
-            "save": "Save results",
-            "download": "Download driftr.js",
-            "report": "Send feedback"
+            'save': 'Save results',
+            'download': 'Download driftr.js',
+            'report': 'Send feedback'
         }
     });
-    x18n.register("ja", {
+    x18n.register('ja', {
         params: {
-            "popsize": "集団サイズ",
-            "selection": "選択係数",
-            "frequency": "初期頻度",
-            "observation": "観察期間",
-            "replicates": "反復回数"
+            'popsize': '集団サイズ',
+            'selection': '選択係数',
+            'frequency': '初期頻度',
+            'observation': '観察期間',
+            'replicates': '反復回数'
         },
         axes: {
-            "time": "時間 (世代数)",
-            "frequency": "変異型アリル頻度"
+            'time': '時間 (世代数)',
+            'frequency': '変異型アリル頻度'
         },
         fixation: {
-            "fixed": "固定",
-            "polymorphic": "多型",
-            "lost": "消失"
+            'fixed': '固定',
+            'polymorphic': '多型',
+            'lost': '消失'
         },
         footer: {
-            "save": "結果を保存",
-            "download": "driftr.jsをダウンロード",
-            "report": "不具合報告・提案"
+            'save': '結果を保存',
+            'download': 'driftr.jsをダウンロード',
+            'report': '不具合報告・提案'
         }
     });
 
     var params = [
-        [t("params.popsize") + " (<var>N</var>)",
-         "popsize", 100, 10000, 100, 1000],
-        [t("params.selection") + " (<var>s<var>)",
-         "selection", -0.025, 0.025, 0.001, 0.0],
-        [t("params.frequency") + " (<var>q<sub>0</sub></var>)",
-         "frequency", 0.0, 1.0, 0.01, 0.1],
-        [t("params.observation"),
-         "observation", 50, 400, 50, 100],
-        [t("params.replicates"),
-         "replicates", 10, 50, 10, 20]
+        [t('params.popsize') + ' (<var>N</var>)',
+         'popsize', 100, 10000, 100, 1000],
+        [t('params.selection') + ' (<var>s<var>)',
+         'selection', -0.025, 0.025, 0.001, 0.0],
+        [t('params.frequency') + ' (<var>q<sub>0</sub></var>)',
+         'frequency', 0.0, 1.0, 0.01, 0.1],
+        [t('params.observation'),
+         'observation', 50, 400, 50, 100],
+        [t('params.replicates'),
+         'replicates', 10, 50, 10, 20]
     ];
 
     var params_now = {};
@@ -80,63 +80,63 @@
     }
 
     // TODO
-    var model = d3.select("form")
-        .append("dl").attr("class", "parameter");
-    model.append("dt").append("label").attr("class", "name").text("Model");
-    model.append("dd").append("select").attr("name", "model")
-        .append("option").attr("value", "wf").text("Wright-Fisher");
+    var model = d3.select('form')
+        .append('dl').attr('class', 'parameter');
+    model.append('dt').append('label').attr('class', 'name').text('Model');
+    model.append('dd').append('select').attr('name', 'model')
+        .append('option').attr('value', 'wf').text('Wright-Fisher');
     model.remove();
 
-    var input_items = d3.select("form")
-        .selectAll("dl")
+    var input_items = d3.select('form')
+        .selectAll('dl')
         .data(params)
         .enter()
-        .append("dl")
-        .attr("id", function(d){return d[1];})
-        .attr("class", "parameter");
+        .append('dl')
+        .attr('id', function(d){return d[1];})
+        .attr('class', 'parameter');
 
-    input_items.append("label")
-        .attr("class", "value")
-        .attr("for", function(d){return d[1];})
+    input_items.append('label')
+        .attr('class', 'value')
+        .attr('for', function(d){return d[1];})
         .text(function(d){return d[5];});
 
-    input_items.append("dt")
-        .append("label")
-        .attr("class", "name")
-        .attr("for", function(d){return d[1];})
+    input_items.append('dt')
+        .append('label')
+        .attr('class', 'name')
+        .attr('for', function(d){return d[1];})
         .html(function(d){return d[0];});
 
-    var input_ranges = input_items.append("dd")
-        .attr("class", "param_range");
-    input_ranges.append("input")
-        .attr("type", "range")
-        .attr("name", function(d){return d[1];})
-        .attr("min", function(d){return d[2];})
-        .attr("max", function(d){return d[3];})
-        .attr("step", function(d){return d[4];})
-        .attr("value", function(d){return d[5];})
-        .on("input", function(d){update_param(d[1], this.value);});
-    input_ranges.append("label")
-        .attr("class", "min")
-        .attr("for", function(d){return d[1];})
+    var input_ranges = input_items.append('dd')
+        .attr('class', 'param_range');
+    input_ranges.append('input')
+        .attr('type', 'range')
+        .attr('name', function(d){return d[1];})
+        .attr('min', function(d){return d[2];})
+        .attr('max', function(d){return d[3];})
+        .attr('step', function(d){return d[4];})
+        .attr('value', function(d){return d[5];})
+        .on('input', function(d){update_param(d[1], this.value);});
+    input_ranges.append('label')
+        .attr('class', 'min')
+        .attr('for', function(d){return d[1];})
         .text(function(d){return d[2];});
-    input_ranges.append("label")
-        .attr("class", "max")
-        .attr("for", function(d){return d[1];})
+    input_ranges.append('label')
+        .attr('class', 'max')
+        .attr('for', function(d){return d[1];})
         .text(function(d){return d[3];});
 
     function update_param(id, value) {
         input_items
-            .select("#"+id+" label.value")
+            .select('#'+id+' label.value')
             .text(value);
         params_now[id] = value;
     }
 
-    d3.select("form").append("button")
-        .attr("type", "button")
-        .attr("id", "start")
-        .attr("class", "button")
-        .text("START!");
+    d3.select('form').append('button')
+        .attr('type', 'button')
+        .attr('id', 'start')
+        .attr('class', 'button')
+        .text('START!');
 
     var svg_padding = {
         top:    20,
@@ -145,32 +145,32 @@
         left:   80
     };
 
-    var svg = d3.select("#graph").append("svg");
+    var svg = d3.select('#graph').append('svg');
 
-    var fixation_divs = d3.select("#graph")
-            .append("div")
-            .attr("id", "fixation")
-            .selectAll("label")
-            .data(["fixed", "polymorphic", "lost"])
+    var fixation_divs = d3.select('#graph')
+            .append('div')
+            .attr('id', 'fixation')
+            .selectAll('label')
+            .data(['fixed', 'polymorphic', 'lost'])
             .enter()
-            .append("div")
-            .attr("id", function(d){return d;});
-    fixation_divs.append("label")
-            .attr("class", function(d){return "name";})
-            .text(function(d){return t("fixation." + d);});
-    fixation_divs.append("label")
-            .attr("class", function(d){return "value";});
+            .append('div')
+            .attr('id', function(d){return d;});
+    fixation_divs.append('label')
+            .attr('class', function(d){return 'name';})
+            .text(function(d){return t('fixation.' + d);});
+    fixation_divs.append('label')
+            .attr('class', function(d){return 'value';});
 
-    var panel_height = parseInt(svg.style("height")) - svg_padding.top - svg_padding.bottom;
-    var plot = svg.append("g")
-            .attr("class", "plot")
-            .attr("transform",
-                  "translate("+svg_padding.left+","+svg_padding.top+")");
-    var panel_bg = plot.append("rect")
-            .attr("class", "panel_background")
-            .attr("height", panel_height);
-    var panel = plot.append("g")
-            .attr("class", "panel");
+    var panel_height = parseInt(svg.style('height')) - svg_padding.top - svg_padding.bottom;
+    var plot = svg.append('g')
+            .attr('class', 'plot')
+            .attr('transform',
+                  'translate('+svg_padding.left+','+svg_padding.top+')');
+    var panel_bg = plot.append('rect')
+            .attr('class', 'panel_background')
+            .attr('height', panel_height);
+    var panel = plot.append('g')
+            .attr('class', 'panel');
 
     var scale_x = d3.scale.linear()
             .domain([0, parseInt(params_now.observation)]);
@@ -179,42 +179,42 @@
             .range([panel_height, 0]);
     var axis_func_x = d3.svg.axis()
             .scale(scale_x)
-            .orient("bottom");
+            .orient('bottom');
     var axis_func_y = d3.svg.axis()
             .scale(scale_y)
-            .orient("left");
-    var axis_x = plot.append("g")
-            .attr("transform",
-                  "translate(0,"+ panel_height +")")
+            .orient('left');
+    var axis_x = plot.append('g')
+            .attr('transform',
+                  'translate(0,'+ panel_height +')')
             .call(axis_func_x);
-    var axis_y = plot.append("g")
+    var axis_y = plot.append('g')
             .call(axis_func_y);
-    var axis_title_x = plot.append("text")
+    var axis_title_x = plot.append('text')
             .attr('class', 'axis_title_x')
-            .attr("text-anchor", "middle")
-            .text(t("axes.time"));
-    var axis_title_y = plot.append("text")
+            .attr('text-anchor', 'middle')
+            .text(t('axes.time'));
+    var axis_title_y = plot.append('text')
             .attr('class', 'axis_title_y')
-            .attr("text-anchor", 'middle')
-            .text(t("axes.frequency") + " (q)")
-            .attr("transform", "translate(-50,"+ panel_height/2 +") rotate(-90)");
+            .attr('text-anchor', 'middle')
+            .text(t('axes.frequency') + ' (q)')
+            .attr('transform', 'translate(-50,'+ panel_height/2 +') rotate(-90)');
     var line = d3.svg.line()
             .x(function(d, i) {return scale_x(i);})
             .y(function(d, i) {return scale_y(d);})
-            .interpolate("linear");
+            .interpolate('linear');
 
     function update_width() {
-        var width = parseInt(d3.select("#graph").style("width"));
-        var fixation_width = parseInt(d3.select("svg").style("padding-right"));
-        svg.attr("width", width - fixation_width);
-        var svg_width = parseInt(svg.attr("width"));
+        var width = parseInt(d3.select('#graph').style('width'));
+        var fixation_width = parseInt(d3.select('svg').style('padding-right'));
+        svg.attr('width', width - fixation_width);
+        var svg_width = parseInt(svg.attr('width'));
         var panel_width = svg_width - svg_padding.left - svg_padding.right;
-        panel_bg.attr("width", panel_width);
+        panel_bg.attr('width', panel_width);
         scale_x.range([0, panel_width]);
         axis_x.call(axis_func_x.scale(scale_x));
-        axis_title_x.attr("transform", "translate("+
-                          (panel_width / 2) +","+ (panel_height + 50) +")");
-        panel.selectAll("path").remove();
+        axis_title_x.attr('transform', 'translate('+
+                          (panel_width / 2) +','+ (panel_height + 50) +')');
+        panel.selectAll('path').remove();
         draw();
     }
 
@@ -280,7 +280,7 @@
         var rep = results.length;
         for (var i=0; i<rep; ++i) {
             var trajectory = results[i];
-            panel.append("path").attr("d", line(trajectory));
+            panel.append('path').attr('d', line(trajectory));
         }
     }
 
@@ -290,55 +290,55 @@
             var trajectory = results[i];
             var T = trajectory.length;
             var repl_delay = rep * T / 5 + 600 * i / rep;
-            var path = panel.append("path");
+            var path = panel.append('path');
             for (var t=0; t<=T; ++t) {
                 var part = trajectory.slice(0, t);
-                path.transition().delay(repl_delay + 23 * t).ease("linear")
-                    .attr("d", line(part));
+                path.transition().delay(repl_delay + 23 * t).ease('linear')
+                    .attr('d', line(part));
             }
             var qT = trajectory.slice(-1)[0];
             if (qT == 1) {
-                fixation_increment("#fixed");
+                fixation_increment('#fixed');
             } else if (qT === 0) {
-                fixation_increment("#lost");
+                fixation_increment('#lost');
             } else {
-                fixation_increment("#polymorphic");
+                fixation_increment('#polymorphic');
             }
         }
     }
 
     function fixation_increment(id) {
-        var label = d3.select(id + " label.value");
+        var label = d3.select(id + ' label.value');
         label.text(parseInt(label.text()) + 1);
     }
 
-    var footer = d3.select("#footer");
-    var download_json = footer.append("a")
-        .attr("class", "button")
-        .attr("download", "driftr_result.json")
-        .text(t("footer.save"));
-    download_json.on("click", function(){
+    var footer = d3.select('#footer');
+    var download_json = footer.append('a')
+        .attr('class', 'button')
+        .attr('download', 'driftr_result.json')
+        .text(t('footer.save'));
+    download_json.on('click', function(){
         var json = JSON.stringify(results);
-        var blob = new Blob([json], {type: "application/json"});
+        var blob = new Blob([json], {type: 'application/json'});
         var url = URL.createObjectURL(blob);
-        download_json.attr("href", url);
+        download_json.attr('href', url);
     });
-    footer.append("a")
-        .attr("class", "button")
-        .attr("href", "https://github.com/heavywatal/driftr.js/releases/latest")
-        .text(t("footer.download"));
-    footer.append("a")
-        .attr("class", "button")
-        .attr("href", "https://github.com/heavywatal/driftr.js/issues")
-        .text(t("footer.report"));
+    footer.append('a')
+        .attr('class', 'button')
+        .attr('href', 'https://github.com/heavywatal/driftr.js/releases/latest')
+        .text(t('footer.download'));
+    footer.append('a')
+        .attr('class', 'button')
+        .attr('href', 'https://github.com/heavywatal/driftr.js/issues')
+        .text(t('footer.report'));
 
     var results = [];
     update_width();
 
-    d3.select(window).on("resize", update_width);
-    d3.select("#start").on("click", function(){
-        panel.selectAll("path").remove();
-        d3.selectAll("#fixation label.value").text(0);
+    d3.select(window).on('resize', update_width);
+    d3.select('#start').on('click', function(){
+        panel.selectAll('path').remove();
+        d3.selectAll('#fixation label.value').text(0);
         results = [];
         simulation();
         animation();
