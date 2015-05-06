@@ -83,8 +83,17 @@
     var model = d3.select('form')
         .append('dl').attr('class', 'parameter');
     model.append('dt').append('label').attr('class', 'name').text('Model');
-    model.append('dd').append('select').attr('name', 'model')
-        .append('option').attr('value', 'wf').text('Wright-Fisher');
+    model.append('dd').append('input')
+        .attr('type', 'radio')
+        .attr('name', 'model')
+        .attr('value', 'wf')
+        .property('checked', true)
+        .append('label').attr('for', 'model').text('Wright-Fisher');
+    d3.select('dd').append('input')
+        .attr('type', 'radio')
+        .attr('name', 'model')
+        .attr('value', 'moran')
+        .append('label').attr('for', 'model').text('Moran');
     model.remove();
 
     var input_items = d3.select('form')
