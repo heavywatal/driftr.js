@@ -26,7 +26,6 @@ dl {
 
 dt {
     font-weight: bold;
-    max-height: 1ex;
 }
 
 dd {
@@ -57,10 +56,9 @@ label.max {
     text-align: right;
 }
 
-input {
+input[type=range] {
     width: 100%;
     margin: 0;
-    font-size: inherit;
 }
 
 .button {

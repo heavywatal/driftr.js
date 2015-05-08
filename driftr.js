@@ -83,22 +83,35 @@
     var model = d3.select('form')
         .append('dl').attr('class', 'parameter');
     model.append('dt').append('label').attr('class', 'name').text('Model');
-    model.append('dd').append('input')
-        .attr('type', 'radio')
-        .attr('name', 'model')
-        .attr('value', 'wf')
-        .property('checked', true)
-        .append('label').attr('for', 'model').text('Wright-Fisher');
-    d3.select('dd').append('input')
-        .attr('type', 'radio')
-        .attr('name', 'model')
-        .attr('value', 'moran')
-        .append('label').attr('for', 'model').text('Moran');
+    model.append('dd')
+        .each(function(d) {
+            d3.select(this).append('input')
+                .attr('type', 'radio')
+                .attr('name', 'model')
+                .attr('value', 'wf')
+                .attr('id', 'wf')
+                .property('checked', true);
+            d3.select(this).append('label')
+                .attr('for', 'wf')
+                .attr('class', 'radio')
+                .text('Wright-Fisher');
+            d3.select(this).append('br');
+            d3.select(this)
+                .append('input')
+                .attr('type', 'radio')
+                .attr('name', 'model')
+                .attr('value', 'moran')
+                .attr('id', 'moran');
+            d3.select(this).append('label')
+                .attr('for', 'moran')
+                .attr('class', 'radio')
+                .text('Moran');
+        });
     model.remove();
 
     var input_items = d3.select('form')
         .selectAll('dl')
-        .data(params)
+        .data(params, function(d) {return d;})
         .enter()
         .append('dl')
         .attr('id', function(d){return d[1];})
