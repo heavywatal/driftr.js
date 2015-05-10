@@ -79,10 +79,18 @@
         params_now[String(x[1])] = x[5];
     }
 
-    // TODO
+    function update_param(id, value) {
+        input_items
+            .select('#'+id+' label.value')
+            .text(value);
+        params_now[id] = value;
+    }
+
     var model = d3.select('form')
         .append('dl').attr('class', 'parameter');
-    model.append('dt').append('label').attr('class', 'name').text('Model');
+    model.append('dt').append('label')
+        .attr('class', 'name')
+        .text('Model');
     model.append('dd')
         .each(function(d) {
             d3.select(this).append('input')
@@ -96,8 +104,7 @@
                 .attr('class', 'radio')
                 .text('Wright-Fisher');
             d3.select(this).append('br');
-            d3.select(this)
-                .append('input')
+            d3.select(this).append('input')
                 .attr('type', 'radio')
                 .attr('name', 'model')
                 .attr('value', 'moran')
@@ -107,7 +114,6 @@
                 .attr('class', 'radio')
                 .text('Moran');
         });
-    model.remove();
 
     var input_items = d3.select('form')
         .selectAll('dl')
@@ -146,13 +152,6 @@
         .attr('class', 'max')
         .attr('for', function(d){return d[1];})
         .text(function(d){return d[3];});
-
-    function update_param(id, value) {
-        input_items
-            .select('#'+id+' label.value')
-            .text(value);
-        params_now[id] = value;
-    }
 
     d3.select('form').append('button')
         .attr('type', 'button')
@@ -240,13 +239,7 @@
         draw();
     }
 
-    function wright_fisher() {
-        var N = parseFloat(params_now.popsize);
-        var s = parseFloat(params_now.selection);
-        var q0 = parseFloat(params_now.frequency);
-        var T = parseInt(params_now.observation);
-        var rep = parseInt(params_now.replicates);
-        axis_x.call(axis_func_x.scale(scale_x.domain([0, T])));
+    function wright_fisher(N, s, q0, T, rep) {
         for (var i=0; i<rep; ++i) {
             var qt = q0;
             var trajectory = [q0];
@@ -260,32 +253,21 @@
         return results;
     }
 
-    function moran() {
-        var N = parseFloat(params_now.popsize);
-        var s = parseFloat(params_now.selection);
-        var q0 = parseFloat(params_now.frequency);
-        var T = parseInt(params_now.observation);
-        var rep = parseInt(params_now.replicates);
-        axis_x.call(axis_func_x.scale(scale_x.domain([0, T])));
+    function moran(N, s, q0, T, rep) {
         var s1 = s + 1;
         for (var i=0; i<rep; ++i) {
-            var qt = q0;
+            var Nq = Math.round(N * q0);
             var trajectory = [q0];
             var repl_delay = rep * T / 5 + 600 * i / rep;
             for (var t=1; t<=T * N; ++t) {
-                var Nqt = N * qt;
-                var p_mutrep = s1 * Nqt / (s1 * Nqt  + (N - Nqt));
-                if (random_bernoulli(qt)) {  // a mutant dies
-                    if (!random_bernoulli(p_mutrep)) {
-                        qt -= 1 / N;
-                    }
+                var p_mutrep = s1 * Nq / (s1 * Nq  + (N - Nq));
+                if (random_bernoulli(Nq / N)) {  // a mutant dies
+                    if (!random_bernoulli(p_mutrep)) {--Nq;}
                 } else {  // a wildtype dies
-                    if (random_bernoulli(p_mutrep)) {
-                        qt += 1 / N;
-                    }
+                    if (random_bernoulli(p_mutrep)) {++Nq;}
                 }
                 if (t % N == 0) {
-                    trajectory.push(qt);
+                    trajectory.push(Nq / N);
                 }
             }
             results.push(trajectory);
@@ -294,8 +276,18 @@
     }
 
     function simulation() {
-//        moran();
-        wright_fisher();
+        var N = parseFloat(params_now.popsize);
+        var s = parseFloat(params_now.selection);
+        var q0 = parseFloat(params_now.frequency);
+        var T = parseInt(params_now.observation);
+        var rep = parseInt(params_now.replicates);
+        axis_x.call(axis_func_x.scale(scale_x.domain([0, T])));
+        var model = d3.select('input[name="model"]:checked').node().value;
+        if (model == 'wf') {
+            wright_fisher(N, s, q0, T, rep);
+        } else {
+            moran(N, s, q0, T, rep);
+        }
     }
 
     function draw() {
