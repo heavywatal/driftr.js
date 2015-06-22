@@ -6,6 +6,10 @@
      -o-box-sizing: border-box;
 }
 
+h1 {
+  font-size: 1.6em;
+}
+
 body {
     margin: 0 10px 10px;
     font-family: "Noto Sans", "Segoe UI", sans-serif;
@@ -81,13 +85,13 @@ input[type=range] {
     width: 100%;
 }
 
-#footer .button {
+footer .button {
     margin: 12px 4px;
     background-color: #AAAAAA;
     font-size: 80%;
 }
 
-#footer {
+footer {
     text-align: right;
 }
 

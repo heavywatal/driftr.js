@@ -86,6 +86,7 @@
         params_now[id] = value;
     }
 
+    d3.select('main').append('form');
     var model = d3.select('form')
         .append('dl').attr('class', 'parameter');
     model.append('dt').append('label')
@@ -166,6 +167,7 @@
         left:   80
     };
 
+    d3.select('main').append('div').attr('id', 'graph');
     var svg = d3.select('#graph').append('svg');
 
     var fixation_divs = d3.select('#graph')
@@ -326,7 +328,7 @@
         label.text(parseInt(label.text()) + 1);
     }
 
-    var footer = d3.select('#footer');
+    var footer = d3.select('footer');
     var download_json = footer.append('a')
         .attr('class', 'button')
         .attr('download', 'driftr_result.json')
