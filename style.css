@@ -1,15 +1,18 @@
+@charset "UTF-8";
+/*csslint
+  box-model: false, box-sizing: false,
+  universal-selector: false, font-sizes: false,
+  qualified-headings: false, unique-headings: false,
+*/
+
 * {
-        box-sizing: border-box;
--webkit-box-sizing: border-box;
-   -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-     -o-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
+    color: #444444;
     margin: 0 10px 10px;
-    font-family: "Noto Sans", "Segoe UI", sans-serif;
-    -webkit-text-size-adjust: 100%;
+    font-family: "Open Sans", Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", "游ゴシック", Meiryo, "メイリオ", sans-serif;
 }
 
 h1 {
@@ -22,10 +25,6 @@ dl {
     margin: 0 12px 12px 0;
     padding: 8px 12px;
     background-color: #EEEEEE;
-}
-
-@media (min-width: 600px) {
-    dl {width: 48%;}
 }
 
 dt {
@@ -86,7 +85,7 @@ input[type=range] {
 }
 
 footer .button {
-    margin: 12px 4px;
+    margin: 12px 0px 12px 8px;
     background-color: #AAAAAA;
     font-size: 80%;
     font-weight: normal;
@@ -139,4 +138,17 @@ path.domain {
     stroke: #000000;
     stroke-opacity: 0.5;
     stroke-width: 2;
+}
+
+@media (min-width: 600px) {
+    form {
+      margin: 0 -2% 0 0;
+    }
+    dl {
+      width: 48%;
+      margin: 0 2% 12px 0;
+    }
+    #start {
+      width: 98%;
+    }
 }
