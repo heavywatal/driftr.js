@@ -156,8 +156,7 @@
 
     d3.select('form').append('button')
         .attr('type', 'button')
-        .attr('id', 'start')
-        .attr('class', 'button')
+        .attr('class', 'start button')
         .text('START!');
 
     var svg_padding = {
@@ -167,12 +166,12 @@
         left:   80
     };
 
-    d3.select('main').append('div').attr('id', 'graph');
-    var svg = d3.select('#graph').append('svg');
+    d3.select('main').append('div').attr('class', 'graph');
+    var svg = d3.select('.graph').append('svg');
 
-    var fixation_divs = d3.select('#graph')
+    var fixation_divs = d3.select('.graph')
             .append('div')
-            .attr('id', 'fixation')
+            .attr('class', 'fixation')
             .selectAll('label')
             .data(['fixed', 'polymorphic', 'lost'])
             .enter()
@@ -227,7 +226,7 @@
             .interpolate('linear');
 
     function update_width() {
-        var width = parseInt(d3.select('#graph').style('width'));
+        var width = parseInt(d3.select('.graph').style('width'));
         var fixation_width = parseInt(d3.select('svg').style('padding-right'));
         svg.attr('width', width - fixation_width);
         var svg_width = parseInt(svg.attr('width'));
@@ -268,7 +267,7 @@
                 } else {  // a wildtype dies
                     if (random_bernoulli(p_mutrep)) {++Nq;}
                 }
-                if (t % N == 0) {
+                if (t % N === 0) {
                     trajectory.push(Nq / N);
                 }
             }

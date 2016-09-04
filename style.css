@@ -39,7 +39,7 @@ label {
     display: inline-block;
 }
 
-label.name:after {
+.name:after {
     content: ":";
 }
 
@@ -50,7 +50,7 @@ label.value {
     font-weight: bold;
 }
 
-label.min, label.max {
+.min, .max {
     color: #999999;
 }
 
@@ -77,7 +77,7 @@ input[type=range] {
     cursor: pointer;
 }
 
-#start {
+.start {
     margin: 0 0 12px;
     padding: 12px 16px;
     font-size: 120%;
@@ -85,7 +85,7 @@ input[type=range] {
 }
 
 footer .button {
-    margin: 12px 0px 12px 8px;
+    margin: 12px 0 12px 8px;
     background-color: #AAAAAA;
     font-size: 80%;
     font-weight: normal;
@@ -95,7 +95,7 @@ footer {
     text-align: right;
 }
 
-#graph {
+.graph {
     background-color: #EEEEEE;
 }
 
@@ -104,19 +104,19 @@ svg {
     height: 360px;
 }
 
-#fixation {
+.fixation {
     display: inline-block;
     margin-right: 12px;
 }
 
-#fixation div {
+.fixation div {
     display: inline-block;
     padding: 8px;
     margin-right: 8px;
     background-color: #DDDDDD;
 }
 
-#fixation label.value {
+.fixation label.value {
     min-width: 2em;
 }
 
@@ -148,7 +148,7 @@ path.domain {
       width: 48%;
       margin: 0 2% 12px 0;
     }
-    #start {
+    .start {
       width: 98%;
     }
 }
