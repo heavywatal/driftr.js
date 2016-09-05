@@ -351,9 +351,9 @@
     update_width();
 
     d3.select(window).on('resize', update_width);
-    d3.select('#start').on('click', function(){
+    d3.select('.start').on('click', function(){
         panel.selectAll('path').remove();
-        d3.selectAll('#fixation label.value').text(0);
+        d3.selectAll('.fixation label.value').text(0);
         results = [];
         simulation();
         animation();
