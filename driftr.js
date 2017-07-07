@@ -23,7 +23,7 @@
         },
         axes: {
             'time': 'Time (generations)',
-            'frequency': 'Frequency of mutant allele'
+            'frequency': 'Derived Allele Frequency'
         },
         fixation: {
             'fixed': 'fixed',
