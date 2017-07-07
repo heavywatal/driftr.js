@@ -68,7 +68,7 @@
         [t('params.frequency') + ' (<var>q<sub>0</sub></var>)',
          'frequency', 0.0, 1.0, 0.01, 0.1],
         [t('params.observation'),
-         'observation', 50, 400, 50, 100],
+         'observation', 100, 10000, 100, 100],
         [t('params.replicates'),
          'replicates', 10, 50, 10, 20]
     ];
