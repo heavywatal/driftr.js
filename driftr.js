@@ -1,4 +1,4 @@
-(function(d3, x18n, t) {
+(function(d3) {
     'use strict';
 
     function random_bernoulli(prob) {
@@ -13,63 +13,16 @@
         return cnt;
     }
 
-    x18n.register('en', {
-        params: {
-            'popsize': 'Population size',
-            'selection': 'Selection coefficient',
-            'frequency': 'Initital frequency',
-            'observation': 'Observation period',
-            'replicates': 'Number of replicates'
-        },
-        axes: {
-            'time': 'Time (generations)',
-            'frequency': 'Derived Allele Frequency'
-        },
-        fixation: {
-            'fixed': 'fixed',
-            'polymorphic': 'polymorphic',
-            'lost': 'lost'
-        },
-        footer: {
-            'save': 'Save results',
-            'download': 'Download driftr.js',
-            'report': 'Send feedback'
-        }
-    });
-    x18n.register('ja', {
-        params: {
-            'popsize': '集団サイズ',
-            'selection': '選択係数',
-            'frequency': '初期頻度',
-            'observation': '観察期間',
-            'replicates': '反復回数'
-        },
-        axes: {
-            'time': '時間 (世代数)',
-            'frequency': '変異型アリル頻度'
-        },
-        fixation: {
-            'fixed': '固定',
-            'polymorphic': '多型',
-            'lost': '消失'
-        },
-        footer: {
-            'save': '結果を保存',
-            'download': 'driftr.jsをダウンロード',
-            'report': '不具合報告・提案'
-        }
-    });
-
     var params = [
-        [t('params.popsize') + ' (<var>N</var>)',
+        ['Population size (<var>N</var>)',
          'popsize', 100, 10000, 100, 1000],
-        [t('params.selection') + ' (<var>s<var>)',
+        ['Selection coefficient (<var>s<var>)',
          'selection', -0.025, 0.025, 0.001, 0.0],
-        [t('params.frequency') + ' (<var>q<sub>0</sub></var>)',
+        ['Initital frequency (<var>q<sub>0</sub></var>)',
          'frequency', 0.0, 1.0, 0.01, 0.1],
-        [t('params.observation'),
+        ['Observation period',
          'observation', 100, 10000, 100, 100],
-        [t('params.replicates'),
+        ['Number of replicates',
          'replicates', 10, 50, 10, 20]
     ];
 
@@ -179,7 +132,7 @@
             .attr('id', function(d){return d;});
     fixation_divs.append('label')
             .attr('class', function(d){return 'name';})
-            .text(function(d){return t('fixation.' + d);});
+            .text(function(d){return d;});
     fixation_divs.append('label')
             .attr('class', function(d){return 'value';});
 
@@ -214,11 +167,11 @@
     var axis_title_x = plot.append('text')
             .attr('class', 'axis_title_x')
             .attr('text-anchor', 'middle')
-            .text(t('axes.time'));
+            .text('Time (generations)');
     var axis_title_y = plot.append('text')
             .attr('class', 'axis_title_y')
             .attr('text-anchor', 'middle')
-            .text(t('axes.frequency') + ' (q)')
+            .text('Derived Allele Frequency (q)')
             .attr('transform', 'translate(-50,'+ panel_height/2 +') rotate(-90)');
     var line = d3.svg.line()
             .x(function(d, i) {return scale_x(i);})
@@ -331,7 +284,7 @@
     var download_json = footer.append('a')
         .attr('class', 'button')
         .attr('download', 'driftr_result.json')
-        .text(t('footer.save'));
+        .text('Save results');
     download_json.on('click', function(){
         var json = JSON.stringify(results);
         var blob = new Blob([json], {type: 'application/json'});
@@ -341,11 +294,11 @@
     footer.append('a')
         .attr('class', 'button')
         .attr('href', 'https://github.com/heavywatal/driftr.js/releases/latest')
-        .text(t('footer.download'));
+        .text('Download driftr.js');
     footer.append('a')
         .attr('class', 'button')
         .attr('href', 'https://github.com/heavywatal/driftr.js/issues')
-        .text(t('footer.report'));
+        .text('Send feedback');
 
     var results = [];
     update_width();
@@ -359,4 +312,4 @@
         animation();
     });
 
-})(d3, x18n, t);
+})(d3);
