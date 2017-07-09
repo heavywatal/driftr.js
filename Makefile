@@ -1,5 +1,5 @@
 ## Directories and Files
-SRCS := index.html style.css driftr.js README.md LICENSE d3/d3.min.js d3/LICENSE
+SRCS := index.html style.css driftr.js README.md LICENSE
 PACKAGE := $(notdir $(shell pwd))
 DISTFILES := $(addprefix $(PACKAGE)/,$(SRCS))
 VERSION := $(shell git describe --tags || echo v0.0)
