@@ -1,11 +1,11 @@
 ## Directories and Files
-SRCS := index.html style.css driftr.js README.md LICENSE.txt d3/d3.min.js d3/LICENSE x18n/lib/x18n.js x18n/LICENSE
+SRCS := index.html style.css driftr.js README.md LICENSE d3/d3.min.js d3/LICENSE
 PACKAGE := $(notdir $(shell pwd))
 DISTFILES := $(addprefix $(PACKAGE)/,$(SRCS))
 VERSION := $(shell git describe --tags || echo v0.0)
 
 ## Targets
-.PHONY: all dist sync
+.PHONY: all clean dist
 .DEFAULT_GOAL := all
 
 all:
