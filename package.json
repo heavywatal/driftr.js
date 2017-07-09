@@ -1,0 +1,16 @@
+{
+  "name": "driftr",
+  "version": "0.3.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "browserify -t babelify -o driftr.js src/main.js"
+  },
+  "dependencies": {
+    "d3": "^4.9.1"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0"
+  }
+}
