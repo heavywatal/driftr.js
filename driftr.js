@@ -17055,12 +17055,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     }
 
     function animation(trajectory, repl_delay) {
-        var T = trajectory.length;
-        var path = panel.append('path');
-        for (var t = 0; t <= T; ++t) {
-            var part = trajectory.slice(0, t);
-            path.transition().delay(repl_delay + 23 * t).ease(d3.easeLinear).attr('d', line(part));
+        function len() {
+            return this.getTotalLength();
         }
+        panel.append('path').attr('d', line(trajectory)).attr("stroke-dasharray", len).attr("stroke-dashoffset", len).transition().delay(repl_delay).duration(2000).ease(d3.easeLinear).attr("stroke-dashoffset", 0);
         var qT = trajectory.slice(-1)[0];
         if (qT == 1) {
             fixation_increment('#fixed');
@@ -17104,7 +17102,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
         for (var i = 0; i < rep; ++i) {
             var trajectory = wtl_genetics.evolve(N, s, q0, T, model);
-            var repl_delay = rep * trajectory.length / 5 + 600 * i / rep;
+            var repl_delay = trajectory.length / 5 + 600 * i / rep;
             animation(trajectory, repl_delay);
             results.push(trajectory);
         }
