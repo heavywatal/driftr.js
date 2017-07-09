@@ -1,19 +1,8 @@
 import * as d3 from "d3";
+import * as wtl_random from "./random.js";
 
 (function() {
     'use strict';
-
-    function random_bernoulli(prob) {
-        return Math.random() < prob;
-    }
-
-    function random_binomial(size, prob) {
-        var cnt = 0;
-        for (var i=0; i<size; ++i) {
-            if (random_bernoulli(prob)) {++cnt;}
-        }
-        return cnt;
-    }
 
     var params = [
         ['Population size (<var>N</var>)',
@@ -192,9 +181,8 @@ import * as d3 from "d3";
         for (var i=0; i<rep; ++i) {
             var qt = q0;
             var trajectory = [q0];
-            var repl_delay = rep * T / 5 + 600 * i / rep;
             for (var t=1; t<=T; ++t) {
-                qt = random_binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
+                qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
                 trajectory.push(qt);
             }
             results.push(trajectory);
@@ -207,13 +195,12 @@ import * as d3 from "d3";
         for (var i=0; i<rep; ++i) {
             var Nq = Math.round(N * q0);
             var trajectory = [q0];
-            var repl_delay = rep * T / 5 + 600 * i / rep;
             for (var t=1; t<=T * N; ++t) {
                 var p_mutrep = s1 * Nq / (s1 * Nq  + (N - Nq));
-                if (random_bernoulli(Nq / N)) {  // a mutant dies
-                    if (!random_bernoulli(p_mutrep)) {--Nq;}
+                if (wtl_random.bernoulli(Nq / N)) {  // a mutant dies
+                    if (!wtl_random.bernoulli(p_mutrep)) {--Nq;}
                 } else {  // a wildtype dies
-                    if (random_bernoulli(p_mutrep)) {++Nq;}
+                    if (wtl_random.bernoulli(p_mutrep)) {++Nq;}
                 }
                 if (t % N === 0) {
                     trajectory.push(Nq / N);

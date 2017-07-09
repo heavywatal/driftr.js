@@ -16867,30 +16867,20 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],2:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _d = require('d3');
+var _d = require("d3");
 
 var d3 = _interopRequireWildcard(_d);
+
+var _random = require("./random.js");
+
+var wtl_random = _interopRequireWildcard(_random);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 (function () {
     'use strict';
-
-    function random_bernoulli(prob) {
-        return Math.random() < prob;
-    }
-
-    function random_binomial(size, prob) {
-        var cnt = 0;
-        for (var i = 0; i < size; ++i) {
-            if (random_bernoulli(prob)) {
-                ++cnt;
-            }
-        }
-        return cnt;
-    }
 
     var params = [['Population size (<var>N</var>)', 'popsize', 100, 10000, 100, 1000], ['Selection coefficient (<var>s<var>)', 'selection', -0.025, 0.025, 0.001, 0.0], ['Initital frequency (<var>q<sub>0</sub></var>)', 'frequency', 0.0, 1.0, 0.01, 0.1], ['Observation period', 'observation', 100, 10000, 100, 100], ['Number of replicates', 'replicates', 10, 50, 10, 20]];
 
@@ -17018,9 +17008,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         for (var i = 0; i < rep; ++i) {
             var qt = q0;
             var trajectory = [q0];
-            var repl_delay = rep * T / 5 + 600 * i / rep;
             for (var t = 1; t <= T; ++t) {
-                qt = random_binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
+                qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
                 trajectory.push(qt);
             }
             results.push(trajectory);
@@ -17033,17 +17022,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         for (var i = 0; i < rep; ++i) {
             var Nq = Math.round(N * q0);
             var trajectory = [q0];
-            var repl_delay = rep * T / 5 + 600 * i / rep;
             for (var t = 1; t <= T * N; ++t) {
                 var p_mutrep = s1 * Nq / (s1 * Nq + (N - Nq));
-                if (random_bernoulli(Nq / N)) {
+                if (wtl_random.bernoulli(Nq / N)) {
                     // a mutant dies
-                    if (!random_bernoulli(p_mutrep)) {
+                    if (!wtl_random.bernoulli(p_mutrep)) {
                         --Nq;
                     }
                 } else {
                     // a wildtype dies
-                    if (random_bernoulli(p_mutrep)) {
+                    if (wtl_random.bernoulli(p_mutrep)) {
                         ++Nq;
                     }
                 }
@@ -17130,4 +17118,26 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     });
 })();
 
-},{"d3":1}]},{},[2]);
+},{"./random.js":3,"d3":1}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.bernoulli = bernoulli;
+exports.binomial = binomial;
+function bernoulli(prob) {
+    return Math.random() < prob;
+}
+
+function binomial(size, prob) {
+    var cnt = 0;
+    for (var i = 0; i < size; ++i) {
+        if (bernoulli(prob)) {
+            ++cnt;
+        }
+    }
+    return cnt;
+}
+
+},{}]},{},[2]);
