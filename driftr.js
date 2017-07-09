@@ -16940,17 +16940,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
     var params = [['Population size (<var>N</var>)', 'popsize', 100, 10000, 100, 1000], ['Selection coefficient (<var>s<var>)', 'selection', -0.025, 0.025, 0.001, 0.0], ['Initital frequency (<var>q<sub>0</sub></var>)', 'frequency', 0.0, 1.0, 0.01, 0.1], ['Observation period', 'observation', 100, 10000, 100, 100], ['Number of replicates', 'replicates', 10, 50, 10, 20]];
 
-    var params_now = {};
-    for (var i = 0; i < params.length; ++i) {
-        var x = params[i];
-        params_now[String(x[1])] = x[5];
-    }
-
-    function update_param(id, value) {
-        input_items.select('#' + id + ' label.value').text(value);
-        params_now[id] = value;
-    }
-
     d3.select('main').append('form');
     var model = d3.select('form').append('dl').attr('class', 'parameter');
     model.append('dt').append('label').attr('class', 'name').text('Model');
@@ -16992,7 +16981,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     }).attr('value', function (d) {
         return d[5];
     }).on('input', function (d) {
-        update_param(d[1], this.value);
+        d3.select('#' + this.name + ' label.value').text(this.value);
+        d[5] = this.value;
     });
     input_ranges.append('label').attr('class', 'min').attr('for', function (d) {
         return d[1];
@@ -17034,7 +17024,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     var panel_bg = plot.append('rect').attr('class', 'panel_background').attr('height', panel_height);
     var panel = plot.append('g').attr('class', 'panel');
 
-    var scale_x = d3.scaleLinear().domain([0, parseInt(params_now.observation)]);
+    var scale_x = d3.scaleLinear().domain([0, parseInt(params[3][5])]);
     var scale_y = d3.scaleLinear().domain([0, 1]).range([panel_height, 0]);
     var axis_x = plot.append('g').attr('transform', 'translate(0,' + panel_height + ')').call(d3.axisBottom(scale_x));
     /*var axis_y =*/plot.append('g').call(d3.axisLeft(scale_y));
@@ -17061,11 +17051,11 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     }
 
     function simulation() {
-        var N = parseFloat(params_now.popsize);
-        var s = parseFloat(params_now.selection);
-        var q0 = parseFloat(params_now.frequency);
-        var T = parseInt(params_now.observation);
-        var rep = parseInt(params_now.replicates);
+        var N = parseFloat(params[0][5]);
+        var s = parseFloat(params[1][5]);
+        var q0 = parseFloat(params[2][5]);
+        var T = parseInt(params[3][5]);
+        var rep = parseInt(params[4][5]);
         axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
         var model = d3.select('input[name="model"]:checked').node().value;
         if (model == 'wf') {

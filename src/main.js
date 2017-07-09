@@ -17,19 +17,6 @@ import * as wtl_genetics from "./genetics.js";
          'replicates', 10, 50, 10, 20]
     ];
 
-    var params_now = {};
-    for (var i=0; i<params.length; ++i) {
-        var x = params[i];
-        params_now[String(x[1])] = x[5];
-    }
-
-    function update_param(id, value) {
-        input_items
-            .select('#'+id+' label.value')
-            .text(value);
-        params_now[id] = value;
-    }
-
     d3.select('main').append('form');
     var model = d3.select('form')
         .append('dl').attr('class', 'parameter');
@@ -88,7 +75,11 @@ import * as wtl_genetics from "./genetics.js";
         .attr('max', function(d){return d[3];})
         .attr('step', function(d){return d[4];})
         .attr('value', function(d){return d[5];})
-        .on('input', function(d){update_param(d[1], this.value);});
+        .on('input', function(d){
+            d3.select('#'+this.name+' label.value')
+              .text(this.value);
+            d[5] = this.value;
+        });
     input_ranges.append('label')
         .attr('class', 'min')
         .attr('for', function(d){return d[1];})
@@ -139,7 +130,7 @@ import * as wtl_genetics from "./genetics.js";
             .attr('class', 'panel');
 
     var scale_x = d3.scaleLinear()
-            .domain([0, parseInt(params_now.observation)]);
+            .domain([0, parseInt(params[3][5])]);
     var scale_y = d3.scaleLinear()
             .domain([0, 1])
             .range([panel_height, 0]);
@@ -178,11 +169,11 @@ import * as wtl_genetics from "./genetics.js";
     }
 
     function simulation() {
-        var N = parseFloat(params_now.popsize);
-        var s = parseFloat(params_now.selection);
-        var q0 = parseFloat(params_now.frequency);
-        var T = parseInt(params_now.observation);
-        var rep = parseInt(params_now.replicates);
+        var N   = parseFloat(params[0][5]);
+        var s   = parseFloat(params[1][5]);
+        var q0  = parseFloat(params[2][5]);
+        var T   = parseInt(  params[3][5]);
+        var rep = parseInt(  params[4][5]);
         axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
         var model = d3.select('input[name="model"]:checked').node().value;
         if (model == 'wf') {
