@@ -16869,13 +16869,69 @@ Object.defineProperty(exports, '__esModule', { value: true });
 },{}],2:[function(require,module,exports){
 "use strict";
 
-var _d = require("d3");
-
-var d3 = _interopRequireWildcard(_d);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.wright_fisher = wright_fisher;
+exports.moran = moran;
 
 var _random = require("./random.js");
 
 var wtl_random = _interopRequireWildcard(_random);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function wright_fisher(N, s, q0, T, rep) {
+    var results = [];
+    for (var i = 0; i < rep; ++i) {
+        var qt = q0;
+        var trajectory = [q0];
+        for (var t = 1; t <= T; ++t) {
+            qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
+            trajectory.push(qt);
+        }
+        results.push(trajectory);
+    }
+    return results;
+}
+
+function moran(N, s, q0, T, rep) {
+    var results = [];
+    var s1 = s + 1;
+    for (var i = 0; i < rep; ++i) {
+        var Nq = Math.round(N * q0);
+        var trajectory = [q0];
+        for (var t = 1; t <= T * N; ++t) {
+            var p_mutrep = s1 * Nq / (s1 * Nq + (N - Nq));
+            if (wtl_random.bernoulli(Nq / N)) {
+                // a mutant dies
+                if (!wtl_random.bernoulli(p_mutrep)) {
+                    --Nq;
+                }
+            } else {
+                // a wildtype dies
+                if (wtl_random.bernoulli(p_mutrep)) {
+                    ++Nq;
+                }
+            }
+            if (t % N === 0) {
+                trajectory.push(Nq / N);
+            }
+        }
+        results.push(trajectory);
+    }
+}
+
+},{"./random.js":4}],3:[function(require,module,exports){
+"use strict";
+
+var _d = require("d3");
+
+var d3 = _interopRequireWildcard(_d);
+
+var _genetics = require("./genetics.js");
+
+var wtl_genetics = _interopRequireWildcard(_genetics);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -16898,7 +16954,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     d3.select('main').append('form');
     var model = d3.select('form').append('dl').attr('class', 'parameter');
     model.append('dt').append('label').attr('class', 'name').text('Model');
-    model.append('dd').each(function (d) {
+    model.append('dd').each(function () {
         d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wf').attr('id', 'wf').property('checked', true);
         d3.select(this).append('label').attr('for', 'wf').attr('class', 'radio').text('Wright-Fisher');
         d3.select(this).append('br');
@@ -16964,12 +17020,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     var fixation_divs = d3.select('.graph').append('div').attr('class', 'fixation').selectAll('label').data(['fixed', 'polymorphic', 'lost']).enter().append('div').attr('id', function (d) {
         return d;
     });
-    fixation_divs.append('label').attr('class', function (d) {
+    fixation_divs.append('label').attr('class', function () {
         return 'name';
     }).text(function (d) {
         return d;
     });
-    fixation_divs.append('label').attr('class', function (d) {
+    fixation_divs.append('label').attr('class', function () {
         return 'value';
     });
 
@@ -16981,12 +17037,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     var scale_x = d3.scaleLinear().domain([0, parseInt(params_now.observation)]);
     var scale_y = d3.scaleLinear().domain([0, 1]).range([panel_height, 0]);
     var axis_x = plot.append('g').attr('transform', 'translate(0,' + panel_height + ')').call(d3.axisBottom(scale_x));
-    var axis_y = plot.append('g').call(d3.axisLeft(scale_y));
+    /*var axis_y =*/plot.append('g').call(d3.axisLeft(scale_y));
     var axis_title_x = plot.append('text').attr('class', 'axis_title_x').attr('text-anchor', 'middle').text('Time (generations)');
-    var axis_title_y = plot.append('text').attr('class', 'axis_title_y').attr('text-anchor', 'middle').text('Derived Allele Frequency (q)').attr('transform', 'translate(-50,' + panel_height / 2 + ') rotate(-90)');
+    /*var axis_title_y =*/plot.append('text').attr('class', 'axis_title_y').attr('text-anchor', 'middle').text('Derived Allele Frequency (q)').attr('transform', 'translate(-50,' + panel_height / 2 + ') rotate(-90)');
     var line = d3.line().x(function (d, i) {
         return scale_x(i);
-    }).y(function (d, i) {
+    }).y(function (d) {
         return scale_y(d);
     });
 
@@ -17004,46 +17060,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         draw();
     }
 
-    function wright_fisher(N, s, q0, T, rep) {
-        for (var i = 0; i < rep; ++i) {
-            var qt = q0;
-            var trajectory = [q0];
-            for (var t = 1; t <= T; ++t) {
-                qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
-                trajectory.push(qt);
-            }
-            results.push(trajectory);
-        }
-        return results;
-    }
-
-    function moran(N, s, q0, T, rep) {
-        var s1 = s + 1;
-        for (var i = 0; i < rep; ++i) {
-            var Nq = Math.round(N * q0);
-            var trajectory = [q0];
-            for (var t = 1; t <= T * N; ++t) {
-                var p_mutrep = s1 * Nq / (s1 * Nq + (N - Nq));
-                if (wtl_random.bernoulli(Nq / N)) {
-                    // a mutant dies
-                    if (!wtl_random.bernoulli(p_mutrep)) {
-                        --Nq;
-                    }
-                } else {
-                    // a wildtype dies
-                    if (wtl_random.bernoulli(p_mutrep)) {
-                        ++Nq;
-                    }
-                }
-                if (t % N === 0) {
-                    trajectory.push(Nq / N);
-                }
-            }
-            results.push(trajectory);
-        }
-        return results;
-    }
-
     function simulation() {
         var N = parseFloat(params_now.popsize);
         var s = parseFloat(params_now.selection);
@@ -17053,9 +17069,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
         var model = d3.select('input[name="model"]:checked').node().value;
         if (model == 'wf') {
-            wright_fisher(N, s, q0, T, rep);
+            return wtl_genetics.wright_fisher(N, s, q0, T, rep);
         } else {
-            moran(N, s, q0, T, rep);
+            return wtl_genetics.moran(N, s, q0, T, rep);
         }
     }
 
@@ -17112,13 +17128,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     d3.select('.start').on('click', function () {
         panel.selectAll('path').remove();
         d3.selectAll('.fixation label.value').text(0);
-        results = [];
-        simulation();
+        results = simulation();
         animation();
     });
 })();
 
-},{"./random.js":3,"d3":1}],3:[function(require,module,exports){
+},{"./genetics.js":2,"d3":1}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17140,4 +17155,4 @@ function binomial(size, prob) {
     return cnt;
 }
 
-},{}]},{},[2]);
+},{}]},{},[3]);

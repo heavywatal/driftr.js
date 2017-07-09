@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import * as wtl_random from "./random.js";
+import * as wtl_genetics from "./genetics.js";
 
 (function() {
     'use strict';
@@ -37,7 +37,7 @@ import * as wtl_random from "./random.js";
         .attr('class', 'name')
         .text('Model');
     model.append('dd')
-        .each(function(d) {
+        .each(function() {
             d3.select(this).append('input')
                 .attr('type', 'radio')
                 .attr('name', 'model')
@@ -122,10 +122,10 @@ import * as wtl_random from "./random.js";
             .append('div')
             .attr('id', function(d){return d;});
     fixation_divs.append('label')
-            .attr('class', function(d){return 'name';})
+            .attr('class', function(){return 'name';})
             .text(function(d){return d;});
     fixation_divs.append('label')
-            .attr('class', function(d){return 'value';});
+            .attr('class', function(){return 'value';});
 
     var panel_height = parseInt(svg.style('height')) - svg_padding.top - svg_padding.bottom;
     var plot = svg.append('g')
@@ -147,20 +147,20 @@ import * as wtl_random from "./random.js";
             .attr('transform',
                   'translate(0,'+ panel_height +')')
             .call(d3.axisBottom(scale_x));
-    var axis_y = plot.append('g')
+    /*var axis_y =*/ plot.append('g')
             .call(d3.axisLeft(scale_y));
     var axis_title_x = plot.append('text')
             .attr('class', 'axis_title_x')
             .attr('text-anchor', 'middle')
             .text('Time (generations)');
-    var axis_title_y = plot.append('text')
+    /*var axis_title_y =*/ plot.append('text')
             .attr('class', 'axis_title_y')
             .attr('text-anchor', 'middle')
             .text('Derived Allele Frequency (q)')
             .attr('transform', 'translate(-50,'+ panel_height/2 +') rotate(-90)');
     var line = d3.line()
             .x(function(d, i) {return scale_x(i);})
-            .y(function(d, i) {return scale_y(d);});
+            .y(function(d   ) {return scale_y(d);});
 
     function update_width() {
         var width = parseInt(d3.select('.graph').style('width'));
@@ -177,40 +177,6 @@ import * as wtl_random from "./random.js";
         draw();
     }
 
-    function wright_fisher(N, s, q0, T, rep) {
-        for (var i=0; i<rep; ++i) {
-            var qt = q0;
-            var trajectory = [q0];
-            for (var t=1; t<=T; ++t) {
-                qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
-                trajectory.push(qt);
-            }
-            results.push(trajectory);
-        }
-        return results;
-    }
-
-    function moran(N, s, q0, T, rep) {
-        var s1 = s + 1;
-        for (var i=0; i<rep; ++i) {
-            var Nq = Math.round(N * q0);
-            var trajectory = [q0];
-            for (var t=1; t<=T * N; ++t) {
-                var p_mutrep = s1 * Nq / (s1 * Nq  + (N - Nq));
-                if (wtl_random.bernoulli(Nq / N)) {  // a mutant dies
-                    if (!wtl_random.bernoulli(p_mutrep)) {--Nq;}
-                } else {  // a wildtype dies
-                    if (wtl_random.bernoulli(p_mutrep)) {++Nq;}
-                }
-                if (t % N === 0) {
-                    trajectory.push(Nq / N);
-                }
-            }
-            results.push(trajectory);
-        }
-        return results;
-    }
-
     function simulation() {
         var N = parseFloat(params_now.popsize);
         var s = parseFloat(params_now.selection);
@@ -220,9 +186,9 @@ import * as wtl_random from "./random.js";
         axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
         var model = d3.select('input[name="model"]:checked').node().value;
         if (model == 'wf') {
-            wright_fisher(N, s, q0, T, rep);
+            return wtl_genetics.wright_fisher(N, s, q0, T, rep);
         } else {
-            moran(N, s, q0, T, rep);
+            return wtl_genetics.moran(N, s, q0, T, rep);
         }
     }
 
@@ -290,8 +256,7 @@ import * as wtl_random from "./random.js";
     d3.select('.start').on('click', function(){
         panel.selectAll('path').remove();
         d3.selectAll('.fixation label.value').text(0);
-        results = [];
-        simulation();
+        results = simulation();
         animation();
     });
 
