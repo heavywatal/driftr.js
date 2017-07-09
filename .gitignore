@@ -1,2 +1,6 @@
 *.tar.gz
 *.zip
+d3/d3.js
+d3/API.md
+d3/CHANGES.md
+d3/README.md

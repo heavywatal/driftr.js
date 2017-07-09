@@ -147,23 +147,17 @@
     var panel = plot.append('g')
             .attr('class', 'panel');
 
-    var scale_x = d3.scale.linear()
+    var scale_x = d3.scaleLinear()
             .domain([0, parseInt(params_now.observation)]);
-    var scale_y = d3.scale.linear()
+    var scale_y = d3.scaleLinear()
             .domain([0, 1])
             .range([panel_height, 0]);
-    var axis_func_x = d3.svg.axis()
-            .scale(scale_x)
-            .orient('bottom');
-    var axis_func_y = d3.svg.axis()
-            .scale(scale_y)
-            .orient('left');
     var axis_x = plot.append('g')
             .attr('transform',
                   'translate(0,'+ panel_height +')')
-            .call(axis_func_x);
+            .call(d3.axisBottom(scale_x));
     var axis_y = plot.append('g')
-            .call(axis_func_y);
+            .call(d3.axisLeft(scale_y));
     var axis_title_x = plot.append('text')
             .attr('class', 'axis_title_x')
             .attr('text-anchor', 'middle')
@@ -173,10 +167,9 @@
             .attr('text-anchor', 'middle')
             .text('Derived Allele Frequency (q)')
             .attr('transform', 'translate(-50,'+ panel_height/2 +') rotate(-90)');
-    var line = d3.svg.line()
+    var line = d3.line()
             .x(function(d, i) {return scale_x(i);})
-            .y(function(d, i) {return scale_y(d);})
-            .interpolate('linear');
+            .y(function(d, i) {return scale_y(d);});
 
     function update_width() {
         var width = parseInt(d3.select('.graph').style('width'));
@@ -186,7 +179,7 @@
         var panel_width = svg_width - svg_padding.left - svg_padding.right;
         panel_bg.attr('width', panel_width);
         scale_x.range([0, panel_width]);
-        axis_x.call(axis_func_x.scale(scale_x));
+        axis_x.call(d3.axisBottom(scale_x));
         axis_title_x.attr('transform', 'translate('+
                           (panel_width / 2) +','+ (panel_height + 50) +')');
         panel.selectAll('path').remove();
@@ -235,7 +228,7 @@
         var q0 = parseFloat(params_now.frequency);
         var T = parseInt(params_now.observation);
         var rep = parseInt(params_now.replicates);
-        axis_x.call(axis_func_x.scale(scale_x.domain([0, T])));
+        axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
         var model = d3.select('input[name="model"]:checked').node().value;
         if (model == 'wf') {
             wright_fisher(N, s, q0, T, rep);
@@ -261,7 +254,8 @@
             var path = panel.append('path');
             for (var t=0; t<=T; ++t) {
                 var part = trajectory.slice(0, t);
-                path.transition().delay(repl_delay + 23 * t).ease('linear')
+                path.transition().delay(repl_delay + 23 * t)
+                    .ease(d3.easeLinear)
                     .attr('d', line(part));
             }
             var qT = trajectory.slice(-1)[0];
