@@ -16874,6 +16874,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.wright_fisher = wright_fisher;
 exports.moran = moran;
+exports.evolve = evolve;
 
 var _random = require("./random.js");
 
@@ -16881,44 +16882,45 @@ var wtl_random = _interopRequireWildcard(_random);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function wright_fisher(N, s, q0, T, rep) {
-    var results = [];
-    for (var i = 0; i < rep; ++i) {
-        var qt = q0;
-        var trajectory = [q0];
-        for (var t = 1; t <= T; ++t) {
-            qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
-            trajectory.push(qt);
-        }
-        results.push(trajectory);
+function wright_fisher(N, s, q0, T) {
+    var qt = q0;
+    var trajectory = [q0];
+    for (var t = 1; t <= T; ++t) {
+        qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
+        trajectory.push(qt);
     }
-    return results;
+    return trajectory;
 }
 
-function moran(N, s, q0, T, rep) {
-    var results = [];
+function moran(N, s, q0, T) {
     var s1 = s + 1;
-    for (var i = 0; i < rep; ++i) {
-        var Nq = Math.round(N * q0);
-        var trajectory = [q0];
-        for (var t = 1; t <= T * N; ++t) {
-            var p_mutrep = s1 * Nq / (s1 * Nq + (N - Nq));
-            if (wtl_random.bernoulli(Nq / N)) {
-                // a mutant dies
-                if (!wtl_random.bernoulli(p_mutrep)) {
-                    --Nq;
-                }
-            } else {
-                // a wildtype dies
-                if (wtl_random.bernoulli(p_mutrep)) {
-                    ++Nq;
-                }
+    var Nq = Math.round(N * q0);
+    var trajectory = [q0];
+    for (var t = 1; t <= T * N; ++t) {
+        var p_mutrep = s1 * Nq / (s1 * Nq + (N - Nq));
+        if (wtl_random.bernoulli(Nq / N)) {
+            // a mutant dies
+            if (!wtl_random.bernoulli(p_mutrep)) {
+                --Nq;
             }
-            if (t % N === 0) {
-                trajectory.push(Nq / N);
+        } else {
+            // a wildtype dies
+            if (wtl_random.bernoulli(p_mutrep)) {
+                ++Nq;
             }
         }
-        results.push(trajectory);
+        if (t % N === 0) {
+            trajectory.push(Nq / N);
+        }
+    }
+    return trajectory;
+}
+
+function evolve(N, s, q0, T, model) {
+    if (model == 'wf') {
+        return wright_fisher(N, s, q0, T);
+    } else {
+        return moran(N, s, q0, T);
     }
 }
 
@@ -17047,51 +17049,25 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         axis_x.call(d3.axisBottom(scale_x));
         axis_title_x.attr('transform', 'translate(' + panel_width / 2 + ',' + (panel_height + 50) + ')');
         panel.selectAll('path').remove();
-        draw();
+        for (var i = 0; i < results.length; ++i) {
+            panel.append('path').attr('d', line(results[i]));
+        }
     }
 
-    function simulation() {
-        var N = parseFloat(params[0][5]);
-        var s = parseFloat(params[1][5]);
-        var q0 = parseFloat(params[2][5]);
-        var T = parseInt(params[3][5]);
-        var rep = parseInt(params[4][5]);
-        axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
-        var model = d3.select('input[name="model"]:checked').node().value;
-        if (model == 'wf') {
-            return wtl_genetics.wright_fisher(N, s, q0, T, rep);
+    function animation(trajectory, repl_delay) {
+        var T = trajectory.length;
+        var path = panel.append('path');
+        for (var t = 0; t <= T; ++t) {
+            var part = trajectory.slice(0, t);
+            path.transition().delay(repl_delay + 23 * t).ease(d3.easeLinear).attr('d', line(part));
+        }
+        var qT = trajectory.slice(-1)[0];
+        if (qT == 1) {
+            fixation_increment('#fixed');
+        } else if (qT === 0) {
+            fixation_increment('#lost');
         } else {
-            return wtl_genetics.moran(N, s, q0, T, rep);
-        }
-    }
-
-    function draw() {
-        var rep = results.length;
-        for (var i = 0; i < rep; ++i) {
-            var trajectory = results[i];
-            panel.append('path').attr('d', line(trajectory));
-        }
-    }
-
-    function animation() {
-        var rep = results.length;
-        for (var i = 0; i < rep; ++i) {
-            var trajectory = results[i];
-            var T = trajectory.length;
-            var repl_delay = rep * T / 5 + 600 * i / rep;
-            var path = panel.append('path');
-            for (var t = 0; t <= T; ++t) {
-                var part = trajectory.slice(0, t);
-                path.transition().delay(repl_delay + 23 * t).ease(d3.easeLinear).attr('d', line(part));
-            }
-            var qT = trajectory.slice(-1)[0];
-            if (qT == 1) {
-                fixation_increment('#fixed');
-            } else if (qT === 0) {
-                fixation_increment('#lost');
-            } else {
-                fixation_increment('#polymorphic');
-            }
+            fixation_increment('#polymorphic');
         }
     }
 
@@ -17116,10 +17092,22 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
     d3.select(window).on('resize', update_width);
     d3.select('.start').on('click', function () {
+        results = [];
         panel.selectAll('path').remove();
         d3.selectAll('.fixation label.value').text(0);
-        results = simulation();
-        animation();
+        var N = parseFloat(params[0][5]);
+        var s = parseFloat(params[1][5]);
+        var q0 = parseFloat(params[2][5]);
+        var T = parseInt(params[3][5]);
+        var rep = parseInt(params[4][5]);
+        var model = d3.select('input[name="model"]:checked').node().value;
+        axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
+        for (var i = 0; i < rep; ++i) {
+            var trajectory = wtl_genetics.evolve(N, s, q0, T, model);
+            var repl_delay = rep * trajectory.length / 5 + 600 * i / rep;
+            animation(trajectory, repl_delay);
+            results.push(trajectory);
+        }
     });
 })();
 

@@ -165,53 +165,27 @@ import * as wtl_genetics from "./genetics.js";
         axis_title_x.attr('transform', 'translate('+
                           (panel_width / 2) +','+ (panel_height + 50) +')');
         panel.selectAll('path').remove();
-        draw();
+        for (var i=0; i<results.length; ++i) {
+            panel.append('path').attr('d', line(results[i]));
+        }
     }
 
-    function simulation() {
-        var N   = parseFloat(params[0][5]);
-        var s   = parseFloat(params[1][5]);
-        var q0  = parseFloat(params[2][5]);
-        var T   = parseInt(  params[3][5]);
-        var rep = parseInt(  params[4][5]);
-        axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
-        var model = d3.select('input[name="model"]:checked').node().value;
-        if (model == 'wf') {
-            return wtl_genetics.wright_fisher(N, s, q0, T, rep);
+    function animation(trajectory, repl_delay) {
+        var T = trajectory.length;
+        var path = panel.append('path');
+        for (var t=0; t<=T; ++t) {
+            var part = trajectory.slice(0, t);
+            path.transition().delay(repl_delay + 23 * t)
+                .ease(d3.easeLinear)
+                .attr('d', line(part));
+        }
+        var qT = trajectory.slice(-1)[0];
+        if (qT == 1) {
+            fixation_increment('#fixed');
+        } else if (qT === 0) {
+            fixation_increment('#lost');
         } else {
-            return wtl_genetics.moran(N, s, q0, T, rep);
-        }
-    }
-
-    function draw() {
-        var rep = results.length;
-        for (var i=0; i<rep; ++i) {
-            var trajectory = results[i];
-            panel.append('path').attr('d', line(trajectory));
-        }
-    }
-
-    function animation() {
-        var rep = results.length;
-        for (var i=0; i<rep; ++i) {
-            var trajectory = results[i];
-            var T = trajectory.length;
-            var repl_delay = rep * T / 5 + 600 * i / rep;
-            var path = panel.append('path');
-            for (var t=0; t<=T; ++t) {
-                var part = trajectory.slice(0, t);
-                path.transition().delay(repl_delay + 23 * t)
-                    .ease(d3.easeLinear)
-                    .attr('d', line(part));
-            }
-            var qT = trajectory.slice(-1)[0];
-            if (qT == 1) {
-                fixation_increment('#fixed');
-            } else if (qT === 0) {
-                fixation_increment('#lost');
-            } else {
-                fixation_increment('#polymorphic');
-            }
+            fixation_increment('#polymorphic');
         }
     }
 
@@ -245,10 +219,22 @@ import * as wtl_genetics from "./genetics.js";
 
     d3.select(window).on('resize', update_width);
     d3.select('.start').on('click', function(){
+        results = [];
         panel.selectAll('path').remove();
         d3.selectAll('.fixation label.value').text(0);
-        results = simulation();
-        animation();
+        var N   = parseFloat(params[0][5]);
+        var s   = parseFloat(params[1][5]);
+        var q0  = parseFloat(params[2][5]);
+        var T   = parseInt(  params[3][5]);
+        var rep = parseInt(  params[4][5]);
+        var model = d3.select('input[name="model"]:checked').node().value;
+        axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
+        for (var i = 0; i < rep; ++i) {
+            var trajectory = wtl_genetics.evolve(N, s, q0, T, model);
+            var repl_delay = rep * trajectory.length / 5 + 600 * i / rep;
+            animation(trajectory, repl_delay);
+            results.push(trajectory);
+        }
     });
 
 })();
