@@ -16989,6 +16989,77 @@ Object.defineProperty(exports, '__esModule', { value: true });
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+exports.default = function (params) {
+    d3.select('main').append('form');
+
+    var input_items = d3.select('form').selectAll('dl').data(params).enter().append('dl').attr('id', function (d) {
+        return d.name;
+    }).attr('class', 'parameter');
+
+    input_items.append('label').attr('class', 'value').attr('for', function (d) {
+        return d.name;
+    }).text(function (d) {
+        return d.value;
+    });
+
+    input_items.append('dt').append('label').attr('class', 'name').attr('for', function (d) {
+        return d.name;
+    }).html(function (d) {
+        return d.label;
+    });
+
+    var input_ranges = input_items.append('dd').attr('class', 'param_range');
+    input_ranges.append('input').attr('type', 'range').attr('name', function (d) {
+        return d.name;
+    }).attr('min', function (d) {
+        return d.min;
+    }).attr('max', function (d) {
+        return d.max;
+    }).attr('step', function (d) {
+        return d.step;
+    }).attr('value', function (d) {
+        return d.value;
+    }).on('input', function (d) {
+        d3.select('#' + this.name + ' label.value').text(this.value);
+        d.value = this.value;
+    });
+    input_ranges.append('label').attr('class', 'min').attr('for', function (d) {
+        return d.name;
+    }).text(function (d) {
+        return d.min;
+    });
+    input_ranges.append('label').attr('class', 'max').attr('for', function (d) {
+        return d.name;
+    }).text(function (d) {
+        return d.max;
+    });
+
+    var input_model = d3.select('form').append('dl').attr('class', 'parameter');
+    input_model.append('dt').append('label').attr('class', 'name').text('Model');
+    input_model.append('dd').each(function () {
+        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wf').attr('id', 'wf').property('checked', true);
+        d3.select(this).append('label').attr('for', 'wf').attr('class', 'radio').text('Wright-Fisher');
+        d3.select(this).append('br');
+        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'moran').attr('id', 'moran');
+        d3.select(this).append('label').attr('for', 'moran').attr('class', 'radio').text('Moran');
+    });
+
+    d3.select('form').append('button').attr('type', 'button').attr('class', 'start button').text('START!');
+};
+
+var _d = require('d3');
+
+var d3 = _interopRequireWildcard(_d);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+},{"d3":2}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.wright_fisher = wright_fisher;
 exports.moran = moran;
 exports.evolve = evolve;
@@ -17045,7 +17116,7 @@ function evolve(N, s, q0, T, model) {
     }
 }
 
-},{"./random.js":6}],4:[function(require,module,exports){
+},{"./random.js":7}],5:[function(require,module,exports){
 'use strict';
 
 var _d = require("d3");
@@ -17060,67 +17131,17 @@ var _parameters = require("./parameters.js");
 
 var _parameters2 = _interopRequireDefault(_parameters);
 
+var _form = require("./form.js");
+
+var _form2 = _interopRequireDefault(_form);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 (function () {
 
-    d3.select('main').append('form');
-
-    var input_items = d3.select('form').selectAll('dl').data(_parameters2.default).enter().append('dl').attr('id', function (d) {
-        return d.name;
-    }).attr('class', 'parameter');
-
-    input_items.append('label').attr('class', 'value').attr('for', function (d) {
-        return d.name;
-    }).text(function (d) {
-        return d.value;
-    });
-
-    input_items.append('dt').append('label').attr('class', 'name').attr('for', function (d) {
-        return d.name;
-    }).html(function (d) {
-        return d.label;
-    });
-
-    var input_ranges = input_items.append('dd').attr('class', 'param_range');
-    input_ranges.append('input').attr('type', 'range').attr('name', function (d) {
-        return d.name;
-    }).attr('min', function (d) {
-        return d.min;
-    }).attr('max', function (d) {
-        return d.max;
-    }).attr('step', function (d) {
-        return d.step;
-    }).attr('value', function (d) {
-        return d.value;
-    }).on('input', function (d) {
-        d3.select('#' + this.name + ' label.value').text(this.value);
-        d.value = this.value;
-    });
-    input_ranges.append('label').attr('class', 'min').attr('for', function (d) {
-        return d.name;
-    }).text(function (d) {
-        return d.min;
-    });
-    input_ranges.append('label').attr('class', 'max').attr('for', function (d) {
-        return d.name;
-    }).text(function (d) {
-        return d.max;
-    });
-
-    var model = d3.select('form').append('dl').attr('class', 'parameter');
-    model.append('dt').append('label').attr('class', 'name').text('Model');
-    model.append('dd').each(function () {
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wf').attr('id', 'wf').property('checked', true);
-        d3.select(this).append('label').attr('for', 'wf').attr('class', 'radio').text('Wright-Fisher');
-        d3.select(this).append('br');
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'moran').attr('id', 'moran');
-        d3.select(this).append('label').attr('for', 'moran').attr('class', 'radio').text('Moran');
-    });
-
-    d3.select('form').append('button').attr('type', 'button').attr('class', 'start button').text('START!');
+    (0, _form2.default)(_parameters2.default);
 
     var svg_padding = {
         top: 20,
@@ -17237,7 +17258,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     d3.select('.start').on('click', start);
 })();
 
-},{"./genetics.js":3,"./parameters.js":5,"d3":2}],5:[function(require,module,exports){
+},{"./form.js":3,"./genetics.js":4,"./parameters.js":6,"d3":2}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17280,7 +17301,7 @@ exports.default = [{
   value: 20
 }];
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17318,4 +17339,4 @@ function binomial(size, prob) {
     return cnt;
 }
 
-},{"d3-random":1}]},{},[4]);
+},{"d3-random":1}]},{},[5]);
