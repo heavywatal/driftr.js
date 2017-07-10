@@ -1,23 +1,54 @@
+'use strict';
 import * as d3 from "d3";
 import * as wtl_genetics from "./genetics.js";
+import params from "./parameters.js";
 
 (function() {
-    'use strict';
-
-    var params = [
-        ['Population size (<var>N</var>)',
-         'popsize', 100, 10000, 100, 1000],
-        ['Selection coefficient (<var>s<var>)',
-         'selection', -0.025, 0.025, 0.001, 0.0],
-        ['Initital frequency (<var>q<sub>0</sub></var>)',
-         'frequency', 0.0, 1.0, 0.01, 0.1],
-        ['Observation period',
-         'observation', 100, 10000, 100, 100],
-        ['Number of replicates',
-         'replicates', 10, 50, 10, 20]
-    ];
 
     d3.select('main').append('form');
+
+    var input_items = d3.select('form')
+        .selectAll('dl')
+        .data(params)
+        .enter()
+        .append('dl')
+        .attr('id', function(d){return d.name;})
+        .attr('class', 'parameter');
+
+    input_items.append('label')
+        .attr('class', 'value')
+        .attr('for', function(d){return d.name;})
+        .text(function(d){return d.value;});
+
+    input_items.append('dt')
+        .append('label')
+        .attr('class', 'name')
+        .attr('for', function(d){return d.name;})
+        .html(function(d){return d.label;});
+
+    var input_ranges = input_items.append('dd')
+        .attr('class', 'param_range');
+    input_ranges.append('input')
+        .attr('type', 'range')
+        .attr('name',  function(d){return d.name;})
+        .attr('min',   function(d){return d.min;})
+        .attr('max',   function(d){return d.max;})
+        .attr('step',  function(d){return d.step;})
+        .attr('value', function(d){return d.value;})
+        .on('input', function(d){
+            d3.select('#'+this.name+' label.value')
+              .text(this.value);
+            d.value = this.value;
+        });
+    input_ranges.append('label')
+        .attr('class', 'min')
+        .attr('for', function(d){return d.name;})
+        .text(function(d){return d.min;});
+    input_ranges.append('label')
+        .attr('class', 'max')
+        .attr('for', function(d){return d.name;})
+        .text(function(d){return d.max;});
+
     var model = d3.select('form')
         .append('dl').attr('class', 'parameter');
     model.append('dt').append('label')
@@ -46,48 +77,6 @@ import * as wtl_genetics from "./genetics.js";
                 .attr('class', 'radio')
                 .text('Moran');
         });
-
-    var input_items = d3.select('form')
-        .selectAll('dl')
-        .data(params, function(d) {return d;})
-        .enter()
-        .append('dl')
-        .attr('id', function(d){return d[1];})
-        .attr('class', 'parameter');
-
-    input_items.append('label')
-        .attr('class', 'value')
-        .attr('for', function(d){return d[1];})
-        .text(function(d){return d[5];});
-
-    input_items.append('dt')
-        .append('label')
-        .attr('class', 'name')
-        .attr('for', function(d){return d[1];})
-        .html(function(d){return d[0];});
-
-    var input_ranges = input_items.append('dd')
-        .attr('class', 'param_range');
-    input_ranges.append('input')
-        .attr('type', 'range')
-        .attr('name', function(d){return d[1];})
-        .attr('min', function(d){return d[2];})
-        .attr('max', function(d){return d[3];})
-        .attr('step', function(d){return d[4];})
-        .attr('value', function(d){return d[5];})
-        .on('input', function(d){
-            d3.select('#'+this.name+' label.value')
-              .text(this.value);
-            d[5] = this.value;
-        });
-    input_ranges.append('label')
-        .attr('class', 'min')
-        .attr('for', function(d){return d[1];})
-        .text(function(d){return d[2];});
-    input_ranges.append('label')
-        .attr('class', 'max')
-        .attr('for', function(d){return d[1];})
-        .text(function(d){return d[3];});
 
     d3.select('form').append('button')
         .attr('type', 'button')
@@ -130,7 +119,7 @@ import * as wtl_genetics from "./genetics.js";
             .attr('class', 'panel');
 
     var scale_x = d3.scaleLinear()
-            .domain([0, parseInt(params[3][5])]);
+            .domain([0, parseInt(params[3].value)]);
     var scale_y = d3.scaleLinear()
             .domain([0, 1])
             .range([panel_height, 0]);
@@ -224,11 +213,11 @@ import * as wtl_genetics from "./genetics.js";
         results = [];
         panel.selectAll('path').remove();
         d3.selectAll('.fixation label.value').text(0);
-        var N   = parseFloat(params[0][5]);
-        var s   = parseFloat(params[1][5]);
-        var q0  = parseFloat(params[2][5]);
-        var T   = parseInt(  params[3][5]);
-        var rep = parseInt(  params[4][5]);
+        var N   = params[0].value;
+        var s   = params[1].value;
+        var q0  = params[2].value;
+        var T   = params[3].value;
+        var rep = params[4].value;
         var model = d3.select('input[name="model"]:checked').node().value;
         axis_x.call(d3.axisBottom(scale_x.domain([0, T])));
         for (var i = 0; i < rep; ++i) {
