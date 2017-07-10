@@ -1,11 +1,15 @@
+'use strict';
 import * as wtl_random from "./random.js";
 
 export function wright_fisher(N, s, q0, T) {
     var qt = q0;
-    var trajectory = [q0];
+    var trajectory = [[0, q0]];
+    var step = Math.max(T / 1000, 1);
     for (var t=1; t<=T; ++t) {
         qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
-        trajectory.push(qt);
+        if (t % step === 0) {
+            trajectory.push([t, qt]);
+        }
     }
     return trajectory;
 }
@@ -13,7 +17,8 @@ export function wright_fisher(N, s, q0, T) {
 export function moran(N, s, q0, T) {
     var s1 = s + 1;
     var Nq = Math.round(N * q0);
-    var trajectory = [q0];
+    var trajectory = [[0, q0]];
+    var step = Math.max(T / 1000, 1);
     for (var t=1; t<=T * N; ++t) {
         var p_mutrep = s1 * Nq / (s1 * Nq  + (N - Nq));
         if (wtl_random.bernoulli(Nq / N)) {  // a mutant dies
@@ -21,8 +26,8 @@ export function moran(N, s, q0, T) {
         } else {  // a wildtype dies
             if (wtl_random.bernoulli(p_mutrep)) {++Nq;}
         }
-        if (t % N === 0) {
-            trajectory.push(Nq / N);
+        if (t % (step * N) === 0) {
+            trajectory.push([t / N, Nq / N]);
         }
     }
     return trajectory;

@@ -28,10 +28,10 @@ export default [
   {
     label: 'Observation period',
     name: 'observation',
-    min: 100,
+    min: 500,
     max: 10000,
-    step: 100,
-    value: 100
+    step: 500,
+    value: 500
   },
   {
     label: 'Number of replicates',

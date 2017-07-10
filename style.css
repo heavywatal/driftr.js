@@ -95,7 +95,7 @@ footer {
     text-align: right;
 }
 
-.graph {
+.plot {
     background-color: #EEEEEE;
 }
 
@@ -120,7 +120,7 @@ svg {
     min-width: 2em;
 }
 
-rect.panel_background {
+.panel_background {
     fill: #FFFFFF;
 }
 
