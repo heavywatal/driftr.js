@@ -1,4 +1,121 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// https://d3js.org/d3-random/ Version 1.1.0. Copyright 2017 Mike Bostock.
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
+}(this, (function (exports) { 'use strict';
+
+var defaultSource = function() {
+  return Math.random();
+};
+
+var uniform = ((function sourceRandomUniform(source) {
+  function randomUniform(min, max) {
+    min = min == null ? 0 : +min;
+    max = max == null ? 1 : +max;
+    if (arguments.length === 1) max = min, min = 0;
+    else max -= min;
+    return function() {
+      return source() * max + min;
+    };
+  }
+
+  randomUniform.source = sourceRandomUniform;
+
+  return randomUniform;
+}))(defaultSource);
+
+var normal = ((function sourceRandomNormal(source) {
+  function randomNormal(mu, sigma) {
+    var x, r;
+    mu = mu == null ? 0 : +mu;
+    sigma = sigma == null ? 1 : +sigma;
+    return function() {
+      var y;
+
+      // If available, use the second previously-generated uniform random.
+      if (x != null) y = x, x = null;
+
+      // Otherwise, generate a new x and y.
+      else do {
+        x = source() * 2 - 1;
+        y = source() * 2 - 1;
+        r = x * x + y * y;
+      } while (!r || r > 1);
+
+      return mu + sigma * y * Math.sqrt(-2 * Math.log(r) / r);
+    };
+  }
+
+  randomNormal.source = sourceRandomNormal;
+
+  return randomNormal;
+}))(defaultSource);
+
+var logNormal = ((function sourceRandomLogNormal(source) {
+  function randomLogNormal() {
+    var randomNormal = normal.source(source).apply(this, arguments);
+    return function() {
+      return Math.exp(randomNormal());
+    };
+  }
+
+  randomLogNormal.source = sourceRandomLogNormal;
+
+  return randomLogNormal;
+}))(defaultSource);
+
+var irwinHall = ((function sourceRandomIrwinHall(source) {
+  function randomIrwinHall(n) {
+    return function() {
+      for (var sum = 0, i = 0; i < n; ++i) sum += source();
+      return sum;
+    };
+  }
+
+  randomIrwinHall.source = sourceRandomIrwinHall;
+
+  return randomIrwinHall;
+}))(defaultSource);
+
+var bates = ((function sourceRandomBates(source) {
+  function randomBates(n) {
+    var randomIrwinHall = irwinHall.source(source)(n);
+    return function() {
+      return randomIrwinHall() / n;
+    };
+  }
+
+  randomBates.source = sourceRandomBates;
+
+  return randomBates;
+}))(defaultSource);
+
+var exponential = ((function sourceRandomExponential(source) {
+  function randomExponential(lambda) {
+    return function() {
+      return -Math.log(1 - source()) / lambda;
+    };
+  }
+
+  randomExponential.source = sourceRandomExponential;
+
+  return randomExponential;
+}))(defaultSource);
+
+exports.randomUniform = uniform;
+exports.randomNormal = normal;
+exports.randomLogNormal = logNormal;
+exports.randomBates = bates;
+exports.randomIrwinHall = irwinHall;
+exports.randomExponential = exponential;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+},{}],2:[function(require,module,exports){
 // https://d3js.org Version 4.9.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -16866,7 +16983,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16928,7 +17045,7 @@ function evolve(N, s, q0, T, model) {
     }
 }
 
-},{"./random.js":5}],3:[function(require,module,exports){
+},{"./random.js":6}],4:[function(require,module,exports){
 'use strict';
 
 var _d = require("d3");
@@ -17098,7 +17215,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         svg.select('.axis.x').call(axis_x.scale(scale_x.domain([0, T])));
         for (var i = 0; i < rep; ++i) {
             var trajectory = wtl_genetics.evolve(N, s, q0, T, model);
-            var repl_delay = T / 5 + 600 * i / rep;
+            var repl_delay = T / 100 + 600 * i / rep;
             animation(trajectory, repl_delay);
             results.push(trajectory);
         }
@@ -17120,7 +17237,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
     d3.select('.start').on('click', start);
 })();
 
-},{"./genetics.js":2,"./parameters.js":4,"d3":1}],4:[function(require,module,exports){
+},{"./genetics.js":3,"./parameters.js":5,"d3":2}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17151,9 +17268,9 @@ exports.default = [{
   label: 'Observation period',
   name: 'observation',
   min: 500,
-  max: 10000,
+  max: 40000,
   step: 500,
-  value: 500
+  value: 1000
 }, {
   label: 'Number of replicates',
   name: 'replicates',
@@ -17163,26 +17280,42 @@ exports.default = [{
   value: 20
 }];
 
-},{}],5:[function(require,module,exports){
-"use strict";
+},{}],6:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.bernoulli = bernoulli;
 exports.binomial = binomial;
+
+var _d3Random = require("d3-random");
+
 function bernoulli(prob) {
     return Math.random() < prob;
 }
 
 function binomial(size, prob) {
+    if (prob === 0) {
+        return 0;
+    }
+    if (prob === 1) {
+        return size;
+    }
     var cnt = 0;
+    var np = size * prob;
+    var q = 1.0 - prob;
+    if (np > 10 && size * q > 10) {
+        cnt = (0, _d3Random.randomNormal)(np, Math.sqrt(np * q))();
+        cnt = Math.floor(cnt + 0.5);
+        return Math.max(Math.min(cnt, size), 0);
+    }
     for (var i = 0; i < size; ++i) {
-        if (bernoulli(prob)) {
+        if (Math.random() < prob) {
             ++cnt;
         }
     }
     return cnt;
 }
 
-},{}]},{},[3]);
+},{"d3-random":1}]},{},[4]);

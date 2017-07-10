@@ -206,7 +206,7 @@ import params from "./parameters.js";
         svg.select('.axis.x').call(axis_x.scale(scale_x.domain([0, T])));
         for (var i = 0; i < rep; ++i) {
             var trajectory = wtl_genetics.evolve(N, s, q0, T, model);
-            var repl_delay = T / 5 + 600 * i / rep;
+            var repl_delay = T / 100 + 600 * i / rep;
             animation(trajectory, repl_delay);
             results.push(trajectory);
         }
