@@ -17038,11 +17038,17 @@ exports.default = function (params) {
     var input_model = d3.select('form').append('dl').attr('class', 'parameter');
     input_model.append('dt').append('label').attr('class', 'name').text('Model');
     input_model.append('dd').each(function () {
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wf').attr('id', 'wf').property('checked', true);
-        d3.select(this).append('label').attr('for', 'wf').attr('class', 'radio').text('Wright-Fisher');
+        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wright_fisher_haploid').attr('id', 'wright_fisher_haploid').property('checked', true);
+        d3.select(this).append('label').attr('class', 'radio').attr('for', 'wright_fisher_haploid').text('Wright-Fisher haploid');
         d3.select(this).append('br');
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'moran').attr('id', 'moran');
-        d3.select(this).append('label').attr('for', 'moran').attr('class', 'radio').text('Moran');
+        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wright_fisher_diploid').attr('id', 'wright_fisher_diploid');
+        d3.select(this).append('label').attr('class', 'radio').attr('for', 'wright_fisher_diploid').text('Wright-Fisher diploid (h=0.5)');
+        d3.select(this).append('br');
+        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'heterozygote_advantage').attr('id', 'heterozygote_advantage');
+        d3.select(this).append('label').attr('class', 'radio').attr('for', 'heterozygote_advantage').text('Wright-Fisher heterozygote advantage');
+        d3.select(this).append('br');
+        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'moran_haploid').attr('id', 'moran_haploid');
+        d3.select(this).append('label').attr('class', 'radio').attr('for', 'moran_haploid').text('Moran haploid');
     });
 
     d3.select('form').append('button').attr('type', 'button').attr('class', 'start button').text('START!');
@@ -17061,21 +17067,23 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.wright_fisher = wright_fisher;
-exports.moran = moran;
-exports.evolve = evolve;
+exports.wright_fisher_haploid = wright_fisher_haploid;
+exports.wright_fisher_diploid = wright_fisher_diploid;
+exports.heterozygote_advantage = heterozygote_advantage;
+exports.moran_haploid = moran_haploid;
 
-var _random = require('./random.js');
+var _random = require("./random.js");
 
 var wtl_random = _interopRequireWildcard(_random);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function wright_fisher(N, s, q0, T) {
+function wright_fisher(N, s, q0, T, q_prime) {
     var qt = q0;
     var trajectory = [[0, q0]];
     var step = Math.max(T / 1000, 1);
     for (var t = 1; t <= T; ++t) {
-        qt = wtl_random.binomial(N, (1 + s) * qt / (1 + s * qt)) / N;
+        qt = wtl_random.binomial(N, q_prime(qt, s)) / N;
         if (t % step === 0) {
             trajectory.push([t, qt]);
         }
@@ -17083,7 +17091,34 @@ function wright_fisher(N, s, q0, T) {
     return trajectory;
 }
 
-function moran(N, s, q0, T) {
+function wright_fisher_haploid(N, s, q0, T) {
+    function q_prime(q, s) {
+        var sq = s * q;
+        return (q + sq) / (1.0 + sq);
+    }
+    return wright_fisher(N, s, q0, T, q_prime);
+}
+
+function wright_fisher_diploid(N, s, q0, T) {
+    var h = 0.5;
+    function q_prime(q, s) {
+        var sq = s * q;
+        var hsq = h * sq;
+        var sq2 = sq * q;
+        return (q + hsq - hsq * q + sq2) / (1.0 + 2.0 * hsq - 2 * hsq * q + sq2);
+    }
+    return wright_fisher(N, s, q0, T, q_prime);
+}
+
+function heterozygote_advantage(N, s, q0, T) {
+    function q_prime(q, s) {
+        var spq = s * (1.0 - q) * q;
+        return (q + spq) / (1.0 + 2.0 * spq);
+    }
+    return wright_fisher(N, s, q0, T, q_prime);
+}
+
+function moran_haploid(N, s, q0, T) {
     var s1 = s + 1;
     var Nq = Math.round(N * q0);
     var trajectory = [[0, q0]];
@@ -17108,14 +17143,6 @@ function moran(N, s, q0, T) {
     return trajectory;
 }
 
-function evolve(N, s, q0, T, model) {
-    if (model == 'wf') {
-        return wright_fisher(N, s, q0, T);
-    } else {
-        return moran(N, s, q0, T);
-    }
-}
-
 },{"./random.js":7}],5:[function(require,module,exports){
 'use strict';
 
@@ -17125,7 +17152,7 @@ var d3 = _interopRequireWildcard(_d);
 
 var _genetics = require("./genetics.js");
 
-var wtl_genetics = _interopRequireWildcard(_genetics);
+var genetics = _interopRequireWildcard(_genetics);
 
 var _parameters = require("./parameters.js");
 
@@ -17235,7 +17262,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
         var model = d3.select('input[name="model"]:checked').node().value;
         svg.select('.axis.x').call(axis_x.scale(scale_x.domain([0, T])));
         for (var i = 0; i < rep; ++i) {
-            var trajectory = wtl_genetics.evolve(N, s, q0, T, model);
+            var trajectory = genetics[model](N, s, q0, T);
             var repl_delay = T / 100 + 600 * i / rep;
             animation(trajectory, repl_delay);
             results.push(trajectory);

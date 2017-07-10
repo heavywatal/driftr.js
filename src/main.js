@@ -1,6 +1,6 @@
 'use strict';
 import * as d3 from "d3";
-import * as wtl_genetics from "./genetics.js";
+import * as genetics from "./genetics.js";
 import params from "./parameters.js";
 import create_form from "./form.js";
 
@@ -130,7 +130,7 @@ import create_form from "./form.js";
         var model = d3.select('input[name="model"]:checked').node().value;
         svg.select('.axis.x').call(axis_x.scale(scale_x.domain([0, T])));
         for (var i = 0; i < rep; ++i) {
-            var trajectory = wtl_genetics.evolve(N, s, q0, T, model);
+            var trajectory = genetics[model](N, s, q0, T);
             var repl_delay = T / 100 + 600 * i / rep;
             animation(trajectory, repl_delay);
             results.push(trajectory);

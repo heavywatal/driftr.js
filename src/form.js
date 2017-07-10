@@ -53,26 +53,34 @@ export default function(params) {
         .text('Model');
     input_model.append('dd')
         .each(function() {
-            d3.select(this).append('input')
-                .attr('type', 'radio')
-                .attr('name', 'model')
-                .attr('value', 'wf')
-                .attr('id', 'wf')
+            d3.select(this).append('input').attr('type', 'radio').attr('name', 'model')
+                .attr('value', 'wright_fisher_haploid')
+                .attr('id', 'wright_fisher_haploid')
                 .property('checked', true);
-            d3.select(this).append('label')
-                .attr('for', 'wf')
-                .attr('class', 'radio')
-                .text('Wright-Fisher');
+            d3.select(this).append('label').attr('class', 'radio')
+                .attr('for', 'wright_fisher_haploid')
+                .text('Wright-Fisher haploid');
             d3.select(this).append('br');
-            d3.select(this).append('input')
-                .attr('type', 'radio')
-                .attr('name', 'model')
-                .attr('value', 'moran')
-                .attr('id', 'moran');
-            d3.select(this).append('label')
-                .attr('for', 'moran')
-                .attr('class', 'radio')
-                .text('Moran');
+            d3.select(this).append('input').attr('type', 'radio').attr('name', 'model')
+                .attr('value', 'wright_fisher_diploid')
+                .attr('id', 'wright_fisher_diploid');
+            d3.select(this).append('label').attr('class', 'radio')
+                .attr('for', 'wright_fisher_diploid')
+                .text('Wright-Fisher diploid (h=0.5)');
+            d3.select(this).append('br');
+            d3.select(this).append('input').attr('type', 'radio').attr('name', 'model')
+                .attr('value', 'heterozygote_advantage')
+                .attr('id', 'heterozygote_advantage');
+            d3.select(this).append('label').attr('class', 'radio')
+                .attr('for', 'heterozygote_advantage')
+                .text('Wright-Fisher heterozygote advantage');
+            d3.select(this).append('br');
+            d3.select(this).append('input').attr('type', 'radio').attr('name', 'model')
+                .attr('value', 'moran_haploid')
+                .attr('id', 'moran_haploid');
+            d3.select(this).append('label').attr('class', 'radio')
+                .attr('for', 'moran_haploid')
+                .text('Moran haploid');
         });
 
     d3.select('form').append('button')
