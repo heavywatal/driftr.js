@@ -17172,7 +17172,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
     var svg_padding = {
         top: 20,
-        right: 20,
+        right: 30,
         bottom: 60,
         left: 80
     };

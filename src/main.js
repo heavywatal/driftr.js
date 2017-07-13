@@ -10,7 +10,7 @@ import create_form from "./form.js";
 
     var svg_padding = {
         top:    20,
-        right:  20,
+        right:  30,
         bottom: 60,
         left:   80
     };
