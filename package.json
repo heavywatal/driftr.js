@@ -1,6 +1,6 @@
 {
   "name": "driftr",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "license": "MIT",
   "scripts": {
     "build": "browserify -t babelify -o driftr.js src/main.js"
