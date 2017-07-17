@@ -160,5 +160,4 @@ import create_form from "./form.js";
     update_width();
     d3.select(window).on('resize', update_width);
     d3.select('.start').on('click', start);
-
 })();
