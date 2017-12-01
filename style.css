@@ -1,159 +1,161 @@
 @charset "UTF-8";
-/*csslint
+
+/* csslint
   box-model: false, box-sizing: false,
   universal-selector: false, font-sizes: false,
   qualified-headings: false, unique-headings: false,
 */
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    color: #444444;
-    margin: 0;
-    padding: 0 12px 10px;
-    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", "游ゴシック", Meiryo, "メイリオ", sans-serif;
+  color: #444;
+  margin: 0;
+  padding: 0 12px 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Helvetica, "Yu Gothic", sans-serif;
 }
 
 h1 {
-    font-size: 1.6em;
+  font-size: 1.6em;
 }
 
 form {
-    margin: 0 -6px 6px;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-content: space-between;
-    align-items: stretch;
+  margin: 0 -6px 6px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-content: space-between;
+  align-items: stretch;
 }
 
 dl {
-    flex: 1 0 300px;
-    margin: 6px;
-    padding: 8px 12px;
-    background-color: #EEEEEE;
+  flex: 1 0 300px;
+  margin: 6px;
+  padding: 8px 12px;
+  background-color: #eee;
 }
 
 dt {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 dd {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 label {
-    display: inline-block;
+  display: inline-block;
 }
 
-.name:after {
-    content: ":";
+.name::after {
+  content: ":";
 }
 
 label.value {
-    float: right;
-    text-align: right;
-    color: #000000;
-    font-weight: bold;
+  float: right;
+  text-align: right;
+  color: #000;
+  font-weight: bold;
 }
 
-.min, .max {
-    color: #999999;
+.min,
+.max {
+  color: #999;
 }
 
 label.max {
-    float: right;
-    text-align: right;
+  float: right;
+  text-align: right;
 }
 
 input[type=range] {
-    width: 100%;
-    margin: 0;
+  width: 100%;
+  margin: 0;
 }
 
 .button {
-    display: inline-block;
-    border: 1px solid #CCCCCC;
-    border-radius: 4px;
-    padding: 8px 12px;
-    background-color: #666666;
-    color: #FFFFFF;
-    vertical-align: middle;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  background-color: #666;
+  color: #fff;
+  vertical-align: middle;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .start {
-    flex-basis: 100%;
-    margin: 6px;
-    padding: 12px 16px;
-    font-size: 120%;
+  flex-basis: 100%;
+  margin: 6px;
+  padding: 12px 16px;
+  font-size: 120%;
 }
 
 footer .button {
-    margin: 12px 0 12px 8px;
-    background-color: #AAAAAA;
-    font-size: 80%;
-    font-weight: normal;
+  margin: 12px 0 12px 8px;
+  background-color: #aaa;
+  font-size: 80%;
+  font-weight: normal;
 }
 
 footer {
-    text-align: right;
+  text-align: right;
 }
 
 .plot {
-    background-color: #EEEEEE;
+  background-color: #eee;
 }
 
 svg {
-    vertical-align: top;
-    height: 360px;
+  vertical-align: top;
+  height: 360px;
 }
 
 .fixation {
-    display: inline-block;
-    margin-right: 12px;
+  display: inline-block;
+  margin-right: 12px;
 }
 
 .fixation div {
-    display: inline-block;
-    padding: 8px;
-    margin-right: 8px;
-    background-color: #DDDDDD;
+  display: inline-block;
+  padding: 8px;
+  margin-right: 8px;
+  background-color: #ddd;
 }
 
 .fixation label.value {
-    min-width: 2em;
+  min-width: 2em;
 }
 
 .panel_background {
-    fill: #FFFFFF;
+  fill: #fff;
 }
 
 path {
-    fill: none;
+  fill: none;
 }
 
 .panel path {
-    stroke: #FF6000;
-    stroke-opacity: 0.3;
-    stroke-width: 3;
+  stroke: #ff6000;
+  stroke-opacity: 0.3;
+  stroke-width: 3;
 }
 
 path.domain {
-    stroke: #000000;
-    stroke-opacity: 0.5;
-    stroke-width: 2;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 2;
 }
 
 .axis text {
-    font-size: 0.92rem;
+  font-size: 0.92rem;
 }
