@@ -2,8 +2,15 @@
   "name": "driftr",
   "version": "0.3.4",
   "license": "MIT",
+  "repository": "github:heavywatal/driftr.js",
+  "main": "src/main.js",
+  "config": {
+    "distfiles": "index.html style.css driftr.js README.md LICENSE"
+  },
   "scripts": {
-    "build": "browserify -t babelify -o driftr.js src/main.js"
+    "build": "browserify -t babelify -o driftr.js $npm_package_main",
+    "version": "git describe --tags --dirty",
+    "dist": "tar -czf $npm_package_name-$npm_package_version.tar.gz --transform=\"s,,$npm_package_name/,\" $npm_package_config_distfiles"
   },
   "dependencies": {
     "d3": "^4.12.2"
