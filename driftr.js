@@ -19244,85 +19244,84 @@ exports.version = version;
 },{"d3-array":1,"d3-axis":2,"d3-brush":3,"d3-chord":4,"d3-collection":5,"d3-color":6,"d3-contour":7,"d3-dispatch":8,"d3-drag":9,"d3-dsv":10,"d3-ease":11,"d3-fetch":12,"d3-force":13,"d3-format":14,"d3-geo":15,"d3-hierarchy":16,"d3-interpolate":17,"d3-path":18,"d3-polygon":19,"d3-quadtree":20,"d3-random":21,"d3-scale":23,"d3-scale-chromatic":22,"d3-selection":24,"d3-shape":25,"d3-time":27,"d3-time-format":26,"d3-timer":28,"d3-transition":29,"d3-voronoi":30,"d3-zoom":31}],33:[function(require,module,exports){
 'use strict';
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = _default;
 
-exports.default = function (params) {
-    d3.select('main').append('form');
+var d3 = _interopRequireWildcard(require("d3"));
 
-    var input_items = d3.select('form').selectAll('dl').data(params).enter().append('dl').attr('id', function (d) {
-        return d.name;
-    }).attr('class', 'parameter');
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-    input_items.append('label').attr('class', 'value').attr('for', function (d) {
-        return d.name;
-    }).text(function (d) {
-        return d.value;
-    });
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-    input_items.append('dt').append('label').attr('class', 'name').attr('for', function (d) {
-        return d.name;
-    }).html(function (d) {
-        return d.label;
-    });
-
-    var input_ranges = input_items.append('dd').attr('class', 'param_range');
-    input_ranges.append('input').attr('type', 'range').attr('name', function (d) {
-        return d.name;
-    }).attr('min', function (d) {
-        return d.min;
-    }).attr('max', function (d) {
-        return d.max;
-    }).attr('step', function (d) {
-        return d.step;
-    }).attr('value', function (d) {
-        return d.value;
-    }).on('input', function (d) {
-        d3.select('#' + this.name + ' label.value').text(this.value);
-        d.value = this.value;
-    });
-    input_ranges.append('label').attr('class', 'min').attr('for', function (d) {
-        return d.name;
-    }).text(function (d) {
-        return d.min;
-    });
-    input_ranges.append('label').attr('class', 'max').attr('for', function (d) {
-        return d.name;
-    }).text(function (d) {
-        return d.max;
-    });
-
-    var input_model = d3.select('form').append('dl').attr('class', 'parameter');
-    input_model.append('dt').append('label').attr('class', 'name').text('Model');
-    input_model.append('dd').each(function () {
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wright_fisher_haploid').attr('id', 'wright_fisher_haploid').property('checked', true);
-        d3.select(this).append('label').attr('class', 'radio').attr('for', 'wright_fisher_haploid').text('Wright-Fisher haploid');
-        d3.select(this).append('br');
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wright_fisher_diploid').attr('id', 'wright_fisher_diploid');
-        d3.select(this).append('label').attr('class', 'radio').attr('for', 'wright_fisher_diploid').text('Wright-Fisher diploid (h=0.5)');
-        d3.select(this).append('br');
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'heterozygote_advantage').attr('id', 'heterozygote_advantage');
-        d3.select(this).append('label').attr('class', 'radio').attr('for', 'heterozygote_advantage').text('Wright-Fisher heterozygote advantage');
-        d3.select(this).append('br');
-        d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'moran_haploid').attr('id', 'moran_haploid');
-        d3.select(this).append('label').attr('class', 'radio').attr('for', 'moran_haploid').text('Moran haploid');
-    });
-
-    d3.select('form').append('button').attr('type', 'button').attr('class', 'start button').text('START!');
-};
-
-var _d = require('d3');
-
-var d3 = _interopRequireWildcard(_d);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _default(params) {
+  d3.select('main').append('form');
+  var input_items = d3.select('form').selectAll('dl').data(params).enter().append('dl').attr('id', function (d) {
+    return d.name;
+  }).attr('class', 'parameter');
+  input_items.append('label').attr('class', 'value').attr('for', function (d) {
+    return d.name;
+  }).text(function (d) {
+    return d.value;
+  });
+  input_items.append('dt').append('label').attr('class', 'name').attr('for', function (d) {
+    return d.name;
+  }).html(function (d) {
+    return d.label;
+  });
+  var input_ranges = input_items.append('dd').attr('class', 'param_range');
+  input_ranges.append('input').attr('type', 'range').attr('name', function (d) {
+    return d.name;
+  }).attr('min', function (d) {
+    return d.min;
+  }).attr('max', function (d) {
+    return d.max;
+  }).attr('step', function (d) {
+    return d.step;
+  }).attr('value', function (d) {
+    return d.value;
+  }).on('input', function (d) {
+    d3.select('#' + this.name + ' label.value').text(this.value);
+    d.value = this.value;
+  });
+  input_ranges.append('label').attr('class', 'min').attr('for', function (d) {
+    return d.name;
+  }).text(function (d) {
+    return d.min;
+  });
+  input_ranges.append('label').attr('class', 'max').attr('for', function (d) {
+    return d.name;
+  }).text(function (d) {
+    return d.max;
+  });
+  var input_model = d3.select('form').append('dl').attr('class', 'parameter');
+  input_model.append('dt').append('label').attr('class', 'name').text('Model');
+  input_model.append('dd').each(function () {
+    d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wright_fisher_haploid').attr('id', 'wright_fisher_haploid').property('checked', true);
+    d3.select(this).append('label').attr('class', 'radio').attr('for', 'wright_fisher_haploid').text('Wright-Fisher haploid');
+    d3.select(this).append('br');
+    d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'wright_fisher_diploid').attr('id', 'wright_fisher_diploid');
+    d3.select(this).append('label').attr('class', 'radio').attr('for', 'wright_fisher_diploid').text('Wright-Fisher diploid (h=0.5)');
+    d3.select(this).append('br');
+    d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'heterozygote_advantage').attr('id', 'heterozygote_advantage');
+    d3.select(this).append('label').attr('class', 'radio').attr('for', 'heterozygote_advantage').text('Wright-Fisher heterozygote advantage');
+    d3.select(this).append('br');
+    d3.select(this).append('input').attr('type', 'radio').attr('name', 'model').attr('value', 'moran_haploid').attr('id', 'moran_haploid');
+    d3.select(this).append('label').attr('class', 'radio').attr('for', 'moran_haploid').text('Moran haploid');
+  });
+  d3.select('form').append('button').attr('type', 'button').attr('class', 'start button').text('START!');
+}
 
 },{"d3":32}],34:[function(require,module,exports){
 'use strict';
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.wright_fisher = wright_fisher;
 exports.wright_fisher_haploid = wright_fisher_haploid;
@@ -19330,217 +19329,222 @@ exports.wright_fisher_diploid = wright_fisher_diploid;
 exports.heterozygote_advantage = heterozygote_advantage;
 exports.moran_haploid = moran_haploid;
 
-var _random = require("./random.js");
+var wtl_random = _interopRequireWildcard(require("./random.js"));
 
-var wtl_random = _interopRequireWildcard(_random);
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function wright_fisher(N, s, q0, T, q_prime) {
-    var qt = q0;
-    var trajectory = [[0, q0]];
-    var step = Math.max(T / 1000, 1);
-    for (var t = 1; t <= T; ++t) {
-        qt = wtl_random.binomial(N, q_prime(qt, s)) / N;
-        if (t % step === 0) {
-            trajectory.push([t, qt]);
-        }
+  var qt = q0;
+  var trajectory = [[0, q0]];
+  var step = Math.max(T / 1000, 1);
+
+  for (var t = 1; t <= T; ++t) {
+    qt = wtl_random.binomial(N, q_prime(qt, s)) / N;
+
+    if (t % step === 0) {
+      trajectory.push([t, qt]);
     }
-    return trajectory;
+  }
+
+  return trajectory;
 }
 
 function wright_fisher_haploid(N, s, q0, T) {
-    function q_prime(q, s) {
-        var sq = s * q;
-        return (q + sq) / (1.0 + sq);
-    }
-    return wright_fisher(N, s, q0, T, q_prime);
+  function q_prime(q, s) {
+    var sq = s * q;
+    return (q + sq) / (1.0 + sq);
+  }
+
+  return wright_fisher(N, s, q0, T, q_prime);
 }
 
 function wright_fisher_diploid(N, s, q0, T) {
-    var h = 0.5;
-    function q_prime(q, s) {
-        var sq = s * q;
-        var hsq = h * sq;
-        var sq2 = sq * q;
-        return (q + hsq - hsq * q + sq2) / (1.0 + 2.0 * hsq - 2 * hsq * q + sq2);
-    }
-    return wright_fisher(N, s, q0, T, q_prime);
+  var h = 0.5;
+
+  function q_prime(q, s) {
+    var sq = s * q;
+    var hsq = h * sq;
+    var sq2 = sq * q;
+    return (q + hsq - hsq * q + sq2) / (1.0 + 2.0 * hsq - 2 * hsq * q + sq2);
+  }
+
+  return wright_fisher(N, s, q0, T, q_prime);
 }
 
 function heterozygote_advantage(N, s, q0, T) {
-    function q_prime(q, s) {
-        var spq = s * (1.0 - q) * q;
-        return (q + spq) / (1.0 + 2.0 * spq);
-    }
-    return wright_fisher(N, s, q0, T, q_prime);
+  function q_prime(q, s) {
+    var spq = s * (1.0 - q) * q;
+    return (q + spq) / (1.0 + 2.0 * spq);
+  }
+
+  return wright_fisher(N, s, q0, T, q_prime);
 }
 
 function moran_haploid(N, s, q0, T) {
-    var s1 = s + 1;
-    var Nq = Math.round(N * q0);
-    var trajectory = [[0, q0]];
-    var step = Math.max(T / 1000, 1);
-    for (var t = 1; t <= T * N; ++t) {
-        var p_mutrep = s1 * Nq / (s1 * Nq + (N - Nq));
-        if (wtl_random.bernoulli(Nq / N)) {
-            // a mutant dies
-            if (!wtl_random.bernoulli(p_mutrep)) {
-                --Nq;
-            }
-        } else {
-            // a wildtype dies
-            if (wtl_random.bernoulli(p_mutrep)) {
-                ++Nq;
-            }
-        }
-        if (t % (step * N) === 0) {
-            trajectory.push([t / N, Nq / N]);
-        }
+  var s1 = s + 1;
+  var Nq = Math.round(N * q0);
+  var trajectory = [[0, q0]];
+  var step = Math.max(T / 1000, 1);
+
+  for (var t = 1; t <= T * N; ++t) {
+    var p_mutrep = s1 * Nq / (s1 * Nq + (N - Nq));
+
+    if (wtl_random.bernoulli(Nq / N)) {
+      // a mutant dies
+      if (!wtl_random.bernoulli(p_mutrep)) {
+        --Nq;
+      }
+    } else {
+      // a wildtype dies
+      if (wtl_random.bernoulli(p_mutrep)) {
+        ++Nq;
+      }
     }
-    return trajectory;
+
+    if (t % (step * N) === 0) {
+      trajectory.push([t / N, Nq / N]);
+    }
+  }
+
+  return trajectory;
 }
 
 },{"./random.js":37}],35:[function(require,module,exports){
 'use strict';
 
-var _d = require("d3");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var d3 = _interopRequireWildcard(_d);
+var d3 = _interopRequireWildcard(require("d3"));
 
-var _genetics = require("./genetics.js");
+var genetics = _interopRequireWildcard(require("./genetics.js"));
 
-var genetics = _interopRequireWildcard(_genetics);
+var _parameters = _interopRequireDefault(require("./parameters.js"));
 
-var _parameters = require("./parameters.js");
+var _form = _interopRequireDefault(require("./form.js"));
 
-var _parameters2 = _interopRequireDefault(_parameters);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _form = require("./form.js");
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-var _form2 = _interopRequireDefault(_form);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 (function () {
+  (0, _form["default"])(_parameters["default"]);
+  var svg_padding = {
+    top: 20,
+    right: 30,
+    bottom: 60,
+    left: 80
+  };
+  d3.select('main').append('div').attr('class', 'plot');
+  var svg = d3.select('.plot').append('svg');
+  var fixation_divs = d3.select('.plot').append('div').attr('class', 'fixation').selectAll('label').data(['fixed', 'polymorphic', 'lost']).enter().append('div').attr('id', function (d) {
+    return d;
+  });
+  fixation_divs.append('label').attr('class', function () {
+    return 'name';
+  }).text(function (d) {
+    return d;
+  });
+  fixation_divs.append('label').attr('class', function () {
+    return 'value';
+  });
+  var panel_height = parseInt(svg.style('height')) - svg_padding.top - svg_padding.bottom;
+  var plot = svg.append('g').attr('class', 'plot').attr('transform', 'translate(' + svg_padding.left + ',' + svg_padding.top + ')');
+  plot.append('rect').attr('class', 'panel_background').attr('height', panel_height);
+  plot.append('g').attr('class', 'panel');
+  var scale_x = d3.scaleLinear().domain([0, _parameters["default"][3].value]);
+  var scale_y = d3.scaleLinear().domain([0, 1]).range([panel_height, 0]);
+  var axis_x = d3.axisBottom(scale_x);
+  var axis_y = d3.axisLeft(scale_y);
+  plot.append('g').attr('class', 'axis x').attr('transform', 'translate(0,' + panel_height + ')').call(axis_x);
+  plot.append('g').attr('class', 'axis y').call(axis_y);
+  plot.append('text').attr('class', 'title x').attr('text-anchor', 'middle').text('Time (generations)');
+  plot.append('text').attr('class', 'title y').attr('text-anchor', 'middle').text('Derived Allele Frequency (q)').attr('transform', 'translate(-50,' + panel_height / 2 + ') rotate(-90)');
+  var line = d3.line().x(function (d) {
+    return scale_x(d[0]);
+  }).y(function (d) {
+    return scale_y(d[1]);
+  });
 
-    (0, _form2.default)(_parameters2.default);
+  function update_width() {
+    var plot_width = parseInt(d3.select('.plot').style('width'));
+    svg.attr('width', plot_width - parseInt(svg.style('padding-right')));
+    var svg_width = parseInt(svg.attr('width'));
+    var panel_width = svg_width - svg_padding.left - svg_padding.right;
+    svg.select('.panel_background').attr('width', panel_width);
+    scale_x.range([0, panel_width]);
+    axis_x.scale(scale_x);
+    svg.select('.x').call(axis_x);
+    svg.select('.title.x').attr('transform', 'translate(' + panel_width / 2 + ',' + (panel_height + 50) + ')');
+    svg.selectAll('.panel path').remove();
 
-    var svg_padding = {
-        top: 20,
-        right: 30,
-        bottom: 60,
-        left: 80
-    };
+    for (var i = 0; i < results.length; ++i) {
+      svg.select('.panel').append('path').attr('d', line(results[i]));
+    }
+  }
 
-    d3.select('main').append('div').attr('class', 'plot');
-    var svg = d3.select('.plot').append('svg');
-
-    var fixation_divs = d3.select('.plot').append('div').attr('class', 'fixation').selectAll('label').data(['fixed', 'polymorphic', 'lost']).enter().append('div').attr('id', function (d) {
-        return d;
-    });
-    fixation_divs.append('label').attr('class', function () {
-        return 'name';
-    }).text(function (d) {
-        return d;
-    });
-    fixation_divs.append('label').attr('class', function () {
-        return 'value';
-    });
-
-    var panel_height = parseInt(svg.style('height')) - svg_padding.top - svg_padding.bottom;
-    var plot = svg.append('g').attr('class', 'plot').attr('transform', 'translate(' + svg_padding.left + ',' + svg_padding.top + ')');
-    plot.append('rect').attr('class', 'panel_background').attr('height', panel_height);
-    plot.append('g').attr('class', 'panel');
-
-    var scale_x = d3.scaleLinear().domain([0, _parameters2.default[3].value]);
-    var scale_y = d3.scaleLinear().domain([0, 1]).range([panel_height, 0]);
-    var axis_x = d3.axisBottom(scale_x);
-    var axis_y = d3.axisLeft(scale_y);
-
-    plot.append('g').attr('class', 'axis x').attr('transform', 'translate(0,' + panel_height + ')').call(axis_x);
-    plot.append('g').attr('class', 'axis y').call(axis_y);
-    plot.append('text').attr('class', 'title x').attr('text-anchor', 'middle').text('Time (generations)');
-    plot.append('text').attr('class', 'title y').attr('text-anchor', 'middle').text('Derived Allele Frequency (q)').attr('transform', 'translate(-50,' + panel_height / 2 + ') rotate(-90)');
-    var line = d3.line().x(function (d) {
-        return scale_x(d[0]);
-    }).y(function (d) {
-        return scale_y(d[1]);
-    });
-
-    function update_width() {
-        var plot_width = parseInt(d3.select('.plot').style('width'));
-        svg.attr('width', plot_width - parseInt(svg.style('padding-right')));
-        var svg_width = parseInt(svg.attr('width'));
-        var panel_width = svg_width - svg_padding.left - svg_padding.right;
-        svg.select('.panel_background').attr('width', panel_width);
-        scale_x.range([0, panel_width]);
-        axis_x.scale(scale_x);
-        svg.select('.x').call(axis_x);
-        svg.select('.title.x').attr('transform', 'translate(' + panel_width / 2 + ',' + (panel_height + 50) + ')');
-        svg.selectAll('.panel path').remove();
-        for (var i = 0; i < results.length; ++i) {
-            svg.select('.panel').append('path').attr('d', line(results[i]));
-        }
+  function animation(trajectory, repl_delay) {
+    function len() {
+      return this.getTotalLength();
     }
 
-    function animation(trajectory, repl_delay) {
-        function len() {
-            return this.getTotalLength();
-        }
-        svg.select('.panel').append('path').attr('d', line(trajectory)).attr("stroke-dasharray", len).attr("stroke-dashoffset", len).transition().delay(repl_delay).duration(2000).ease(d3.easeLinear).attr("stroke-dashoffset", 0);
-        var qT = trajectory.slice(-1)[0][1];
-        if (qT == 1) {
-            fixation_increment('#fixed');
-        } else if (qT === 0) {
-            fixation_increment('#lost');
-        } else {
-            fixation_increment('#polymorphic');
-        }
+    svg.select('.panel').append('path').attr('d', line(trajectory)).attr("stroke-dasharray", len).attr("stroke-dashoffset", len).transition().delay(repl_delay).duration(2000).ease(d3.easeLinear).attr("stroke-dashoffset", 0);
+    var qT = trajectory.slice(-1)[0][1];
+
+    if (qT == 1) {
+      fixation_increment('#fixed');
+    } else if (qT === 0) {
+      fixation_increment('#lost');
+    } else {
+      fixation_increment('#polymorphic');
     }
+  }
 
-    function fixation_increment(id) {
-        var label = d3.select(id + ' label.value');
-        label.text(parseInt(label.text()) + 1);
+  function fixation_increment(id) {
+    var label = d3.select(id + ' label.value');
+    label.text(parseInt(label.text()) + 1);
+  }
+
+  var results = [];
+
+  function start() {
+    results = [];
+    svg.select('.panel').selectAll('path').remove();
+    d3.selectAll('.fixation label.value').text(0);
+    var N = parseInt(_parameters["default"][0].value);
+    var s = parseFloat(_parameters["default"][1].value);
+    var q0 = parseFloat(_parameters["default"][2].value);
+    var T = parseInt(_parameters["default"][3].value);
+    var rep = parseInt(_parameters["default"][4].value);
+    var model = d3.select('input[name="model"]:checked').node().value;
+    svg.select('.axis.x').call(axis_x.scale(scale_x.domain([0, T])));
+
+    for (var i = 0; i < rep; ++i) {
+      var trajectory = genetics[model](N, s, q0, T);
+      var repl_delay = T / 100 + 600 * i / rep;
+      animation(trajectory, repl_delay);
+      results.push(trajectory);
     }
+  }
 
-    var results = [];
-
-    function start() {
-        results = [];
-        svg.select('.panel').selectAll('path').remove();
-        d3.selectAll('.fixation label.value').text(0);
-        var N = parseInt(_parameters2.default[0].value);
-        var s = parseFloat(_parameters2.default[1].value);
-        var q0 = parseFloat(_parameters2.default[2].value);
-        var T = parseInt(_parameters2.default[3].value);
-        var rep = parseInt(_parameters2.default[4].value);
-        var model = d3.select('input[name="model"]:checked').node().value;
-        svg.select('.axis.x').call(axis_x.scale(scale_x.domain([0, T])));
-        for (var i = 0; i < rep; ++i) {
-            var trajectory = genetics[model](N, s, q0, T);
-            var repl_delay = T / 100 + 600 * i / rep;
-            animation(trajectory, repl_delay);
-            results.push(trajectory);
-        }
-    }
-
-    var footer = d3.select('footer');
-    var download_json = footer.append('a').attr('class', 'button').attr('download', 'driftr_result.json').text('Save results');
-    download_json.on('click', function () {
-        var json = JSON.stringify(results);
-        var blob = new Blob([json], { type: 'application/json' });
-        var url = URL.createObjectURL(blob);
-        download_json.attr('href', url);
+  var footer = d3.select('footer');
+  var download_json = footer.append('a').attr('class', 'button').attr('download', 'driftr_result.json').text('Save results');
+  download_json.on('click', function () {
+    var json = JSON.stringify(results);
+    var blob = new Blob([json], {
+      type: 'application/json'
     });
-    footer.append('a').attr('class', 'button').attr('href', 'https://github.com/heavywatal/driftr.js/releases/latest').text('Download driftr.js');
-    footer.append('a').attr('class', 'button').attr('href', 'https://github.com/heavywatal/driftr.js/issues').text('Send feedback');
-
-    update_width();
-    d3.select(window).on('resize', update_width);
-    d3.select('.start').on('click', start);
+    var url = URL.createObjectURL(blob);
+    download_json.attr('href', url);
+  });
+  footer.append('a').attr('class', 'button').attr('href', 'https://github.com/heavywatal/driftr.js/releases/latest').text('Download driftr.js');
+  footer.append('a').attr('class', 'button').attr('href', 'https://github.com/heavywatal/driftr.js/issues').text('Send feedback');
+  update_width();
+  d3.select(window).on('resize', update_width);
+  d3.select('.start').on('click', start);
 })();
 
 },{"./form.js":33,"./genetics.js":34,"./parameters.js":36,"d3":32}],36:[function(require,module,exports){
@@ -19549,7 +19553,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = [{
+exports["default"] = void 0;
+var _default = [{
   label: 'Population size (<var>N</var>)',
   name: 'popsize',
   min: 100,
@@ -19585,12 +19590,13 @@ exports.default = [{
   step: 10,
   value: 20
 }];
+exports["default"] = _default;
 
 },{}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.bernoulli = bernoulli;
 exports.binomial = binomial;
@@ -19598,30 +19604,35 @@ exports.binomial = binomial;
 var _d3Random = require("d3-random");
 
 function bernoulli(prob) {
-    return Math.random() < prob;
+  return Math.random() < prob;
 }
 
 function binomial(size, prob) {
-    if (prob === 0) {
-        return 0;
+  if (prob === 0) {
+    return 0;
+  }
+
+  if (prob === 1) {
+    return size;
+  }
+
+  var cnt = 0;
+  var np = size * prob;
+  var q = 1.0 - prob;
+
+  if (np > 10 && size * q > 10) {
+    cnt = (0, _d3Random.randomNormal)(np, Math.sqrt(np * q))();
+    cnt = Math.floor(cnt + 0.5);
+    return Math.max(Math.min(cnt, size), 0);
+  }
+
+  for (var i = 0; i < size; ++i) {
+    if (Math.random() < prob) {
+      ++cnt;
     }
-    if (prob === 1) {
-        return size;
-    }
-    var cnt = 0;
-    var np = size * prob;
-    var q = 1.0 - prob;
-    if (np > 10 && size * q > 10) {
-        cnt = (0, _d3Random.randomNormal)(np, Math.sqrt(np * q))();
-        cnt = Math.floor(cnt + 0.5);
-        return Math.max(Math.min(cnt, size), 0);
-    }
-    for (var i = 0; i < size; ++i) {
-        if (Math.random() < prob) {
-            ++cnt;
-        }
-    }
-    return cnt;
+  }
+
+  return cnt;
 }
 
 },{"d3-random":21}]},{},[35]);
