@@ -32,7 +32,7 @@ export default function(params) {
         .attr('max',   function(d){return d.max;})
         .attr('step',  function(d){return d.step;})
         .attr('value', function(d){return d.value;})
-        .on('input', function(d){
+        .on('input', function(event, d){
             d3.select('#'+this.name+' label.value')
               .text(this.value);
             d.value = this.value;
