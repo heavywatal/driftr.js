@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
   mode: 'production',
   entry: './src/main.js',
@@ -7,4 +5,4 @@ module.exports = {
     path: __dirname,
     filename: 'driftr.js'
   }
-};
+}

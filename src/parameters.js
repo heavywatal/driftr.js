@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 export default [
   {
@@ -41,4 +41,4 @@ export default [
     step: 10,
     value: 20
   }
-];
+]
