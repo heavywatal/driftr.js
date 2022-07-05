@@ -1,6 +1,6 @@
 {
   "name": "driftr",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "repository": "github:heavywatal/driftr.js",
   "main": "src/main.js",
