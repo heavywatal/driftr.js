@@ -18,7 +18,7 @@ export default [
     value: 0.0
   },
   {
-    label: 'Initital frequency (<var>q<sub>0</sub></var>)',
+    label: 'Initial frequency (<var>q<sub>0</sub></var>)',
     name: 'frequency',
     min: 0.0,
     max: 1.0,

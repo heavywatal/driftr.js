@@ -47,11 +47,11 @@ export function moranHaploid (N, s, q0, T) {
   const trajectory = [[0, q0]]
   const step = Math.max(T / 1000, 1)
   for (let t = 1; t <= T * N; ++t) {
-    const pMutrep = s1 * Nq / (s1 * Nq + (N - Nq))
+    const pMutRep = s1 * Nq / (s1 * Nq + (N - Nq))
     if (random.bernoulli(Nq / N)) { // a mutant dies
-      if (!random.bernoulli(pMutrep)) { --Nq }
+      if (!random.bernoulli(pMutRep)) { --Nq }
     } else { // a wildtype dies
-      if (random.bernoulli(pMutrep)) { ++Nq }
+      if (random.bernoulli(pMutRep)) { ++Nq }
     }
     if (t % (step * N) === 0) {
       trajectory.push([t / N, Nq / N])
