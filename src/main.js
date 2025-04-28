@@ -115,6 +115,12 @@ import createForm from './form.js';
     label.text(parseInt(label.text()) + 1)
   }
 
+  // AppleWebKit cannot handle stroke-dasharray + stroke-dashoffset properly
+  let maxHistory = 250
+  if (window.navigator.userAgent.match(/Chrome|Firefox/)) {
+    maxHistory = 1000
+  }
+
   let results = []
 
   function start () {
@@ -129,7 +135,7 @@ import createForm from './form.js';
     const model = d3.select('input[name="model"]:checked').node().value
     svg.select('.axis.x').call(axisX.scale(scaleX.domain([0, T])))
     for (let i = 0; i < rep; ++i) {
-      const trajectory = genetics[model](N, s, q0, T)
+      const trajectory = genetics[model](N, s, q0, T, maxHistory)
       const replDelay = T / 100 + 600 * i / rep
       animation(trajectory, replDelay)
       results.push(trajectory)
