@@ -89,7 +89,7 @@ import createForm from './form.js';
     }
   }
 
-  function animation (trajectory, replDelay) {
+  function animation (trajectory: Array<[number, number]>, replDelay: number) {
     function len () { return this.getTotalLength() }
     svg.select('.panel').append('path')
       .attr('d', line(trajectory))
@@ -110,7 +110,7 @@ import createForm from './form.js';
     }
   }
 
-  function fixationIncrement (id) {
+  function fixationIncrement (id: string) {
     const label = d3.select(id + ' label.value')
     label.text(parseInt(label.text()) + 1)
   }
@@ -127,12 +127,12 @@ import createForm from './form.js';
     results = []
     svg.select('.panel').selectAll('path').remove()
     d3.selectAll('.fixation label.value').text(0)
-    const N = parseInt(params[0].value)
-    const s = parseFloat(params[1].value)
-    const q0 = parseFloat(params[2].value)
-    const T = parseInt(params[3].value)
-    const rep = parseInt(params[4].value)
-    const model = d3.select('input[name="model"]:checked').node().value
+    const N = params[0].value
+    const s = params[1].value
+    const q0 = params[2].value
+    const T = params[3].value
+    const rep = params[4].value
+    const model: string = d3.select('input[name="model"]:checked').attr('value')
     svg.select('.axis.x').call(axisX.scale(scaleX.domain([0, T])))
     for (let i = 0; i < rep; ++i) {
       const trajectory = genetics[model](N, s, q0, T, maxHistory)

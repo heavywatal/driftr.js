@@ -3612,12 +3612,12 @@ function form_default(params) {
 		results = [];
 		svg.select(".panel").selectAll("path").remove();
 		selectAll_default$1(".fixation label.value").text(0);
-		const N = parseInt(parameters_default[0].value);
-		const s = parseFloat(parameters_default[1].value);
-		const q0 = parseFloat(parameters_default[2].value);
-		const T = parseInt(parameters_default[3].value);
-		const rep = parseInt(parameters_default[4].value);
-		const model = select_default$1("input[name=\"model\"]:checked").node().value;
+		const N = parameters_default[0].value;
+		const s = parameters_default[1].value;
+		const q0 = parameters_default[2].value;
+		const T = parameters_default[3].value;
+		const rep = parameters_default[4].value;
+		const model = select_default$1("input[name=\"model\"]:checked").attr("value");
 		svg.select(".axis.x").call(axisX.scale(scaleX.domain([0, T])));
 		for (let i = 0; i < rep; ++i) {
 			const trajectory = genetics_exports[model](N, s, q0, T, maxHistory);

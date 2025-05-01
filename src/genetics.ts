@@ -1,7 +1,9 @@
 'use strict'
 import { randomBernoulli, randomBinomial } from 'd3-random'
 
-export function wrightFisher (N, s, q0, T, qPrime, maxHistory) {
+type qPrimeFun = (q: number, s: number) => number
+
+export function wrightFisher(N: number, s: number, q0: number, T: number, qPrime: qPrimeFun, maxHistory: number) {
   let qt = q0
   const trajectory = [[0, q0]]
   const step = Math.max(Math.ceil(T / maxHistory), 1)
@@ -14,17 +16,17 @@ export function wrightFisher (N, s, q0, T, qPrime, maxHistory) {
   return trajectory
 }
 
-export function wrightFisherHaploid (N, s, q0, T, maxHistory) {
-  function qPrime (q, s) {
+export function wrightFisherHaploid(N: number, s: number, q0: number, T: number, maxHistory: number) {
+  function qPrime(q: number, s: number) {
     const sq = s * q
     return (q + sq) / (1.0 + sq)
   }
   return wrightFisher(N, s, q0, T, qPrime, maxHistory)
 }
 
-export function wrightFisherDiploid (N, s, q0, T, maxHistory) {
+export function wrightFisherDiploid(N: number, s: number, q0: number, T: number, maxHistory: number) {
   const h = 0.5
-  function qPrime (q, s) {
+  function qPrime(q: number, s: number) {
     const sq = s * q
     const hsq = h * sq
     const sq2 = sq * q
@@ -33,15 +35,15 @@ export function wrightFisherDiploid (N, s, q0, T, maxHistory) {
   return wrightFisher(N, s, q0, T, qPrime, maxHistory)
 }
 
-export function heterozygoteAdvantage (N, s, q0, T, maxHistory) {
-  function qPrime (q, s) {
+export function heterozygoteAdvantage(N: number, s: number, q0: number, T: number, maxHistory: number) {
+  function qPrime(q: number, s: number) {
     const spq = s * (1.0 - q) * q
     return (q + spq) / (1.0 + 2.0 * spq)
   }
   return wrightFisher(N, s, q0, T, qPrime, maxHistory)
 }
 
-export function moranHaploid (N, s, q0, T, maxHistory) {
+export function moranHaploid(N: number, s: number, q0: number, T: number, maxHistory: number) {
   const s1 = s + 1
   let Nq = Math.round(N * q0)
   const trajectory = [[0, q0]]
