@@ -1,12 +1,21 @@
 'use strict'
 import * as d3 from 'd3'
 
+interface ParameterType {
+  label: string;
+  name: string;
+  min: number;
+  max: number;
+  step: number;
+  value: number;
+}
+
 export default function (params) {
   d3.select('main').append('form')
 
   const inputItems = d3.select('form')
     .selectAll('dl')
-    .data(params)
+    .data<ParameterType>(params)
     .enter()
     .append('dl')
     .attr('id', function (d) { return d.name })
@@ -35,7 +44,7 @@ export default function (params) {
     .on('input', function (event, d) {
       d3.select('#' + this.name + ' label.value')
         .text(this.value)
-      d.value = this.value
+      d.value = Number(this.value);
     })
   inputRanges.append('label')
     .attr('class', 'min')
