@@ -4,9 +4,9 @@ export default [
   {
     label: 'Population size (<var>N</var>)',
     name: 'popsize',
-    min: 100,
+    min: 10,
     max: 10000,
-    step: 100,
+    step: 10,
     value: 1000
   },
   {
@@ -36,9 +36,9 @@ export default [
   {
     label: 'Number of replicates',
     name: 'replicates',
-    min: 10,
+    min: 1,
     max: 50,
-    step: 10,
-    value: 20
+    step: 1,
+    value: 10
   }
 ]
