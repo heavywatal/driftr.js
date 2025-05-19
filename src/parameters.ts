@@ -28,9 +28,9 @@ export default [
   {
     label: 'Observation period',
     name: 'observation',
-    min: 500,
+    min: 100,
     max: 40000,
-    step: 500,
+    step: 100,
     value: 1000
   },
   {

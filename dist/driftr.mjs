@@ -3459,9 +3459,9 @@ var parameters_default = [
 	{
 		label: "Observation period",
 		name: "observation",
-		min: 500,
+		min: 100,
 		max: 4e4,
-		step: 500,
+		step: 100,
 		value: 1e3
 	},
 	{
