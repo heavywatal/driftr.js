@@ -3508,8 +3508,8 @@ function form_default(params) {
 		if (this.name === "popsize") {
 			select_default$1("#frequency input").attr("max", d.value);
 			select_default$1("#frequency label.max").text(d.value);
-			if (d.value <= Number(select_default$1("#frequency input").property("value"))) {
-				select_default$1("#frequency input").attr("value", d.value);
+			if (d.value < params[2].value) {
+				params[2].value = d.value;
 				select_default$1("#frequency label.value").text(d.value);
 			}
 		}

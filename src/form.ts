@@ -50,9 +50,8 @@ export default function (params) {
           .attr('max', d.value)
         d3.select('#frequency label.max')
           .text(d.value)
-        if (d.value <= Number(d3.select('#frequency input').property('value'))) {
-          d3.select('#frequency input')
-            .attr('value', d.value)
+        if (d.value < params[2].value) {
+          params[2].value = d.value
           d3.select('#frequency label.value')
             .text(d.value)
         }
