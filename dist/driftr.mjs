@@ -3443,18 +3443,18 @@ var parameters_default = [
 	{
 		label: "Selection coefficient (<var>s<var>)",
 		name: "selection",
-		min: -.025,
-		max: .025,
+		min: -.03,
+		max: .03,
 		step: .001,
 		value: 0
 	},
 	{
-		label: "Initial frequency (<var>q<sub>0</sub></var>)",
+		label: "Initial frequency (<var>Nq<sub>0</sub></var>)",
 		name: "frequency",
-		min: 0,
-		max: 1,
-		step: .01,
-		value: .1
+		min: 1,
+		max: 1e3,
+		step: 1,
+		value: 100
 	},
 	{
 		label: "Observation period",
@@ -3505,6 +3505,14 @@ function form_default(params) {
 	}).on("input", function(event, d) {
 		select_default$1("#" + this.name + " label.value").text(this.value);
 		d.value = Number(this.value);
+		if (this.name === "popsize") {
+			select_default$1("#frequency input").attr("max", d.value);
+			select_default$1("#frequency label.max").text(d.value);
+			if (d.value <= Number(select_default$1("#frequency input").property("value"))) {
+				select_default$1("#frequency input").attr("value", d.value);
+				select_default$1("#frequency label.value").text(d.value);
+			}
+		}
 	});
 	inputRanges.append("label").attr("class", "min").attr("for", function(d) {
 		return d.name;
@@ -3614,7 +3622,7 @@ function form_default(params) {
 		selectAll_default$1(".fixation label.value").text(0);
 		const N = parameters_default[0].value;
 		const s = parameters_default[1].value;
-		const q0 = parameters_default[2].value;
+		const q0 = parameters_default[2].value / N;
 		const T = parameters_default[3].value;
 		const rep = parameters_default[4].value;
 		const model = select_default$1("input[name=\"model\"]:checked").attr("value");

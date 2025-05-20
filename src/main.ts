@@ -1,8 +1,8 @@
 'use strict'
 import * as d3 from 'd3'
-import * as genetics from './genetics.js'
-import params from './parameters.js'
-import createForm from './form.js';
+import * as genetics from './genetics'
+import params from './parameters'
+import createForm from './form';
 
 (function () {
   createForm(params)
@@ -129,7 +129,7 @@ import createForm from './form.js';
     d3.selectAll('.fixation label.value').text(0)
     const N = params[0].value
     const s = params[1].value
-    const q0 = params[2].value
+    const q0 = params[2].value / N
     const T = params[3].value
     const rep = params[4].value
     const model: string = d3.select('input[name="model"]:checked').attr('value')

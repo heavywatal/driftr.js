@@ -45,6 +45,18 @@ export default function (params) {
       d3.select('#' + this.name + ' label.value')
         .text(this.value)
       d.value = Number(this.value);
+      if (this.name === 'popsize') {
+        d3.select('#frequency input')
+          .attr('max', d.value)
+        d3.select('#frequency label.max')
+          .text(d.value)
+        if (d.value <= Number(d3.select('#frequency input').property('value'))) {
+          d3.select('#frequency input')
+            .attr('value', d.value)
+          d3.select('#frequency label.value')
+            .text(d.value)
+        }
+      }
     })
   inputRanges.append('label')
     .attr('class', 'min')

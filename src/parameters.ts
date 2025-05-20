@@ -12,18 +12,18 @@ export default [
   {
     label: 'Selection coefficient (<var>s<var>)',
     name: 'selection',
-    min: -0.025,
-    max: 0.025,
+    min: -0.03,
+    max: 0.03,
     step: 0.001,
     value: 0.0
   },
   {
-    label: 'Initial frequency (<var>q<sub>0</sub></var>)',
+    label: 'Initial frequency (<var>Nq<sub>0</sub></var>)',
     name: 'frequency',
-    min: 0.0,
-    max: 1.0,
-    step: 0.01,
-    value: 0.1
+    min: 1,
+    max: 1000,
+    step: 1,
+    value: 100
   },
   {
     label: 'Observation period',
