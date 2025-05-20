@@ -3,7 +3,8 @@
   "version": "0.5.1",
   "license": "MIT",
   "repository": "github:heavywatal/driftr.js",
-  "main": "dist/driftr.mjs",
+  "type": "module",
+  "main": "dist/driftr.js",
   "files": [
     "index.html",
     "style.css"
