@@ -1,12 +1,12 @@
-
-
 //#region rolldown:runtime
 var __defProp = Object.defineProperty;
-var __export = (target, all) => {
+var __export = (all) => {
+	let target = {};
 	for (var name in all) __defProp(target, name, {
 		get: all[name],
 		enumerable: true
 	});
+	return target;
 };
 
 //#endregion
@@ -298,7 +298,7 @@ function set$1(type$1, name, callback) {
 	});
 	return type$1;
 }
-var dispatch_default$1 = dispatch;
+var dispatch_default = dispatch;
 
 //#endregion
 //#region node_modules/d3-selection/src/namespaces.js
@@ -498,7 +498,7 @@ function bindIndex(parent, group, enter, update, exit, data) {
 	for (; i < groupLength; ++i) if (node = group[i]) exit[i] = node;
 }
 function bindKey(parent, group, enter, update, exit, data, key) {
-	var i, node, nodeByKeyValue = new Map(), groupLength = group.length, dataLength = data.length, keyValues = new Array(groupLength), keyValue;
+	var i, node, nodeByKeyValue = /* @__PURE__ */ new Map(), groupLength = group.length, dataLength = data.length, keyValues = new Array(groupLength), keyValue;
 	for (i = 0; i < groupLength; ++i) if (node = group[i]) {
 		keyValues[i] = keyValue = key.call(node, node.__data__, i, group) + "";
 		if (nodeByKeyValue.has(keyValue)) exit[i] = node;
@@ -758,8 +758,7 @@ function ClassList(node) {
 }
 ClassList.prototype = {
 	add: function(name) {
-		var i = this._names.indexOf(name);
-		if (i < 0) {
+		if (this._names.indexOf(name) < 0) {
 			this._names.push(name);
 			this._node.setAttribute("class", this._names.join(" "));
 		}
@@ -1003,7 +1002,7 @@ function dispatchFunction(type$1, params) {
 		return dispatchEvent(this, type$1, params.apply(this, arguments));
 	};
 }
-function dispatch_default(type$1, params) {
+function dispatch_default$1(type$1, params) {
 	return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type$1, params));
 }
 
@@ -1061,10 +1060,10 @@ Selection$1.prototype = selection.prototype = {
 	clone: clone_default,
 	datum: datum_default,
 	on: on_default$1,
-	dispatch: dispatch_default,
+	dispatch: dispatch_default$1,
 	[Symbol.iterator]: iterator_default
 };
-var selection_default$1 = selection;
+var selection_default = selection;
 
 //#endregion
 //#region node_modules/d3-selection/src/select.js
@@ -1095,7 +1094,7 @@ function extend(parent, definition) {
 function Color() {}
 var darker = .7;
 var brighter = 1 / darker;
-var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`), reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`), reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`), reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`), reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`), reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
+var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = /* @__PURE__ */ new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`), reRgbPercent = /* @__PURE__ */ new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`), reRgbaInteger = /* @__PURE__ */ new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`), reRgbaPercent = /* @__PURE__ */ new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`), reHslPercent = /* @__PURE__ */ new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`), reHslaPercent = /* @__PURE__ */ new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 var named = {
 	aliceblue: 15792383,
 	antiquewhite: 16444375,
@@ -1461,7 +1460,7 @@ function nogamma(a, b) {
 
 //#endregion
 //#region node_modules/d3-interpolate/src/rgb.js
-var rgb_default = function rgbGamma(y$1) {
+var rgb_default = (function rgbGamma(y$1) {
 	var color$1 = gamma(y$1);
 	function rgb$1(start$1, end) {
 		var r = color$1((start$1 = rgb(start$1)).r, (end = rgb(end)).r), g = color$1(start$1.g, end.g), b = color$1(start$1.b, end.b), opacity = nogamma(start$1.opacity, end.opacity);
@@ -1475,7 +1474,7 @@ var rgb_default = function rgbGamma(y$1) {
 	}
 	rgb$1.gamma = rgbGamma;
 	return rgb$1;
-}(1);
+})(1);
 function rgbSpline(spline) {
 	return function(colors) {
 		var n = colors.length, r = new Array(n), g = new Array(n), b = new Array(n), i, color$1;
@@ -1529,7 +1528,7 @@ function genericArray(a, b) {
 //#endregion
 //#region node_modules/d3-interpolate/src/date.js
 function date_default(a, b) {
-	var d = new Date();
+	var d = /* @__PURE__ */ new Date();
 	return a = +a, b = +b, function(t) {
 		return d.setTime(a * (1 - t) + b * t), d;
 	};
@@ -1805,8 +1804,7 @@ function nap() {
 function sleep(time) {
 	if (frame) return;
 	if (timeout) timeout = clearTimeout(timeout);
-	var delay = time - clockNow;
-	if (delay > 24) {
+	if (time - clockNow > 24) {
 		if (time < Infinity) timeout = setTimeout(wake, time - clock.now() - clockSkew);
 		if (interval) interval = clearInterval(interval);
 	} else {
@@ -1829,7 +1827,7 @@ function timeout_default(callback, delay, time) {
 
 //#endregion
 //#region node_modules/d3-transition/src/transition/schedule.js
-var emptyOn = dispatch_default$1("start", "end", "cancel", "interrupt");
+var emptyOn = dispatch_default("start", "end", "cancel", "interrupt");
 var emptyTween = [];
 var CREATED = 0;
 var SCHEDULED = 1;
@@ -2256,8 +2254,8 @@ function selectAll_default(select) {
 
 //#endregion
 //#region node_modules/d3-transition/src/transition/selection.js
-var Selection = selection_default$1.prototype.constructor;
-function selection_default() {
+var Selection = selection_default.prototype.constructor;
+function selection_default$1() {
 	return new Selection(this._groups, this._parents);
 }
 
@@ -2418,12 +2416,12 @@ function Transition(groups, parents, name, id$1) {
 	this._id = id$1;
 }
 function transition(name) {
-	return selection_default$1().transition(name);
+	return selection_default().transition(name);
 }
 function newId() {
 	return ++id;
 }
-var selection_prototype = selection_default$1.prototype;
+var selection_prototype = selection_default.prototype;
 Transition.prototype = transition.prototype = {
 	constructor: Transition,
 	select: select_default,
@@ -2432,7 +2430,7 @@ Transition.prototype = transition.prototype = {
 	selectChildren: selection_prototype.selectChildren,
 	filter: filter_default,
 	merge: merge_default,
-	selection: selection_default,
+	selection: selection_default$1,
 	transition: transition_default$1,
 	call: selection_prototype.call,
 	nodes: selection_prototype.nodes,
@@ -2490,8 +2488,8 @@ function transition_default(name) {
 
 //#endregion
 //#region node_modules/d3-transition/src/selection/index.js
-selection_default$1.prototype.interrupt = interrupt_default;
-selection_default$1.prototype.transition = transition_default;
+selection_default.prototype.interrupt = interrupt_default;
+selection_default.prototype.transition = transition_default;
 
 //#endregion
 //#region node_modules/d3-brush/src/brush.js
@@ -2894,7 +2892,7 @@ var defaultSource_default = Math.random;
 
 //#endregion
 //#region node_modules/d3-random/src/normal.js
-var normal_default = function sourceRandomNormal(source) {
+var normal_default = (function sourceRandomNormal(source) {
 	function randomNormal(mu, sigma) {
 		var x$1, r;
 		mu = mu == null ? 0 : +mu;
@@ -2912,11 +2910,11 @@ var normal_default = function sourceRandomNormal(source) {
 	}
 	randomNormal.source = sourceRandomNormal;
 	return randomNormal;
-}(defaultSource_default);
+})(defaultSource_default);
 
 //#endregion
 //#region node_modules/d3-random/src/bernoulli.js
-var bernoulli_default = function sourceRandomBernoulli(source) {
+var bernoulli_default = (function sourceRandomBernoulli(source) {
 	function randomBernoulli(p) {
 		if ((p = +p) < 0 || p > 1) throw new RangeError("invalid p");
 		return function() {
@@ -2925,11 +2923,11 @@ var bernoulli_default = function sourceRandomBernoulli(source) {
 	}
 	randomBernoulli.source = sourceRandomBernoulli;
 	return randomBernoulli;
-}(defaultSource_default);
+})(defaultSource_default);
 
 //#endregion
 //#region node_modules/d3-random/src/geometric.js
-var geometric_default = function sourceRandomGeometric(source) {
+var geometric_default = (function sourceRandomGeometric(source) {
 	function randomGeometric(p) {
 		if ((p = +p) < 0 || p > 1) throw new RangeError("invalid p");
 		if (p === 0) return () => Infinity;
@@ -2941,11 +2939,11 @@ var geometric_default = function sourceRandomGeometric(source) {
 	}
 	randomGeometric.source = sourceRandomGeometric;
 	return randomGeometric;
-}(defaultSource_default);
+})(defaultSource_default);
 
 //#endregion
 //#region node_modules/d3-random/src/gamma.js
-var gamma_default = function sourceRandomGamma(source) {
+var gamma_default = (function sourceRandomGamma(source) {
 	var randomNormal = normal_default.source(source)();
 	function randomGamma(k, theta) {
 		if ((k = +k) < 0) throw new RangeError("invalid k");
@@ -2966,11 +2964,11 @@ var gamma_default = function sourceRandomGamma(source) {
 	}
 	randomGamma.source = sourceRandomGamma;
 	return randomGamma;
-}(defaultSource_default);
+})(defaultSource_default);
 
 //#endregion
 //#region node_modules/d3-random/src/beta.js
-var beta_default = function sourceRandomBeta(source) {
+var beta_default = (function sourceRandomBeta(source) {
 	var G = gamma_default.source(source);
 	function randomBeta(alpha, beta) {
 		var X$1 = G(alpha), Y$1 = G(beta);
@@ -2981,11 +2979,11 @@ var beta_default = function sourceRandomBeta(source) {
 	}
 	randomBeta.source = sourceRandomBeta;
 	return randomBeta;
-}(defaultSource_default);
+})(defaultSource_default);
 
 //#endregion
 //#region node_modules/d3-random/src/binomial.js
-var binomial_default = function sourceRandomBinomial(source) {
+var binomial_default = (function sourceRandomBinomial(source) {
 	var G = geometric_default.source(source), B = beta_default.source(source);
 	function randomBinomial(n, p) {
 		n = +n;
@@ -3011,7 +3009,7 @@ var binomial_default = function sourceRandomBinomial(source) {
 	}
 	randomBinomial.source = sourceRandomBinomial;
 	return randomBinomial;
-}(defaultSource_default);
+})(defaultSource_default);
 
 //#endregion
 //#region node_modules/d3-scale/src/init.js
@@ -3134,24 +3132,21 @@ function tickFormat(start$1, stop, count, specifier) {
 	var step = tickStep(start$1, stop, count), precision;
 	specifier = formatSpecifier(specifier == null ? ",f" : specifier);
 	switch (specifier.type) {
-		case "s": {
+		case "s":
 			var value = Math.max(Math.abs(start$1), Math.abs(stop));
 			if (specifier.precision == null && !isNaN(precision = precisionPrefix_default(step, value))) specifier.precision = precision;
 			return formatPrefix(specifier, value);
-		}
 		case "":
 		case "e":
 		case "g":
 		case "p":
-		case "r": {
+		case "r":
 			if (specifier.precision == null && !isNaN(precision = precisionRound_default(step, Math.max(Math.abs(start$1), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
 			break;
-		}
 		case "f":
-		case "%": {
+		case "%":
 			if (specifier.precision == null && !isNaN(precision = precisionFixed_default(step))) specifier.precision = precision - (specifier.type === "%") * 2;
 			break;
-		}
 	}
 	return format(specifier);
 }
@@ -3374,8 +3369,7 @@ function transform(node) {
 
 //#endregion
 //#region src/genetics.ts
-var genetics_exports = {};
-__export(genetics_exports, {
+var genetics_exports = /* @__PURE__ */ __export({
 	heterozygoteAdvantage: () => heterozygoteAdvantage,
 	moranHaploid: () => moranHaploid,
 	wrightFisher: () => wrightFisher,
@@ -3591,8 +3585,7 @@ function form_default(params) {
 	function updateWidth() {
 		const plotWidth = parseInt(select_default$1(".plot").style("width"));
 		svg.attr("width", plotWidth - parseInt(svg.style("padding-right")));
-		const svgWidth = parseInt(svg.attr("width"));
-		const panelWidth = svgWidth - svgPadding.left - svgPadding.right;
+		const panelWidth = parseInt(svg.attr("width")) - svgPadding.left - svgPadding.right;
 		svg.select(".panel_background").attr("width", panelWidth);
 		scaleX.range([0, panelWidth]);
 		axisX.scale(scaleX);
