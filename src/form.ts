@@ -4,6 +4,7 @@ import * as d3 from 'd3'
 interface ParameterType {
   label: string;
   name: string;
+  symbol: string;
   min: number;
   max: number;
   step: number;
@@ -12,6 +13,7 @@ interface ParameterType {
 
 export default function (params) {
   d3.select('main').append('form')
+  const urlsearch = new URLSearchParams(window.location.search);
 
   const inputItems = d3.select('form')
     .selectAll('dl')
@@ -42,6 +44,8 @@ export default function (params) {
     .attr('step', function (d) { return d.step })
     .attr('value', function (d) { return d.value })
     .on('input', function (event, d) {
+      urlsearch.set(d.symbol, this.value);
+      window.history.replaceState(null, '', '?' + urlsearch.toString());
       d3.select('#' + this.name + ' label.value')
         .text(this.value)
       d.value = Number(this.value);
@@ -67,7 +71,7 @@ export default function (params) {
     .text(function (d) { return d.max })
 
   const inputModel = d3.select('form')
-    .append('dl').attr('class', 'parameter')
+    .append('dl').attr('class', 'model')
   inputModel.append('dt').append('label')
     .attr('class', 'name')
     .text('Model')
@@ -76,7 +80,6 @@ export default function (params) {
       d3.select(this).append('input').attr('type', 'radio').attr('name', 'model')
         .attr('value', 'wrightFisherHaploid')
         .attr('id', 'wrightFisherHaploid')
-        .property('checked', true)
       d3.select(this).append('label').attr('class', 'radio')
         .attr('for', 'wrightFisherHaploid')
         .text('Wright-Fisher haploid')
@@ -102,6 +105,13 @@ export default function (params) {
         .attr('for', 'moranHaploid')
         .text('Moran haploid')
     })
+  d3.selectAll('input[name="model"]')
+    .on('change', function () {
+      urlsearch.set('model', this.value);
+      window.history.replaceState(null, '', '?' + urlsearch.toString());
+    });
+  const model = urlsearch.get('model') || 'wrightFisherHaploid';
+  d3.select('input#' + model).property('checked', true);
 
   d3.select('form').append('button')
     .attr('type', 'button')

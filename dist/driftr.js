@@ -3427,46 +3427,52 @@ function moranHaploid(N, s, q0, T, maxHistory) {
 
 //#endregion
 //#region src/parameters.ts
+const urlsearch = new URLSearchParams(window.location.search);
 var parameters_default = [
 	{
 		label: "Population size (<var>N</var>)",
 		name: "popsize",
+		symbol: "n",
 		min: 10,
 		max: 1e4,
 		step: 10,
-		value: 1e3
+		value: Number(urlsearch.get("n")) || 1e3
 	},
 	{
 		label: "Selection coefficient (<var>s<var>)",
 		name: "selection",
+		symbol: "s",
 		min: -.03,
 		max: .03,
 		step: .001,
-		value: 0
+		value: Number(urlsearch.get("s")) || 0
 	},
 	{
 		label: "Initial frequency (<var>Nq<sub>0</sub></var>)",
 		name: "frequency",
+		symbol: "nq0",
 		min: 1,
-		max: 1e3,
+		max: Number(urlsearch.get("n")) || 1e3,
 		step: 1,
-		value: 100
+		value: Number(urlsearch.get("nq0")) || 100
 	},
 	{
 		label: "Observation period",
 		name: "observation",
+		symbol: "t",
 		min: 100,
 		max: 4e4,
 		step: 100,
-		value: 1e3
+		value: Number(urlsearch.get("t")) || 1e3
 	},
 	{
 		label: "Number of replicates",
 		name: "replicates",
+		symbol: "rep",
 		min: 1,
 		max: 100,
 		step: 1,
-		value: 10
+		value: Number(urlsearch.get("rep")) || 10
 	}
 ];
 
@@ -3474,6 +3480,7 @@ var parameters_default = [
 //#region src/form.ts
 function form_default(params) {
 	select_default$1("main").append("form");
+	const urlsearch$1 = new URLSearchParams(window.location.search);
 	const inputItems = select_default$1("form").selectAll("dl").data(params).enter().append("dl").attr("id", function(d) {
 		return d.name;
 	}).attr("class", "parameter");
@@ -3499,6 +3506,8 @@ function form_default(params) {
 	}).attr("value", function(d) {
 		return d.value;
 	}).on("input", function(event, d) {
+		urlsearch$1.set(d.symbol, this.value);
+		window.history.replaceState(null, "", "?" + urlsearch$1.toString());
 		select_default$1("#" + this.name + " label.value").text(this.value);
 		d.value = Number(this.value);
 		if (this.name === "popsize") {
@@ -3520,10 +3529,10 @@ function form_default(params) {
 	}).text(function(d) {
 		return d.max;
 	});
-	const inputModel = select_default$1("form").append("dl").attr("class", "parameter");
+	const inputModel = select_default$1("form").append("dl").attr("class", "model");
 	inputModel.append("dt").append("label").attr("class", "name").text("Model");
 	inputModel.append("dd").each(function() {
-		select_default$1(this).append("input").attr("type", "radio").attr("name", "model").attr("value", "wrightFisherHaploid").attr("id", "wrightFisherHaploid").property("checked", true);
+		select_default$1(this).append("input").attr("type", "radio").attr("name", "model").attr("value", "wrightFisherHaploid").attr("id", "wrightFisherHaploid");
 		select_default$1(this).append("label").attr("class", "radio").attr("for", "wrightFisherHaploid").text("Wright-Fisher haploid");
 		select_default$1(this).append("br");
 		select_default$1(this).append("input").attr("type", "radio").attr("name", "model").attr("value", "wrightFisherDiploid").attr("id", "wrightFisherDiploid");
@@ -3535,6 +3544,12 @@ function form_default(params) {
 		select_default$1(this).append("input").attr("type", "radio").attr("name", "model").attr("value", "moranHaploid").attr("id", "moranHaploid");
 		select_default$1(this).append("label").attr("class", "radio").attr("for", "moranHaploid").text("Moran haploid");
 	});
+	selectAll_default$1("input[name=\"model\"]").on("change", function() {
+		urlsearch$1.set("model", this.value);
+		window.history.replaceState(null, "", "?" + urlsearch$1.toString());
+	});
+	const model = urlsearch$1.get("model") || "wrightFisherHaploid";
+	select_default$1("input#" + model).property("checked", true);
 	select_default$1("form").append("button").attr("type", "button").attr("class", "start button").text("START!");
 }
 
@@ -3610,6 +3625,7 @@ function form_default(params) {
 	}
 	let maxHistory = 250;
 	if (window.navigator.userAgent.match(/Chrome|Firefox/)) maxHistory = 1e3;
+	const urlsearch$1 = new URLSearchParams(window.location.search);
 	let results = [];
 	function start$1() {
 		results = [];
@@ -3621,6 +3637,13 @@ function form_default(params) {
 		const T = parameters_default[3].value;
 		const rep = parameters_default[4].value;
 		const model = select_default$1("input[name=\"model\"]:checked").attr("value");
+		urlsearch$1.set("n", String(N));
+		urlsearch$1.set("s", String(s));
+		urlsearch$1.set("nq0", String(parameters_default[2].value));
+		urlsearch$1.set("t", String(T));
+		urlsearch$1.set("rep", String(rep));
+		urlsearch$1.set("model", model);
+		window.history.replaceState(null, "", "?" + urlsearch$1.toString());
 		svg.select(".axis.x").call(axisX.scale(scaleX.domain([0, T])));
 		for (let i = 0; i < rep; ++i) {
 			const trajectory = genetics_exports[model](N, s, q0, T, maxHistory);

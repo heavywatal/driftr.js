@@ -121,6 +121,7 @@ import createForm from './form';
     maxHistory = 1000
   }
 
+  const urlsearch = new URLSearchParams(window.location.search);
   let results = []
 
   function start () {
@@ -133,6 +134,13 @@ import createForm from './form';
     const T = params[3].value
     const rep = params[4].value
     const model: string = d3.select('input[name="model"]:checked').attr('value')
+    urlsearch.set('n', String(N));
+    urlsearch.set('s', String(s));
+    urlsearch.set('nq0', String(params[2].value));
+    urlsearch.set('t', String(T));
+    urlsearch.set('rep', String(rep));
+    urlsearch.set('model', model);
+    window.history.replaceState(null, '', '?' + urlsearch.toString());
     svg.select('.axis.x').call(axisX.scale(scaleX.domain([0, T])))
     for (let i = 0; i < rep; ++i) {
       const trajectory = genetics[model](N, s, q0, T, maxHistory)
