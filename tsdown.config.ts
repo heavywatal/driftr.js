@@ -1,9 +1,10 @@
-import { defineConfig } from 'tsdown'
+import { defineConfig } from "tsdown";
 
 export default defineConfig({
   entry: {
-    driftr: './src/main.ts',
+    driftr: "./src/main.ts",
   },
-  noExternal: ['d3'],
-  platform: 'browser',
-})
+  noExternal: ["d3"],
+  platform: "browser",
+  inlineOnly: ["d3*"],
+});
