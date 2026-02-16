@@ -37,10 +37,7 @@ import params from "./parameters";
     .append("g")
     .attr("class", "plot")
     .attr("transform", `translate(${svgPadding.left},${svgPadding.top})`);
-  plot
-    .append("rect")
-    .attr("class", "panel_background")
-    .attr("height", panelHeight);
+  plot.append("rect").attr("class", "panel_background").attr("height", panelHeight);
   plot.append("g").attr("class", "panel");
 
   const scaleX = d3.scaleLinear().domain([0, params[3].value]);
@@ -136,9 +133,7 @@ import params from "./parameters";
     const q0 = params[2].value / N;
     const T = params[3].value;
     const rep = params[4].value;
-    const model: string = d3
-      .select('input[name="model"]:checked')
-      .attr("value");
+    const model: string = d3.select('input[name="model"]:checked').attr("value");
     urlsearch.set("n", String(N));
     urlsearch.set("s", String(s));
     urlsearch.set("nq0", String(params[2].value));
